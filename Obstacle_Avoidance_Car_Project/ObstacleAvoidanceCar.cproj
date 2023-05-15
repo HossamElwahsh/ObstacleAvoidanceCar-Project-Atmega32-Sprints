@@ -29,16 +29,16 @@
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <EraseKey />
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.52.0" />
-        </dependencies>
-      </framework-data>
+      <framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.42.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -120,7 +120,37 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ECUAL\dcm\dcm_cfg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\dcm\dcm_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\dcm\dcm_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\dcm\dcm_program.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\delay\delay_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\delay\delay_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\delay\delay_program.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\icu\icu_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\pwm\pwm_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\pwm\pwm_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\pwm\pwm_program.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\us\us_interface.h">
@@ -139,6 +169,21 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\exi\exi_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\timer\timer_cfg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\timer\timer_cfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\timer\timer_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\timer\timer_private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\timer\timer_program.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
