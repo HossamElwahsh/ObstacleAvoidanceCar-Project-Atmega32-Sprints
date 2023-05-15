@@ -9,7 +9,7 @@
 #ifndef DIO_INTERFACE_H_
 #define DIO_INTERFACE_H_
 
-
+#include "../../LIB/std.h"
 
 #define PORT_INPUT		0x00
 #define PORT_OUTPUT		0xff
