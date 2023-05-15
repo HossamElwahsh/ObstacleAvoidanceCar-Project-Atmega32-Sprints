@@ -57,10 +57,10 @@ typedef enum
 
 en_DIO_error_t DIO_setPortDir(en_DIO_port_t en_a_port,  u8 u8_a_portDir);
 en_DIO_error_t DIO_setPortVal(en_DIO_port_t en_a_port,  u8 u8_a_portVal);
-en_DIO_error_t DIO_setPinDir (en_DIO_pin_t en_a_pin, en_DIO_pinDir_t en_a_pinDir);
-en_DIO_error_t DIO_setPinVal (en_DIO_pin_t en_a_pin, en_DIO_level_t en_a_pinVal);
-en_DIO_error_t DIO_togPinVal (en_DIO_pin_t en_a_pin);
-en_DIO_error_t DIO_getPinVal (en_DIO_pin_t en_a_pin, u8* pu8Val);
+en_DIO_error_t DIO_setPinDir (en_DIO_port_t en_a_port, en_DIO_pin_t en_a_pin, en_DIO_pinDir_t en_a_pinDir);
+en_DIO_error_t DIO_setPinVal (en_DIO_port_t en_a_port, en_DIO_pin_t en_a_pin, en_DIO_level_t en_a_pinVal);
+en_DIO_error_t DIO_togPinVal (en_DIO_port_t en_a_port, en_DIO_pin_t en_a_pin);
+en_DIO_error_t DIO_getPinVal (en_DIO_port_t en_a_port, en_DIO_pin_t en_a_pin, u8* pu8_a_Val);
 
 
 
