@@ -9,7 +9,7 @@
 #ifndef ICU_INTERFACE_H_
 #define ICU_INTERFACE_H_
 
-void ICU_init(echo pin, callback);
+void ICU_init(u8 u8_a_echoPin, void (* vp_a_callback));
 void ICU_getCaptureValue(void);
 
 #endif /* ICU_INTERFACE_H_ */
