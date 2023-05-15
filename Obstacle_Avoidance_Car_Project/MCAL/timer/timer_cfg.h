@@ -21,13 +21,13 @@
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
 
-/*************************_SYSTEM_OSCILLARTOR_CLOCK_FREQUENCY_/*************************/
+/*************************_SYSTEM_OSCILLARTOR_CLOCK_FREQUENCY_*************************/
 /*
  *	Enter microcontrolers frequency in Hz writing UL besides it
  */
 #define F_CPU							16000000UL
 
-/*************************_NUMBER_OF_TIMERS_USED_/*************************/
+/*************************_NUMBER_OF_TIMERS_USED_*************************/
 /*
  *	number of timers used
  */
