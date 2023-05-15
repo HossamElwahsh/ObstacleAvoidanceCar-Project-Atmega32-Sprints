@@ -23,7 +23,7 @@ typedef enum{
 }en_ICU_port;
 
 /**
- * ICU PIN (ECHO PIN)
+ * ICU PIN
  */
 typedef enum{
     PIN_0,
