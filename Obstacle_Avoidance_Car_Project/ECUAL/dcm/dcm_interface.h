@@ -15,7 +15,7 @@
  * INCLUDES
  *********************************************************************************************************************/
 #include "../../MCAL/dio/dio_interface.h"
-#include "../pwm/pwm_inteface.h"
+#include "../pwm/pwm_interface.h"
 
 
 /**********************************************************************************************************************
@@ -32,7 +32,7 @@ typedef enum
 	DCM_OK = 0,
 	DCM_WRONG_DCM_NUMBER,
 	DCM_WRONG_DIRECTION
-}en_DCM_Error_t;
+}en_DCM_error_t;
 
 
 /***************************************_DCM_NUMBERS_***************************************/
@@ -68,15 +68,15 @@ typedef struct
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-en_DCM_number_t DCM_init				(void);
+en_DCM_error_t DCM_init				(void);
 
-en_DCM_number_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_direction_t en_a_direction);
+en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_direction_t en_a_direction);
 
-en_DCM_number_t DCM_speed				(u8 u8_a_speed);
+en_DCM_error_t DCM_speed				(u8 u8_a_speed);
 
-en_DCM_number_t DCM_start				(void);
+en_DCM_error_t DCM_start				(void);
 
-en_DCM_number_t DCM_stop				(void);
+en_DCM_error_t DCM_stop				(void);
 
 
 #endif /* DCM_INTERFACE_H_ */
