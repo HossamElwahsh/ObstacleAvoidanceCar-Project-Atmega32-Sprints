@@ -45,7 +45,7 @@ typedef enum{
 typedef struct{
     en_ICU_port icuPort;
     en_ICU_pin icuPin;
-	void (* timeReceivedCallbackFun);
+	void (* timeReceivedCallbackFun)(void);
 }st_ICU_config_t;
 
 /* FUNCTIONS' PROTOTYPES */
