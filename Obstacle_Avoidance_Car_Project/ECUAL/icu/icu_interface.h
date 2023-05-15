@@ -39,12 +39,12 @@ typedef enum{
 /**
  * ICU Configuration structure
  * 0: ICU PORT
- * 1: ICU PIN (ECHO)
+ * 1: ICU PIN
  * 2: CALLBACK POINTER (when time is calculated)
  */
 typedef struct{
-    en_ICU_port echoPort;
-    en_ICU_pin echoPin;
+    en_ICU_port icuPort;
+    en_ICU_pin icuPin;
 	void (* timeReceivedCallbackFun);
 }st_ICU_config_t;
 
