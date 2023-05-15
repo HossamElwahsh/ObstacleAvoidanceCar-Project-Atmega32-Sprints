@@ -138,6 +138,9 @@
     <Compile Include="MCAL\dio\dio_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCAL\exi\exi_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ECUAL\lcd" />
