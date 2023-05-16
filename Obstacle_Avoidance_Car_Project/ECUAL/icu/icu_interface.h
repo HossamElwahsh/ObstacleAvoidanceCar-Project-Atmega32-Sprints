@@ -16,44 +16,22 @@
 #include "../../MCAL/dio/dio_interface.h"
 #include "../../MCAL/exi/exi_interface.h"
 
+/* Config */
+#include "icu_cfg.h"
+
 /** OPTIONS **/
 
 /**
  * CAPTURE PIN
  */
 typedef enum{
-    PORT_B,
-    PORT_D
-}en_ICU_pin_t;
-
-typedef enum{
-    PIN_2,
-    PIN_3
-}en_ICU_port_t;
-
-typedef enum{
-    INT0,
-    INT1,
-    INT2,
-}en_ICU_exi_t;
-
-typedef struct{
-    en_ICU_pin_t capturePort;
-    en_ICU_port_t capturePin;
-    en_ICU_exi_t interruptNo;
-}st_ICU_capturePin_t;
-
-typedef struct{
-    st_ICU_capturePin_t PORT_D_PIN_2;
-    st_ICU_capturePin_t PORT_D_PIN_3;
-    st_ICU_capturePin_t PORT_B_PIN_2;
-}st_ICU_capturePins_t;
-
-typedef enum{
+    // INT0
     PORT_D_PIN_2,
+    // INT1
     PORT_D_PIN_3,
-    PORT_B_PIN_2,
-}en_ICU_capturePin_t;
+    // INT2
+    PORT_B_PIN_2
+}en_ICU_capturePin;
 
 typedef enum{
     ICU_OK,
@@ -62,13 +40,12 @@ typedef enum{
 
 /**
  * ICU Configuration structure
- * 0: ICU Capture Pin Number
- * 1: ICU Capture Pin data
+ * 0: ICU PORT
+ * 1: ICU PIN
  * 2: CALLBACK POINTER (when time is calculated)
  */
 typedef struct{
-    en_ICU_capturePin_t icuCapturePin;
-    st_ICU_capturePin_t icuCapturePinData;
+    en_ICU_capturePin icuCapturePin;
 	void (* timeReceivedCallbackFun)(void);
 }st_ICU_config_t;
 
@@ -86,15 +63,9 @@ typedef struct{
 en_ICU_error_t ICU_init(void);
 
 /**
- * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
- * to rebound back on the echo/capture PIN
+ * Resets and starts the ICU algorithm to capture the elapsed time duration now
+ * starting until echo signal is received back
  */
 void ICU_getCaptureValue(void);
-
-
-/**
- * Handles Interrupts/Events on the capture input pin
- * */
-void ICU_inputHandler(void);
 
 #endif /* ICU_INTERFACE_H_ */

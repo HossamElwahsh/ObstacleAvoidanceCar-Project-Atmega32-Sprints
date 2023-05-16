@@ -29,10 +29,9 @@
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
 typedef enum timerError{
-	TIMER_OK = 0,
-	TIMER_WRONG_TIMER_USED,
-	TIMER_WRONG_DESIRED_TIME,
-	TIMER_NOK
+	TIMER_OK,
+	WRONG_TIMER_USED,
+	WRONG_DESIRED_TIME
 }en_TIMER_error_t;
 	
 typedef enum
@@ -79,19 +78,15 @@ en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desir
 
 en_TIMER_error_t TIMER_pwmGenerator(en_TIMER_number_t en_a_timerUsed , u16 u16_a_onTime, u16 u16_a_offTime);
 
-en_TIMER_error_t TIMER_resume(en_TIMER_number_t en_a_timerUsed);
+en_TIMER_error_t TIMER_start(en_TIMER_number_t en_a_timerUsed);
 
-en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed);
+en_TIMER_error_t TIMER_stop(en_TIMER_number_t en_a_timerUsed);
 
-en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_elapsedTime);
+en_TIMER_error_t	TIMER_disableInterrupt(en_TIMER_number_t en_a_timerUsed);
 
-en_TIMER_error_t TIMER_pause(en_TIMER_number_t en_a_timerUsed);
+en_TIMER_error_t	TIMER_enableInterrupt(en_TIMER_number_t en_a_timerUsed);
 
-en_TIMER_error_t TIMER_disableInterrupt(en_TIMER_number_t en_a_timerUsed);
-				 
-en_TIMER_error_t TIMER_enableInterrupt(en_TIMER_number_t en_a_timerUsed);
-				 
-en_TIMER_error_t TIMER_setCallBack(en_TIMER_number_t en_a_timerUsed, void (*funPtr)(void));
+en_TIMER_error_t	TIMER_setCallBack(en_TIMER_number_t en_a_timerUsed, void (*funPtr)(void));
 
 en_TIMER_error_t TIMER_setDelayTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_timeInMS);
 #endif /* TIMER_INTERFACE_H_ */

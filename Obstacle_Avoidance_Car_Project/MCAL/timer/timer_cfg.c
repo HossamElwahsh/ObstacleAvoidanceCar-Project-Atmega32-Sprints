@@ -19,7 +19,7 @@
  *  GLOBAL DATA
  *********************************************************************************************************************/
  
- const st_TIMER_config_t st_TIMER_config [NUMBER_OF_TIMERS_USED] = 
+ const st_TIMER_config_t TIMER_config [NUMBER_OF_TIMERS_USED] = 
 {
 /*	TIMER_number,	waveformUsed,	prescalerUsed	*/
 	{TIMER_0,		TIMER_OV,		TIMER_PRESCLNG_64},

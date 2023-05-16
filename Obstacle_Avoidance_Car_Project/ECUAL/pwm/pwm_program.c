@@ -56,7 +56,7 @@ en_PWM_error_t PWM_init	(void)
 	{
 		/*returnValue = PWM_OK;*/
 	}
-	if ( TIMER_pause(PWM_TIMER_USED) )
+	if ( TIMER_stop(PWM_TIMER_USED) )
 	{
 		returnValue = PWM_NOK;
 	}
@@ -90,7 +90,7 @@ en_PWM_error_t PWM_start (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
 	
-	if ( TIMER_resume(PWM_TIMER_USED) )
+	if ( TIMER_start(PWM_TIMER_USED) )
 	{
 		returnValue = PWM_NOK;
 	}
