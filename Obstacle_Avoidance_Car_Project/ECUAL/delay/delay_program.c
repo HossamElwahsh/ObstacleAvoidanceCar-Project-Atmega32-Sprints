@@ -19,6 +19,68 @@
  *  GLOBAL DATA
  *********************************************************************************************************************/
  
+ 
+ /**********************************************************************************************************************
+ *  GLOBAL FUNCTION IMPLEMENTATION
+ *********************************************************************************************************************/
+ en_DELAY_error_t DELAY_init (void)
+ {
+	 en_DELAY_error_t returnValue = DELAY_OK;
+	 
+	 
+	 if ( TIMER_init() )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 if ( TIMER_disableInterrupt(DELAY_TIMER_USED) )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 if ( TIMER_stop(DELAY_TIMER_USED) )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 return returnValue;
+ }
+
+ en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS)
+ {
+	 en_DELAY_error_t returnValue = DELAY_OK;
+	 
+	 if ( TIMER_stop(DELAY_TIMER_USED) )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 
+	 if ( TIMER_setDelayTime(DELAY_TIMER_USED, f32_a_timeInMS) )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 
+	 return returnValue;
+	 
+ }
+
 /**********************************************************************************************************************
  *  END OF FILE: delay_program.c
  *********************************************************************************************************************/
