@@ -38,6 +38,14 @@
  */
 #define PWM_TIMER_USED					TIMER_0
 
+/*************************_NUMBER_OF_PWM_PINS_*************************/
+/*
+ *	Number of pwm pins used to generate PWM signal on them
+ */
+#define NUMBER_OF_PWM_PINS				2
+#define PWM_0							0
+#define PWM_1							1
+
 
 #endif /* PWM_CFG_H_ */
 /**********************************************************************************************************************
