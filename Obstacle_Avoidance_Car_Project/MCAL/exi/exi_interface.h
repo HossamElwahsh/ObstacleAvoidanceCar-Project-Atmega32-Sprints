@@ -18,8 +18,8 @@ typedef enum
 
 typedef enum
 {
-	EXTI_ENABLE ,
-	EXTI_DISABLE
+	EXTI_DISABLE ,
+	EXTI_ENABLE
 }en_EXTI_state_t;
 
 typedef enum
@@ -36,46 +36,64 @@ typedef enum
 	EXTI_ERROR
 }en_EXTI_error_t;
 
-typedef struct
-{
-	en_EXTI_num_t 	 EXTI_NUM;		
-	en_EXTI_senseMode_t   SENSE_MODE;
-	en_EXTI_state_t 	 EXTI_EN;
-}st_PortDDirConfig_t;
-
-
+/*************************************************************************************************************
+ * 											  Function Prototypes
+ ************************************************************************************************************/
 
 /**
- * @def   Initialize given EXTI as configured
- * @param u8_a_IntNumber: the interrupt to be initialized
- * @return error state
+ * @brief Initialize given EXTI as configured
+ *
+ * This function initializes the passed interrupt with the configured
+ * parameters in the configuration source file
+ *
+ * @param[in] en_a_IntNumber the interrupt to be initialized
+ *
+ * @return en_EXTI_error_t value that indicates operation success/failure
+ *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_init(en_EXTI_num_t u8_a_intNumber);
+en_EXTI_error_t EXTI_init(en_EXTI_num_t en_a_intNumber);
 
 /**
- * @def   Function to choose the trigger event for given EXTI 
- * @param u8_a_IntNumber: the interrupt to be configured
- * @param u8_a_SenseMode: the  EXTI trigger event
- * @return error state
+ * @brief  Function to choose the trigger event for given EXTI 
+ *
+ * This function sets the given EXTI to be triggered whenever 
+ * an event that matches the given sense mode occurs
+ *
+ * @param[in] en_a_IntNumber The interrupt to be configured
+ * @param[in] en_a_SenseMode The event to trigger the EXTI
+ *
+ * @return en_EXTI_error_t value that indicates operation success/failure
+ *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setSense(en_EXTI_num_t u8_a_intNumber, en_EXTI_senseMode_t u8_a_senseMode);
+en_EXTI_error_t EXTI_setSense(en_EXTI_num_t en_a_intNumber, en_EXTI_senseMode_t en_a_senseMode);
 
 /**
- * @def	  Function to enable/disable given EXTI
- * @param u8_a_IntNumber: the interrupt to be configured
- * @param en_a_intState: EXTI state (Enable/Disable)
- * @return error state
+ * @brief Function to enable/disable given EXTI
+ *
+ * This function sets or clears the specific interrupt enable bit
+ * for the given interrupt to enable or disable it
+ *
+ * @param[in] en_a_IntNumber The interrupt to be configured
+ * @param[in] en_a_intState  EXTI state (EXTI_ENABLE/EXTI_DISABLE)
+ *
+ * @return en_EXTI_error_t value that indicates operation success/failure
+ *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setState(en_EXTI_num_t u8_a_IntNumber, en_EXTI_state_t en_a_intState);
+en_EXTI_error_t EXTI_setState(en_EXTI_num_t en_a_IntNumber, en_EXTI_state_t en_a_intState);
 
 /**
- * @def   Function to set a CBF to call when exti is triggered
- * @param u8_a_IntNumber : the desired exti
- * @param pv_a_Function: The function to call
- * @return error state
+ * @brief Function to set a function to call when exti is triggered
+ *
+ * This function sets a callback function to be called whenever 
+ * the given interrupt is triggered 
+ *
+ * @param[in] en_a_IntNumber The desired exti number
+ * @param[in] pv_a_Function  The function to call
+ *
+ * @return en_EXTI_error_t value that indicates operation success/failure
+ *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setCallback(en_EXTI_num_t u8_a_IntNumber, void (pv_a_Function)(void));
-
+en_EXTI_error_t EXTI_setCallback(en_EXTI_num_t en_a_IntNumber, void (*pv_a_Function)(void));
 
 
 #endif /* EXI_INTERFACE_H_ */
