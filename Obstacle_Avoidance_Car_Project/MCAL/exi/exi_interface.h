@@ -46,11 +46,9 @@ typedef struct
 
 
 /**
- * @def   Initialize given EXTI as configured
- * @param u8_a_IntNumber: the interrupt to be initialized
- * @return error state
+ * @def   Initialize all EXTIs as configured
  */
-en_EXTI_error_t EXTI_init(en_EXTI_num_t u8_a_intNumber);
+void EXTI_init(void);
 
 /**
  * @def   Function to choose the trigger event for given EXTI 

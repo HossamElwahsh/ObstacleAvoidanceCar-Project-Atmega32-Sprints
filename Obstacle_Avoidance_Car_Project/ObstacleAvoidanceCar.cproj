@@ -129,9 +129,6 @@
     <Compile Include="LIB\bit_math.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LIB\interrupts.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="LIB\std.h">
       <SubType>compile</SubType>
     </Compile>
