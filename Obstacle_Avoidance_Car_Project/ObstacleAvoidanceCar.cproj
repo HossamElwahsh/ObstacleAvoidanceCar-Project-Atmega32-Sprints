@@ -129,6 +129,9 @@
     <Compile Include="LIB\bit_math.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LIB\interrupts.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="LIB\std.h">
       <SubType>compile</SubType>
     </Compile>
@@ -136,6 +139,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\dio\dio_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\dio\dio_private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\dio\dio_program.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\exi\exi_interface.h">
