@@ -8,7 +8,8 @@
 
 #ifndef BUTTON_INTERFACE_H_
 #define BUTTON_INTERFACE_H_
-
+#include "../../LIB/std.h"
+#include "../../MCAL/dio/dio_interface.h"
 
 #define BUTTON_1_PORT	PORT_B
 #define BUTTON_1_Pin	2

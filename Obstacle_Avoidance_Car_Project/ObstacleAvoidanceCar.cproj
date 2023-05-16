@@ -30,15 +30,15 @@
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -120,13 +120,28 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ECUAL\btn\button.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\btn\button_interface.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\icu\icu_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ECUAL\kpd\keypad.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\kpd\keypad_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\lcd\lcd.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\lcd\lcd_config.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\lcd\lcd_config.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\lcd\lcd_interface.h">
