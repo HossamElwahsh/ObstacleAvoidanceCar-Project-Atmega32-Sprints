@@ -11,8 +11,8 @@
 #include "../../LIB/std.h"
 #include "../../MCAL/dio/dio_interface.h"
 
-#define BUTTON_1_PORT	PORT_B
-#define BUTTON_1_Pin	2
+#define BUTTON_1_PORT	DIO_PORTB
+#define BUTTON_1_Pin	DIO_PIN_2
 
 typedef enum buttonErrors{
 	BUTTON_OK,

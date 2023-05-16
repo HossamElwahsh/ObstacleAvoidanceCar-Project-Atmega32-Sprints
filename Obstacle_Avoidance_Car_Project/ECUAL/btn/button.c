@@ -18,7 +18,8 @@ en_buttonError_t BUTTON_init(u8 u8_a_buttonPort, u8 u8_a_buttonPin)
 	}
 	else
 	{
-		DIO_init(u8_a_buttonPort, u8_a_buttonPin, INPUT);
+
+          DIO_setPinDir (DIO_PORTB,DIO_PIN_2,INPUT);
 		en_a_error = BUTTON_OK;
 	}
 	
