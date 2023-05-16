@@ -21,7 +21,7 @@
 extern const st_DCM_config_t st_DCM_config [NUMBER_OF_DCMS_USED];
  
  /**********************************************************************************************************************
- *  GLOBAL FUNCTION Implementations
+ *  GLOBAL FUNCTION IMPLEMENTATION
  *********************************************************************************************************************/
 en_DCM_error_t DCM_init	(void)
 {
@@ -35,7 +35,7 @@ en_DCM_error_t DCM_init	(void)
 		}
 		else
 		{
-			returnValue = DCM_OK;
+			/*returnValue = DCM_OK*/
 		}
 		if (DIO_setPinDir(st_DCM_config[counter].dcmPortNumber_1, st_DCM_config[counter].dcmPinNumber_1, OUTPUT))
 		{
@@ -44,7 +44,7 @@ en_DCM_error_t DCM_init	(void)
 		}
 		else
 		{
-			returnValue = DCM_OK;	
+			/*returnValue = DCM_OK*/	
 		}
 	}
 	if (PWM_init())
@@ -53,7 +53,7 @@ en_DCM_error_t DCM_init	(void)
 	}
 	else
 	{
-		returnValue = DCM_OK;
+		/*returnValue = DCM_OK*/
 	}
 	
 	return returnValue;
@@ -81,7 +81,7 @@ en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_directi
 				}
 				else
 				{
-					returnValue = DCM_OK;
+					/*returnValue = DCM_OK*/
 				}
 				if (DIO_setPinVal(st_DCM_config[counter].dcmPortNumber_1, st_DCM_config[counter].dcmPinNumber_1,LOW))
 				{
@@ -89,7 +89,7 @@ en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_directi
 				}
 				else
 				{
-					returnValue = DCM_OK;
+					/*returnValue = DCM_OK*/
 				}
 				break;
 				case DCM_ACW:
@@ -99,7 +99,7 @@ en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_directi
 				}
 				else
 				{
-					returnValue = DCM_OK;
+					/*returnValue = DCM_OK*/
 				}
 				if (DIO_setPinVal(st_DCM_config[counter].dcmPortNumber_1, st_DCM_config[counter].dcmPinNumber_1,HIGH))
 				{
@@ -107,7 +107,7 @@ en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_directi
 				}
 				else
 				{
-					returnValue = DCM_OK;
+					/*returnValue = DCM_OK*/
 				}
 				break;
 				default:
@@ -133,7 +133,7 @@ en_DCM_error_t DCM_speed (u8 u8_a_speed)
 		}
 		else
 		{
-			returnValue = DCM_OK;
+			/*returnValue = DCM_OK*/
 		}
 	}
 	else
@@ -155,7 +155,7 @@ en_DCM_error_t DCM_start (void)
 	}
 	else
 	{
-		returnValue = DCM_OK;
+		/*returnValue = DCM_OK*/
 	}
 	return returnValue;
 }
@@ -171,7 +171,7 @@ en_DCM_error_t DCM_stop	(void)
 	}
 	else
 	{
-		returnValue = DCM_OK;
+		/*returnValue = DCM_OK*/
 	}
 	
 	return returnValue;

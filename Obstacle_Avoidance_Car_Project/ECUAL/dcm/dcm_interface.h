@@ -60,10 +60,10 @@ typedef enum
 typedef struct
 {
 	en_DCM_number_t 	dcmNumber;
-	u8					dcmPortNumber_0;
-	u8					dcmPinNumber_0;
-	u8				 	dcmPortNumber_1;
-	u8					dcmPinNumber_1;
+				 u8		dcmPortNumber_0;
+				 u8		dcmPinNumber_0;
+				 u8		dcmPortNumber_1;
+				 u8		dcmPinNumber_1;
 }st_DCM_config_t;
 
 /**********************************************************************************************************************
