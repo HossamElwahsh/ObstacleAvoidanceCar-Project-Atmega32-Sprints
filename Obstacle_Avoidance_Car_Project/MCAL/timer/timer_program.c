@@ -385,15 +385,18 @@ en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed)
 		case TIMER_0:
 		u32_g_timer0OVFCounter = 0;
 		TCNT0 = 0;
+		TIMER_pause(en_a_timerUsed);
 		break;
 		
 		case TIMER_1:
 		u32_g_timer1OVFCounter = 0;
+		TIMER_pause(en_a_timerUsed);
 		TCNT1 = 0;
 		break;
 		
 		case TIMER_2:
 		u32_g_timer2OVFCounter = 0;
+		TIMER_pause(en_a_timerUsed);
 		TCNT2 = 0;
 		break;
 		
