@@ -8,33 +8,35 @@
 #ifndef ICU_INTERFACE_H_
 #define ICU_INTERFACE_H_
 
+/* LIB*/
 #include "../../LIB/std.h"
+#include "../../LIB/interrupts.h"
+
+/* MCAL */
+#include "../../MCAL/dio/dio_interface.h"
+#include "../../MCAL/exi/exi_interface.h"
+
+/* Config */
+#include "icu_cfg.h"
 
 /** OPTIONS **/
 
 /**
- * ICU PORT
+ * CAPTURE PIN
  */
 typedef enum{
-    PORT_A,
-    PORT_B,
-    PORT_C,
-    PORT_D
-}en_ICU_port;
+    // INT0
+    PORT_D_PIN_2,
+    // INT1
+    PORT_D_PIN_3,
+    // INT2
+    PORT_B_PIN_2
+}en_ICU_capturePin;
 
-/**
- * ICU PIN
- */
 typedef enum{
-    PIN_0,
-    PIN_1,
-    PIN_2,
-    PIN_3,
-    PIN_4,
-    PIN_5,
-    PIN_6,
-    PIN_7
-}en_ICU_pin;
+    ICU_OK,
+    ICU_ERROR
+}en_ICU_error_t;
 
 /**
  * ICU Configuration structure
@@ -43,8 +45,7 @@ typedef enum{
  * 2: CALLBACK POINTER (when time is calculated)
  */
 typedef struct{
-    en_ICU_port icuPort;
-    en_ICU_pin icuPin;
+    en_ICU_capturePin icuCapturePin;
 	void (* timeReceivedCallbackFun)(void);
 }st_ICU_config_t;
 
@@ -59,7 +60,7 @@ typedef struct{
  *
  * configuration -> icu_cfg.c, or on the fly using ICU_setConfig() before initialization
  */
-void ICU_init(void);
+en_ICU_error_t ICU_init(void);
 
 /**
  * Resets and starts the ICU algorithm to capture the elapsed time duration now

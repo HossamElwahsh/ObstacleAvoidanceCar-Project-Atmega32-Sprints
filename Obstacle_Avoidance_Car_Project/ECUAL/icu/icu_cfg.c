@@ -8,10 +8,8 @@
 #include "icu_cfg.h"
 
 static st_ICU_config_t st_gs_icuConfig = {
-    // Echo PORT
-	PORT_B,
-    // Echo PIN
-	PIN_2,
+    // Capture Pin
+	PORT_B_PIN_2,
 
     // Callback Function on time received
 	NULL // callback function
