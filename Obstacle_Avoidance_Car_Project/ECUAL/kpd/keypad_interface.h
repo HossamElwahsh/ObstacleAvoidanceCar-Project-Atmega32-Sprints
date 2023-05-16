@@ -1,7 +1,13 @@
-#ifndef KPD_INTERFACE_H_
-#define KPD_INTERFACE_H_
+/*
+ * keypad_interface.h
+ *
+ * Created: 5/16/2023 10:55:15 AM
+ *  Author: Sarah
+ */ 
 
 
+#ifndef KEYPAD_INTERFACE_H_
+#define KEYPAD_INTERFACE_H_
 
 
 
@@ -25,4 +31,6 @@ void KPD_disableKPD ( void );
 u8 KPD_getPressedKey( u8 *pu8_a_returnedKeyValue );
 /*******************************************************************************************************************************************************************/
 
-#endif /* KPD_INTERFACE_H_ */
+
+
+#endif /* KEYPAD_INTERFACE_H_ */

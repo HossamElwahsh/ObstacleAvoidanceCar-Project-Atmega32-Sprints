@@ -1,7 +1,9 @@
-#ifndef INCFILE1_H_
-#define INCFILE1_H_
-
- 
+/*
+ * button_interface.h
+ *
+ * Created: 5/16/2023 11:01:09 AM
+ *  Author: Sarah
+ */ 
 
 
 #ifndef BUTTON_INTERFACE_H_
@@ -20,6 +22,7 @@ typedef enum buttonErrors{
 en_buttonError_t BUTTON_init(u8 u8_a_buttonPort, u8 u8_a_buttonPin);
 
 en_buttonError_t BUTTON_read(u8 u8_a_buttonPort, u8 u8_a_buttonPin, u8 *u8_a_buttonState);
+
 
 
 #endif /* BUTTON_INTERFACE_H_ */

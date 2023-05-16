@@ -29,16 +29,16 @@
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <EraseKey />
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.52.0" />
-        </dependencies>
-      </framework-data>
+      <framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -120,7 +120,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ECUAL\btn\button_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\icu\icu_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\kpd\keypad_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\lcd\lcd_interface.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\us\us_interface.h">
