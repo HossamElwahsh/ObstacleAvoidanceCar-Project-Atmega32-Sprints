@@ -88,8 +88,10 @@ en_ICU_error_t ICU_init(void);
 /**
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
+ *
+ * @return elapsed time in uS
  */
-void ICU_getCaptureValue(void);
+u16 ICU_getCaptureValue(void);
 
 
 /**

@@ -62,8 +62,10 @@ en_ICU_error_t ICU_init(void)
 /**
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
+ *
+ * @return elapsed time in uS
  */
-void ICU_getCaptureValue(void)
+u16 ICU_getCaptureValue(void)
 {
     // enable EXI
     EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
@@ -79,7 +81,7 @@ void ICU_getCaptureValue(void)
                   EXTI_DISABLE);
 
     // todo return time elapsed
-
+    return u16_g_icuLastCaptureValue;
 }
 
 /**
