@@ -141,6 +141,12 @@
     <Compile Include="MCAL\dio\dio_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCAL\dio\dio_private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\dio\dio_program.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCAL\exi\exi_interface.h">
       <SubType>compile</SubType>
     </Compile>
