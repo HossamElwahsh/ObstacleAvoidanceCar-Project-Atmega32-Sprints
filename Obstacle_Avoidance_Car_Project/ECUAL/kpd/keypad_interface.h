@@ -37,7 +37,7 @@
 #define ROW_FINAL  4
 const u8 keypad[1][2] =
 {
-	{'1','2'},
+	{'start','stop'},
 	
 };
 
