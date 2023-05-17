@@ -10,6 +10,7 @@
 #define KEYPAD_INTERFACE_H_
 #include "../../LIB/std.h"
 #include "../../MCAL/dio/dio_interface.h"
+#include "../../ECUAL/delay/delay_interface.h"
 
 /*************************************************************************************************************
  * 													Macros
@@ -19,6 +20,8 @@
 #define HIGH 1
 #define OUTPUT 0
 #define INPUT 1
+
+#define KPD_DEBOUNCE_DELAY 20
 
 /*************************************************************************************************************
  * 											User-defined data types
@@ -35,10 +38,10 @@
 
 #define ROW_INIT   4
 #define ROW_FINAL  4
-const u8 keypad[1][2] =
+const u8 * keypad[2] =
 {
-	{'start','stop'},
-	
+        (u8 *)"start",
+        (u8 *)"stop"
 };
 
 /*************************************************************************************************************
@@ -47,7 +50,7 @@ const u8 keypad[1][2] =
 
 
 /**
- * @brief This function inialize keypad
+ * @brief This function initialize keypad
  *
  * @param void
  *
@@ -61,9 +64,9 @@ void KEYPAD_Init(void);
  *
  * @param void
  *
- * @return Returns u8 : value of keypad
+ * @return Returns u8 value of keypad
  */
-u8 KEYPAD_GetValue(void);
+u8 KEYPAD_GetButton(void);
  
 
 

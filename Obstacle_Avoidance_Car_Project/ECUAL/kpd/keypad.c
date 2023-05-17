@@ -5,6 +5,7 @@
  *  Author: Sarah
  */ 
 #include "keypad_interface.h"
+
 /**
  * @brief This function inialize keypad
  *
@@ -22,7 +23,8 @@ void KEYPAD_init()
 	DIO_setPinDir(KEYPAD_PORT, KEYPAD_COLUMN_0,INPUT);
 	DIO_setPinDir(KEYPAD_PORT, KEYPAD_COLUMN_1,INPUT);
 	
-	
+	// Init Timer
+    DELAY_init();
 }
 /**
  * @brief This function gets keypad value pressed or not pressed
@@ -51,7 +53,7 @@ u8 KEYPAD_GetButton()
 				{
 					DIO_getPinVal(KEYPAD_PORT, LOC_ROW, &Temp);
 				}
-				DELAY_setTime (10);
+				DELAY_setTime (KPD_DEBOUNCE_DELAY);
 			}
 		}
 		DIO_setPinVal(KEYPAD_PORT, LOC_COL, HIGH);/*Finish by activate only one column, Set high again*/
