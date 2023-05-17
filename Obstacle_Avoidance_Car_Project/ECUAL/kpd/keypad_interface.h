@@ -23,20 +23,23 @@
 /*************************************************************************************************************
  * 											User-defined data types
  ************************************************************************************************************/
-typedef enum EN_KEYPAD_BTNS
+#define KEYPAD_PORT DIO_PORTC
+
+#define KEYPAD_COLUMN_0 DIO_PIN_5
+#define KEYPAD_COLUMN_1 DIO_PIN_6
+
+
+#define KEYPAD_ROW_0 DIO_PIN_2
+#define COL_INIT 0
+#define COL_FINAL 1
+
+#define ROW_INIT   4
+#define ROW_FINAL  4
+const u8 keypad[1][2] =
 {
-	KEY_INCREAMENT=0,
-	KEY_DECREAMENT,
-	KEY_SET,
-	KEY_ADJUST,
-	KEY_RESET,
-	KEY_6,
-	KEY_7,
-	KEY_8,
-	KEY_9,
-	KEY_NOTHING
+	{'1','2'},
 	
-}EN_KEYPAD_BTNS;
+};
 
 /*************************************************************************************************************
  * 											  Function Prototypes
@@ -50,8 +53,7 @@ typedef enum EN_KEYPAD_BTNS
  ARGS : void
  return : void   
  ************************************************************************************************************/
-
-void KEYPAD_init(void);
+void KEYPAD_Init(void);
 
 
 /*************************************************************************************************************
@@ -61,19 +63,9 @@ void KEYPAD_init(void);
  ARGS : void
  return : the pressed key or Nothing pressed   
  ************************************************************************************************************/
+u8 KEYPAD_GetValue(void);
+ 
 
-EN_KEYPAD_BTNS KEYPAD_GetButton(void);
-/*************************************************************************************************************
- *
- Name : KEYPAD_checkR1 ,  KEYPAD_checkR2, KEYPAD_checkR3
- Description : functions are checking the entire row if it pressed or not.
- ARGS : void
- return : the pressed key or Nothing pressed   
- ************************************************************************************************************/
-
-EN_KEYPAD_BTNS KEYPAD_checkR1(void);
-EN_KEYPAD_BTNS KEYPAD_checkR2(void);
-EN_KEYPAD_BTNS KEYPAD_checkR3(void);
 
 
 #endif /* KEYPAD_INTERFACE_H_ */
