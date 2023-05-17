@@ -25,22 +25,24 @@ typedef enum buttonPosition{
 	LONGRELEASED
 	
 }en_buttonPosition_t;
-/* 
-* Parameters
-*       	 u8_a_buttonPort:  read port number.
-*       	 u8_a_buttonPin :  read pin number .
-* Return
-*   	en_buttonError_t if the button state was read successfully, 
-*/
+/**
+ * @brief This function to inialize button
+ *
+ * @param  u8_a_buttonPort -> define port of button
+ * 		   u8_a_buttonPin -> define pins of button
+ *
+ * @return Returns void
+ */
 en_buttonError_t BUTTON_init(u8 u8_a_buttonPort, u8 u8_a_buttonPin);
-/*
-* Parameters
-*       	 u8_a_buttonPort:  read port number.
-*       	 u8_a_buttonPin :  read pin number .
-             u8_a_buttonState: pionter to read button state
-* Return
-*   	en_buttonError_t if the button state was read successfully,
-*/
+/**
+ * @brief This function to read button state
+ *
+ * @param  u8_a_buttonPort -> define port of button
+ * 		   u8_a_buttonPin -> define pins of button
+ *         *u8_a_buttonState -> pointer to get button state
+ *
+ * @return Returns void
+ */
 en_buttonError_t BUTTON_read(u8 u8_a_buttonPort, u8 u8_a_buttonPin, u8 *u8_a_buttonState);
 
 

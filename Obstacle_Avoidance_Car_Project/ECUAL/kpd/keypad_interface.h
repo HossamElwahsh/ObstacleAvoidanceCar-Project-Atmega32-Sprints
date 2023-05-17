@@ -46,23 +46,23 @@ const u8 keypad[1][2] =
  ************************************************************************************************************/
 
 
-/*************************************************************************************************************
+/**
+ * @brief This function inialize keypad
  *
- Name : KEYPAD_init() 
- Description : This Function Initializes keypad pins (Rows are outputs & Columns are inputs).
- ARGS : void
- return : void   
- ************************************************************************************************************/
+ * @param void
+ *
+ * @return Returns void
+ */
 void KEYPAD_Init(void);
 
 
-/*************************************************************************************************************
+/**
+ * @brief This function gets keypad value pressed or not pressed
  *
- Name : KEYPAD_GetButton 
- Description : This Function loops over other three functions (Checks (R1,R2,R3)).
- ARGS : void
- return : the pressed key or Nothing pressed   
- ************************************************************************************************************/
+ * @param void
+ *
+ * @return Returns u8 : value of keypad
+ */
 u8 KEYPAD_GetValue(void);
  
 
