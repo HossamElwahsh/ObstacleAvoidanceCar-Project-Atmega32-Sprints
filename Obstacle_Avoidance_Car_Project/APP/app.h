@@ -30,23 +30,27 @@
 #define APP_DIR_RESET       1
 
 /* Alaa Macros */
+#define APP_INC_SPEED_TIME		5000
+#define APP_DELAY_START_TIME	2000
+#define APP_U8_STOP_SPEED		0
+#define APP_U8_ZERO_DIST		0
+#define APP_U8_SPEED_30			30
+#define APP_U8_SPEED_50			50
+#define APP_U8_DIST_30			30
+#define APP_U8_DIST_20			20
 
+#define APP_RIGHT_SIDE_MOTORS	DCM_0
+#define APP_LEFT_SIDE_MOTORS	DCM_1
+#define APP_ROTATION_TIME_MS	550
 
+#define APP_CHAR_DIR_FWD		'F'
+#define APP_CHAR_DIR_BACK		'B'
+#define APP_CHAR_DIR_ROTATE		'R'
+#define APP_CHAR_DIR_STOP		'S'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#define APP_LCD_LINE_START      0
+#define APP_LCD_MIN_DIST_POS	9
+#define APP_LCD_MIDDLE_DIST_POS 8
 
 
 
