@@ -16,6 +16,7 @@
 st_ICU_config_t st_g_ICU_config;
 u8 u8_g_icuState = ICU_STATE_WAIT;
 u16 u16_g_icuLastCaptureValue = 0;
+const en_TIMER_number_t const_g_icuTimer = TIMER_2;
 
 /**
  * Initializes the ICU driver
@@ -44,7 +45,8 @@ en_ICU_error_t ICU_init(void)
             // write low on capture pin
             DIO_setPinVal(u8_l_port,u8_l_pin, LOW);
 
-            // todo init timer
+            TIMER_init();
+            TIMER_enableInterrupt(const_g_icuTimer);
 
             // enable external interrupt
             EXTI_init(u8_l_exi);
@@ -97,6 +99,9 @@ void ICU_inputHandler(void)
     // if HIGH reset timer and start counting
     if(u8_l_capturePinValue){
         // todo reset and restart timer
+        TIMER_reset(const_g_icuTimer);
+        TIMER_resume(const_g_icuTimer);
+
     }else{
         // if LOW = signal rebound complete, send elapsed time back
         u8_g_icuState = EXTI_OK;

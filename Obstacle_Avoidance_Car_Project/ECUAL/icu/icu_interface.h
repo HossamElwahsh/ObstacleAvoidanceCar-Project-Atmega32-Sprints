@@ -15,6 +15,7 @@
 /* MCAL */
 #include "../../MCAL/dio/dio_interface.h"
 #include "../../MCAL/exi/exi_interface.h"
+#include "../../MCAL/timer/timer_interface.h"
 
 /** OPTIONS **/
 
