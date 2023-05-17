@@ -73,7 +73,7 @@ en_buttonError_t BUTTON_read(u8 u8_a_buttonPort, u8 u8_a_buttonPin, u8 *u8_a_but
 				if(en_buttonPosition_t == NOTPRESSED && u16_l_elapsedTime < BTN_DELAY_LONG_PRESS)
 				{
 					// short press
-					*u8_a_buttonState = NOTPRESSED;
+					*u8_a_buttonState = PRESSED;
 				}
 				if(u16_l_elapsedTime > BTN_DELAY_LONG_PRESS) // long press
 				{
