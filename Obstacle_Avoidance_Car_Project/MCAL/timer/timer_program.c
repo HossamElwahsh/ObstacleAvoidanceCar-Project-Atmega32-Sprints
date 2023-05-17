@@ -33,7 +33,6 @@ void (*TIMER_0_pwmOnCallBack) (void) = NULL_PTR;
 void (*TIMER_0_pwmOffcallBack) (void) = NULL_PTR;
 
 
-
 u32 u32_g_timer0NumberOfOVFs	=	0;
 
 u8  u8_g_timer0RemTicks		=	0;
@@ -171,7 +170,7 @@ en_TIMER_error_t TIMER_init( void )
 	return returnValue;
 }
 
-en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desiredTime)
+en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_desiredTime)
 {
 	en_TIMER_error_t returnValue = TIMER_OK;
 	u32 tickTime = 0;
@@ -185,7 +184,7 @@ en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desir
 		{
 			case TIMER_OV:
 			tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
-			numberOfTicks = ((u32_a_desiredTime*1000)/tickTime);
+			numberOfTicks = ((f32_a_desiredTime*1000)/tickTime);
 			
 			u32_g_timer0NumberOfOVFs = numberOfTicks / 256;
 			u8_g_timer0RemTicks = numberOfTicks % 256;
@@ -216,7 +215,7 @@ en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desir
 		{
 			case TIMER_OV:
 			tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
-			numberOfTicks = ((u32_a_desiredTime*1000)/tickTime);
+			numberOfTicks = ((f32_a_desiredTime*1000)/tickTime);
 			
 			u32_g_timer1NumberOfOVFs = numberOfTicks / 65536;
 			u16_g_timer1RemTicks = numberOfTicks % 65536;
@@ -251,7 +250,7 @@ en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desir
 		{
 			case TIMER_OV:
 			tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
-			numberOfTicks = ((u32_a_desiredTime*1000)/tickTime);
+			numberOfTicks = ((f32_a_desiredTime*1000)/tickTime);
 			
 			u32_g_timer2NumberOfOVFs = numberOfTicks / 256;
 			u8_g_timer2RemTicks = numberOfTicks % 256;

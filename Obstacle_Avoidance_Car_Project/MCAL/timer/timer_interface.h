@@ -77,7 +77,7 @@ typedef struct
 
 en_TIMER_error_t TIMER_init( void );
 
-en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, u32 u32_a_desiredTime);
+en_TIMER_error_t TIMER_setTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_desiredTime);
 
 en_TIMER_error_t TIMER_pwmGenerator(en_TIMER_number_t en_a_timerUsed , u16 u16_a_onTime, u16 u16_a_offTime);
 
