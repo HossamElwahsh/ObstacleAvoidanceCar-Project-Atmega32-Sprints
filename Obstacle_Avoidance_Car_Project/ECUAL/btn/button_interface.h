@@ -11,13 +11,20 @@
 #include "../../LIB/std.h"
 #include "../../MCAL/dio/dio_interface.h"
 
+#define BTN_DELAY_BTN_POLL      50
 
-
+#define BTN_DELAY_LONG_PRESS    2000
 typedef enum buttonErrors{
 	BUTTON_OK,
 	WRONG_BUTTON_PORT,
 	WRONG_BUTTON_PIN
 }en_buttonError_t;
+typedef enum buttonPosition{
+	PRESSED,
+	NOTPRESSED,
+	LONGRELEASED
+	
+}en_buttonPosition_t;
 /* 
 * Parameters
 *       	 u8_a_buttonPort:  read port number.

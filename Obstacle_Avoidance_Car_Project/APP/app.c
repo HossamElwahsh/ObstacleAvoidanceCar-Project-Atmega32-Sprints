@@ -11,23 +11,49 @@ u8 u8_g_currentSpeed = 0;
 u8 u8_g_state = APP_STATE_INIT;
 u8 u8_g_dirChange = APP_DIR_RESET;
 u8 u8_g_defaultDirection = APP_DIR_RIGHT;
+
+
+static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
+{
+    u8 u8_l_cursorPos;
+
+    /* Display speed and direction on LCD line one */
+    HLCD_gotoXY(LCD_ROW_1, LCD_COL_1);
+    HLCD_WriteString("Speed:00%  Dir:S");
+    HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
+    HLCD_WriteInt(u8_a_speed);
+    HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+    HLCD_vidWriteChar(u8_a_dir);
+
+    /* Display Distance on LCD line two */
+    if(u16_a_dist > APP_MAX_2_DIGITS) u8_l_cursorPos = APP_LCD_DIST_POS;
+    if(u16_a_dist > APP_MAX_1_DIGIT) u8_l_cursorPos = APP_LCD_MIDDLE_DIST_POS;
+    else u8_l_cursorPos = APP_LCD_MIN_DIST_POS;
+
+    HLCD_gotoXY(APP_LCD_LINE_2, LCD_COL_1);
+    HLCD_WriteString("Dist.: 000 Cm");
+    HLCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
+    HLCD_WriteInt(u16_a_dist);
+}
+
+
 void APP_initialization(void)
 {
-    // todo-Alaa
+    // donetodo-Alaa
     // init button
-
+    BUTTON_init(TOGGLE_BTN_PORT, TOGGLE_BTN_PIN);
     // init keypad
-
+    KEYPAD_init();
     // init delay
-
+    DELAY_init();
     // init DCM
-
+    DCM_init();
     // init LCD
-
+    HLCD_vidInit();
     // init Ultrasonic (US)
-
+    PWM_init();
     // enable global interrupt (SEI)
-
+    sei();
     // switch to init state
     APP_switchState(APP_STATE_INIT);
 }
@@ -42,15 +68,10 @@ void APP_startProgram(void)
         switch (u8_g_state) {
             case APP_STATE_INIT: // todo-(Alaa)
                 // wait for start button
-
-
-
-
-
-
-
-
-
+                if(KEYPAD_GetButton() == 0/*START_KEY*/) //Get key before switch or here??
+                {
+                    APP_switchState(APP_STATE_SET_DIR);
+                }
 
                 break;
             case APP_STATE_SET_DIR: // donetodo-(Hossam)
@@ -100,43 +121,21 @@ void APP_startProgram(void)
             } /* line 100 */
                 break;
             case APP_STATE_STARTING: // todo-(Alaa)
-                // wait 2 seconds
+                // wait 2 seconds (Async)
+                DELAY_setTime(APP_DELAY_START_TIME);
 
+                /* Check whether stop key is pressed or delay done */
+                while ()// todo: check flag from CBF
+                {
+                    if (KEYPAD_GetButton() == 1/*Stop*/)
+                    {
+                        /* Reset to init state */
+                        APP_switchState(APP_STATE_INIT);
+                    }
+                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                // todo: reset flag from CBF
+                APP_switchState(APP_STATE_RUNNING);
 
 
                 break;
@@ -154,39 +153,14 @@ void APP_startProgram(void)
                 // > 70 // todo-(Alaa)
                 if(u16_l_distanceCm > 70)
                 {
+                    if(u16_l_lastDist <= APP_U8_CAR_SPEED_70)
+                    {
+                        DELAY_setTime(APP_INC_SPEED_TIME);
+                        //todo: Delay CBF to set (u8_g_currentSpeed) to APP_U8_SPEED_50
+                    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    DCM_speed(u8_g_currentSpeed);
+                    DCM_start();
 
                 }
                 // 30 < distance < 70 // donetodo-(Hossam)
@@ -241,6 +215,31 @@ void APP_startProgram(void)
                 // 20 -> 30 // todo-(Alaa), todo-(Hossam) Bonus
                 else if(u16_l_distanceCm > 30 && u16_l_distanceCm < 70)
                 {
+                    DCM_stop();
+
+                    if(u8_g_defaultDirection == APP_DIR_LEFT)
+                    {
+                        /* Set motors on right side to rotate forward */
+                        DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_CW);
+
+                        /* Set motors on left side to rotate backward */
+                        DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_ACW);
+                    }
+
+                    if(u8_g_defaultDirection == APP_DIR_RIGHT)
+                    {
+                        /* Set motors on left side to rotate forward */
+                        DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_CW);
+
+                        /* Set motors on right side to rotate backward */
+                        DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_ACW);
+                    }
+
+                    DCM_speed(APP_U8_SPEED_30);
+                    DCM_start();
+
+                    //todo?: set sync. delay to rotation time
+                    DELAY_setTime(APP_ROTATION_TIME_MS);
 
 
 
@@ -329,22 +328,21 @@ void APP_switchState(u8 u8_a_state)
 {
     switch (u8_a_state) {
         case APP_STATE_INIT:
-            // stop car
-            // Write on LCD (stopped)
-            // todo-Alaa
 
+            // donetodo-Alaa
 
+            /* Stop the robot */
+            DCM_stop();
 
+            /* Reset the delay module */
+            DELAY_init();
 
+            /* Display speed and direction on LCD line one */
+            HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_LINE_START);
+            HLCD_WriteString("Speed:00%  Dir:S");
 
-
-
-
-
-
-
-
-
+            /* Initialize speed */
+            u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
 
 
 
@@ -381,7 +379,8 @@ void APP_switchState(u8 u8_a_state)
             break;
         case APP_STATE_STARTING:
             // LCD output Line1,2 "SPEED:00% Dir:S\nDist.: 000 Cm"
-            // todo-Alaa
+            // donetodo-Alaa
+            APP_updateUI(APP_U8_STOP_SPEED, APP_CHAR_DIR_STOP, APP_U8_ZERO_DIST);
 
 
 
