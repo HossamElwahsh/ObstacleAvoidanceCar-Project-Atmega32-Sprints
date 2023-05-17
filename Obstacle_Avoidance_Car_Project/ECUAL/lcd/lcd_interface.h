@@ -97,7 +97,7 @@ void LCD_ShiftLeft(void);
  *         pos -> take colom number from 0 ~ 15
  * @return Returns void
  */
-void HLCD_gotoXY(u8 row, u8 pos);
+void LCD_gotoXY(u8 row, u8 pos);
 
 
 
