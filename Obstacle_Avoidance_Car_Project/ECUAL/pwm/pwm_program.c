@@ -108,6 +108,15 @@ en_PWM_error_t PWM_start (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
 	
+	if ( TIMER_enableInterrupt(PWM_TIMER_USED) )
+	{
+		returnValue = PWM_NOK;
+	}
+	else
+	{
+		/*returnValue = PWM_OK;*/
+	}
+	
 	if ( TIMER_resume(PWM_TIMER_USED) )
 	{
 		returnValue = PWM_NOK;
@@ -123,6 +132,15 @@ en_PWM_error_t PWM_start (void)
 en_PWM_error_t PWM_stop (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
+	
+	if ( TIMER_disableInterrupt(PWM_TIMER_USED) )
+	{
+		returnValue = PWM_NOK;
+	}
+	else
+	{
+		/*returnValue = PWM_OK;*/
+	}
 	
 	if ( TIMER_pause(PWM_TIMER_USED) )
 	{

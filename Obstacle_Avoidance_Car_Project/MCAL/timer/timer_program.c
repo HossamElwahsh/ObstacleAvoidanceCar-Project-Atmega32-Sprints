@@ -30,7 +30,7 @@ void (*TIMER_2_callBack) (void) = NULL_PTR;
 
 void (*TIMER_0_pwmOnCallBack) (void) = NULL_PTR;
 
-void (*TIMER_0_pwmOffcallBack) (void) = NULL_PTR;
+void (*TIMER_0_pwmOffCallBack) (void) = NULL_PTR;
 
 
 u32 u32_g_timer0NumberOfOVFs	=	0;
@@ -290,18 +290,18 @@ en_TIMER_error_t TIMER_pwmGenerator(en_TIMER_number_t en_a_timerUsed , u16 u16_a
 	switch(en_a_timerUsed)
 	{
 		case TIMER_0:
-		u16_g_offTime0	= u16_a_onTime;
-		u16_g_onTime0	= u16_a_offTime;
+		u16_g_offTime0	= u16_a_offTime;
+		u16_g_onTime0	= u16_a_onTime;
 		break;
 		
 		case TIMER_1:
-		u32_g_offTime1	= u16_a_onTime;
-		u32_g_onTime1	= u16_a_offTime;
+		u32_g_offTime1	= u16_a_offTime;
+		u32_g_onTime1	= u16_a_onTime;
 		break;
 		
 		case TIMER_2:
-		u16_g_offTime2	= u16_a_onTime;
-		u16_g_onTime2	= u16_a_offTime;
+		u16_g_offTime2	= u16_a_offTime;
+		u16_g_onTime2	= u16_a_onTime;
 		break;
 		
 		default:
@@ -591,7 +591,7 @@ en_TIMER_error_t TIMER_setPwmOffCallBack(en_TIMER_number_t en_a_timerUsed, void 
 	{
 		switch(en_a_timerUsed)
 		{
-			case TIMER_0:	TIMER_0_pwmOffcallBack = funPtr;			break;
+			case TIMER_0:	TIMER_0_pwmOffCallBack = funPtr;			break;
 			
 			case TIMER_1:	/*TO BE IMPLEMENTED*/				break;
 			
@@ -701,11 +701,11 @@ ISR(TIM0_OVF_INT)
 		if (u8_gs_generatorState)
 		{
 			
-			if(TIMER_0_pwmOffcallBack != NULL_PTR)
-			{
-				TIMER_0_callBack();
-			}
-			
+ 			if(TIMER_0_pwmOffCallBack != NULL_PTR)
+ 			{
+ 				TIMER_0_pwmOffCallBack();
+ 			}
+						
 			TCNT0 = 256 - u16_g_offTime0;
 			
 			if (u16_g_offTime0 < 256)
@@ -715,10 +715,10 @@ ISR(TIM0_OVF_INT)
 		}
 		else
 		{
-			if(TIMER_0_pwmOnCallBack != NULL_PTR)
-			{
-				TIMER_0_callBack();
-			}
+ 			if(TIMER_0_pwmOnCallBack != NULL_PTR)
+ 			{
+ 				TIMER_0_pwmOnCallBack();
+ 			}
 			
 			TCNT0 = 256 - u16_g_onTime0;
 			
