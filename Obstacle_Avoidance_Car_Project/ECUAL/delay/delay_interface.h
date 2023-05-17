@@ -39,6 +39,7 @@ en_DELAY_error_t DELAY_init	(void);
 
 en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS);
 
+en_DELAY_error_t DELAY_setTimeNonBlocking (f32 f32_a_timeInMs);
 
 #endif /* DELAY_INTERFACE_H_ */
 /**********************************************************************************************************************

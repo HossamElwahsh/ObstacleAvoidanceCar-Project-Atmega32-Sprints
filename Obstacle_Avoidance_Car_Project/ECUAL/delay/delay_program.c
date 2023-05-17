@@ -18,7 +18,7 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA
  *********************************************************************************************************************/
- 
+
  
  /**********************************************************************************************************************
  *  GLOBAL FUNCTION IMPLEMENTATION
@@ -86,10 +86,87 @@
 		 /*returnValue = DELAY_OK*/
 	 }
 	 
+	 if ( TIMER_enableInterrupt(DELAY_TIMER_USED) )
+	 {
+		 returnValue = DELAY_NOK;
+	 }
+	 else
+	 {
+		 /*returnValue = DELAY_OK*/
+	 }
+	 
 	 return returnValue;
 	 
  }
 
+en_DELAY_error_t DELAY_setTimeNonBlocking (f32 f32_a_timeInMs)
+{
+	en_DELAY_error_t returnValue = DELAY_OK;
+	
+	if ( TIMER_disableInterrupt(DELAY_TIMER_USED) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	if ( TIMER_pause(DELAY_TIMER_USED) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	if ( TIMER_setTime(DELAY_TIMER_USED, f32_a_timeInMs) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	if ( TIMER_enableInterrupt(DELAY_TIMER_USED) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	if ( TIMER_resume(DELAY_TIMER_USED) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	return returnValue;
+}
+
+en_DELAY_error_t DELAY_setCallBack (void (*funPtr)(void))
+{
+	en_DELAY_error_t returnValue = DELAY_OK;
+	
+	
+	if ( TIMER_setCallBack(DELAY_TIMER_USED, funPtr) )
+	{
+		returnValue = DELAY_NOK;
+	}
+	else
+	{
+		/*returnValue = DELAY_OK*/
+	}
+	
+	return returnValue;
+}
 /**********************************************************************************************************************
  *  END OF FILE: delay_program.c
  *********************************************************************************************************************/
