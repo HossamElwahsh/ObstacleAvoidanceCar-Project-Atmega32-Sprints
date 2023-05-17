@@ -74,8 +74,26 @@ en_PWM_error_t PWM_setDutyCycle (u8 u8_a_speed)
 	
 	u16_a_onTime	 = (((u32)u8_a_speed * 256)/100);
 	u16_a_offTime	 = 256 - u16_a_onTime;
-	
+
 	if ( TIMER_pwmGenerator(PWM_TIMER_USED , u16_a_onTime, u16_a_offTime) )
+	{
+		returnValue = PWM_NOK;
+	}
+	else
+	{
+		/*returnValue = PWM_OK;*/
+	}
+	
+	if ( TIMER_setPwmOnCallBack(PWM_TIMER_USED,PWM_onTask) )
+	{
+		returnValue = PWM_NOK;
+	}
+	else
+	{
+		/*returnValue = PWM_OK;*/
+	}
+	
+	if ( TIMER_setPwmOffCallBack(PWM_TIMER_USED,PWM_offTask) )
 	{
 		returnValue = PWM_NOK;
 	}
@@ -106,7 +124,7 @@ en_PWM_error_t PWM_stop (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
 	
-	if ( TIMER_stop(PWM_TIMER_USED) )
+	if ( TIMER_pause(PWM_TIMER_USED) )
 	{
 		returnValue = PWM_NOK;
 	}
@@ -129,6 +147,22 @@ en_PWM_error_t PWM_stop (void)
 	}
 	
 	return returnValue;
+}
+
+void PWM_onTask (void)
+{
+	for (u8 counter = 0; counter < NUMBER_OF_PWM_PINS; counter++)
+	{
+		DIO_setPinVal( st_PWM_config[counter].pwmPortNumber, st_PWM_config[counter].pwmPinNumber, HIGH);
+	}
+}
+
+void PWM_offTask (void)
+{
+	for (u8 counter = 0; counter < NUMBER_OF_PWM_PINS; counter++)
+	{
+		DIO_setPinVal( st_PWM_config[counter].pwmPortNumber, st_PWM_config[counter].pwmPinNumber, LOW);
+	}
 }
 /**********************************************************************************************************************
  *  END OF FILE: pwm_program.c
