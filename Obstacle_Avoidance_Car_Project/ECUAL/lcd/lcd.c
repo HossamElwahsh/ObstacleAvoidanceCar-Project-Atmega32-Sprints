@@ -54,7 +54,7 @@ void LCD_vidInit(void)
 	DIO_setPinDir(DIO_PORTD,LCD_RW_PORT_PIN,OUTPUT);
 	DIO_setPinDir(DIO_PORTD,LCD_EN_PORT_PIN,OUTPUT);
 
-	DELAY_setTime (40);
+	 DELAY_setTime(40);
 
 	LCD_vidWritecmd(LCD_CURSOR_HOME);
 	DELAY_setTime (1);
