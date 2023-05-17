@@ -41,6 +41,7 @@ en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS);
 
 en_DELAY_error_t DELAY_setTimeNonBlocking (f32 f32_a_timeInMs);
 
+en_DELAY_error_t DELAY_setCallBack (void (*funPtr)(void));
 #endif /* DELAY_INTERFACE_H_ */
 /**********************************************************************************************************************
  *  END OF FILE: delay_interface.h

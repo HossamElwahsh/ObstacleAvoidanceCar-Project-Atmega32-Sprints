@@ -85,7 +85,7 @@ en_TIMER_error_t TIMER_resume(en_TIMER_number_t en_a_timerUsed);
 
 en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed);
 
-en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32* f32_a_elapsedTime);
+en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, u32* u32_a_elapsedTime);
 
 en_TIMER_error_t TIMER_pause(en_TIMER_number_t en_a_timerUsed);
 
