@@ -51,11 +51,13 @@
 #define APP_LCD_LINE_START      0
 #define APP_LCD_MIN_DIST_POS	9
 #define APP_LCD_MIDDLE_DIST_POS 8
+#define APP_MAX_2_DIGITS        99
+#define APP_MAX_1_DIGIT         9
 
+#define DELAY_NOT_DONE          0
+#define DELAY_DONE              1
 
-
-
-/* End Line 54 */
+/* End Line 60 */
 /* Hossam Macros */
 #define APP_U8_CAR_SPEED_0 0
 #define APP_U8_CAR_SPEED_30 30
@@ -87,5 +89,7 @@ void APP_initialization(void);
 void APP_startProgram(void);
 
 void APP_switchState(u8 u8_a_state);
+
+void APP_delayNotification(void);
 
 #endif /* APP_H_ */

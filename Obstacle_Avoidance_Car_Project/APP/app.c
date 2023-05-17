@@ -11,7 +11,7 @@ u8 u8_g_currentSpeed = 0;
 u8 u8_g_state = APP_STATE_INIT;
 u8 u8_g_dirChange = APP_DIR_RESET;
 u8 u8_g_defaultDirection = APP_DIR_RIGHT;
-
+u8 u8_g_delayState = DELAY_NOT_DONE;
 
 static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
 {
@@ -60,10 +60,11 @@ void APP_initialization(void)
 
 void APP_startProgram(void)
 {
+	u16 u16_l_lastDist = APP_U8_ZERO_DIST;
+	
     while(1)
     {
         // -> check for keypad stop key
-
 
         switch (u8_g_state) {
             case APP_STATE_INIT: // todo-(Alaa)
@@ -72,8 +73,9 @@ void APP_startProgram(void)
                 {
                     APP_switchState(APP_STATE_SET_DIR);
                 }
-
+				
                 break;
+				
             case APP_STATE_SET_DIR: // donetodo-(Hossam)
             {   // 5 sec timeout
                 // check for BTN0 -> toggle Right/Left
@@ -102,30 +104,16 @@ void APP_startProgram(void)
 
 
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            } /* line 100 */
+            } /* line 107 */
                 break;
+				
             case APP_STATE_STARTING: // todo-(Alaa)
                 // wait 2 seconds (Async)
-                DELAY_setTime(APP_DELAY_START_TIME);
+                DELAY_setTimeNonBlocking(APP_DELAY_START_TIME);
+				DELAY_setCallBack(APP_delayNotification);
 
                 /* Check whether stop key is pressed or delay done */
-                while ()// todo: check flag from CBF
+                while (u8_g_delayState == DELAY_NOT_DONE)// check flag from CBF
                 {
                     if (KEYPAD_GetButton() == 1/*Stop*/)
                     {
@@ -134,9 +122,11 @@ void APP_startProgram(void)
                     }
                 }
 
-                // todo: reset flag from CBF
+                /* reset flag from CBF */
+				u8_g_delayState = DELAY_NOT_DONE;
+				
+				/* Change robot state to running */
                 APP_switchState(APP_STATE_RUNNING);
-
 
                 break;
 
@@ -155,9 +145,19 @@ void APP_startProgram(void)
                 {
                     if(u16_l_lastDist <= APP_U8_CAR_SPEED_70)
                     {
-                        DELAY_setTime(APP_INC_SPEED_TIME);
-                        //todo: Delay CBF to set (u8_g_currentSpeed) to APP_U8_SPEED_50
+                        DELAY_setTimeNonBlocking(APP_INC_SPEED_TIME);
+						DELAY_setCallBack(APP_delayNotification);
                     }
+
+					/* Change speed to 50% after 5 seconds */
+                    if(u8_g_delayState == DELAY_DONE) 
+					{
+						/* Reset delay notification flag */
+						u8_g_delayState = DELAY_NOT_DONE;
+						
+						/* Update Speed */
+						u8_g_currentSpeed = APP_U8_SPEED_50;
+					}
 
                     DCM_speed(u8_g_currentSpeed);
                     DCM_start();
@@ -190,30 +190,9 @@ void APP_startProgram(void)
                         }
                     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 }
                 // 20 -> 30 // todo-(Alaa), todo-(Hossam) Bonus
-                else if(u16_l_distanceCm > 30 && u16_l_distanceCm < 70)
+                else if(u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm < APP_U8_DIST_30)
                 {
                     DCM_stop();
 
@@ -238,7 +217,7 @@ void APP_startProgram(void)
                     DCM_speed(APP_U8_SPEED_30);
                     DCM_start();
 
-                    //todo?: set sync. delay to rotation time
+                    // set sync. delay to rotation time
                     DELAY_setTime(APP_ROTATION_TIME_MS);
 
 
@@ -314,7 +293,10 @@ void APP_startProgram(void)
 
 
 
-                } /* 315 */
+                } /* 296 */
+				
+				/* Save the last measured distance */
+                u16_l_lastDist = u16_l_distanceCm;
             }
                 break;
             default:
@@ -382,37 +364,15 @@ void APP_switchState(u8 u8_a_state)
             // donetodo-Alaa
             APP_updateUI(APP_U8_STOP_SPEED, APP_CHAR_DIR_STOP, APP_U8_ZERO_DIST);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             break;
         default:
             // Ignored
             break;
     }
     u8_g_state = u8_a_state;
+}
+
+void APP_delayNotification(void)
+{
+    u8_g_delayState = DELAY_DONE;
 }
