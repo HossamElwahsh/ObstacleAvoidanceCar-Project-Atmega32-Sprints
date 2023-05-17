@@ -15,6 +15,7 @@
 /* MCAL */
 #include "../../MCAL/dio/dio_interface.h"
 #include "../../MCAL/exi/exi_interface.h"
+#include "../../MCAL/timer/timer_interface.h"
 
 /** OPTIONS **/
 
@@ -88,8 +89,10 @@ en_ICU_error_t ICU_init(void);
 /**
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
+ *
+ * @return elapsed time in uS
  */
-void ICU_getCaptureValue(void);
+u16 ICU_getCaptureValue(void);
 
 
 /**

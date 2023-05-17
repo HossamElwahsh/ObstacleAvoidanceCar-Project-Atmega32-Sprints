@@ -16,6 +16,7 @@
 st_ICU_config_t st_g_ICU_config;
 u8 u8_g_icuState = ICU_STATE_WAIT;
 u16 u16_g_icuLastCaptureValue = 0;
+const en_TIMER_number_t const_g_icuTimer = TIMER_2;
 
 /**
  * Initializes the ICU driver
@@ -44,7 +45,8 @@ en_ICU_error_t ICU_init(void)
             // write low on capture pin
             DIO_setPinVal(u8_l_port,u8_l_pin, LOW);
 
-            // todo init timer
+            TIMER_init();
+            TIMER_enableInterrupt(const_g_icuTimer);
 
             // enable external interrupt
             EXTI_init(u8_l_exi);
@@ -62,8 +64,10 @@ en_ICU_error_t ICU_init(void)
 /**
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
+ *
+ * @return elapsed time in uS
  */
-void ICU_getCaptureValue(void)
+u16 ICU_getCaptureValue(void)
 {
     // enable EXI
     EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
@@ -79,7 +83,7 @@ void ICU_getCaptureValue(void)
                   EXTI_DISABLE);
 
     // todo return time elapsed
-
+    return u16_g_icuLastCaptureValue;
 }
 
 /**
@@ -95,6 +99,9 @@ void ICU_inputHandler(void)
     // if HIGH reset timer and start counting
     if(u8_l_capturePinValue){
         // todo reset and restart timer
+        TIMER_reset(const_g_icuTimer);
+        TIMER_resume(const_g_icuTimer);
+
     }else{
         // if LOW = signal rebound complete, send elapsed time back
         u8_g_icuState = EXTI_OK;
