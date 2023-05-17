@@ -44,7 +44,7 @@
 	 {
 		 /*returnValue = DELAY_OK*/
 	 }
-	 if ( TIMER_pause(DELAY_TIMER_USED) )
+	 if ( TIMER_stop(DELAY_TIMER_USED) )
 	 {
 		 returnValue = DELAY_NOK;
 	 }
@@ -59,16 +59,7 @@
  {
 	 en_DELAY_error_t returnValue = DELAY_OK;
 	 
-	 if ( TIMER_disableInterrupt(DELAY_TIMER_USED) )
-	 {
-		 returnValue = DELAY_NOK;
-	 }
-	 else
-	 {
-		 /*returnValue = DELAY_OK*/
-	 }
-	 
-	 if ( TIMER_pause(DELAY_TIMER_USED) )
+	 if ( TIMER_stop(DELAY_TIMER_USED) )
 	 {
 		 returnValue = DELAY_NOK;
 	 }
