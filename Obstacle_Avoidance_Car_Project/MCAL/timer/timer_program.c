@@ -415,21 +415,24 @@ en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed)
 	switch(en_a_timerUsed)
 	{
 		case TIMER_0:
+		//TIMER_pause(en_a_timerUsed);
 		u32_g_timer0OVFCounter = 0;
 		TCNT0 = 0;
-		TIMER_pause(en_a_timerUsed);
+		//TIMER_resume(en_a_timerUsed);
 		break;
 		
 		case TIMER_1:
+		//TIMER_pause(en_a_timerUsed);
 		u32_g_timer1OVFCounter = 0;
-		TIMER_pause(en_a_timerUsed);
 		TCNT1 = 0;
+		//TIMER_resume(en_a_timerUsed);
 		break;
 		
 		case TIMER_2:
+		//TIMER_pause(en_a_timerUsed);
 		u32_g_timer2OVFCounter = 0;
-		TIMER_pause(en_a_timerUsed);
 		TCNT2 = 0;
+		//TIMER_resume(en_a_timerUsed);
 		break;
 		
 		default:
@@ -441,7 +444,7 @@ en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed)
 	
 }
 
-en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32* f32_a_elapsedTime)
+en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, u32* u32_a_elapsedTime)
 {
 	en_TIMER_error_t returnValue = TIMER_OK;
 	u32 tickTime = 0;
@@ -454,22 +457,26 @@ en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32* f32
 		case TIMER_0:
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
 		TCNTValue = TCNT0;
-		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
-		*f32_a_elapsedTime = ((f32)numberOfTicks/1000) * tickTime;
+		numberOfTicks = TCNTValue + (u32_g_timer0OVFCounter * 256);
+		*u32_a_elapsedTime = ((f32)numberOfTicks) * tickTime;
+		//*u32_a_elapsedTime /= 1000;
 		break;
 		
 		case TIMER_1:
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
 		TCNTValue = ((u16)TCNT1H * 256) + TCNT1L;
+		//TCNTValue = TCNT1;
 		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
-		*f32_a_elapsedTime = ((f32)numberOfTicks/1000) * tickTime;
+		*u32_a_elapsedTime = ((f32)numberOfTicks) * tickTime;
+		//*u32_a_elapsedTime /= 1000;
 		break;
 		
 		case TIMER_2:
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
 		TCNTValue = TCNT2;
-		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
-		*f32_a_elapsedTime = ((f32)numberOfTicks/1000 )* tickTime;
+		numberOfTicks = TCNTValue + (u32_g_timer2OVFCounter * 256);
+		*u32_a_elapsedTime = ((f32)numberOfTicks)* tickTime;
+		//*u32_a_elapsedTime /= 1000;
 		break;
 		
 		default:
@@ -742,7 +749,7 @@ ISR(TIM1_OVF_INT)
 			TIMER_1_callBack();
 		}
 		u32_g_timer1OVFCounter  =	0;
-		TCNT0 = 256 - u16_g_timer1RemTicks;
+		TCNT1 = 65536 - u16_g_timer1RemTicks;
 		
 	}
 
@@ -758,7 +765,7 @@ ISR(TIM2_OVF_INT)
 			TIMER_2_callBack();
 		}
 		u32_g_timer2OVFCounter  =	0;
-		TCNT0 = 256 - u8_g_timer2RemTicks;
+		TCNT2 = 256 - u8_g_timer2RemTicks;
 		
 	}
 
