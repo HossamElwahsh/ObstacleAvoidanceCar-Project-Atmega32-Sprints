@@ -28,9 +28,19 @@ void (*TIMER_1_callBack) (void) = NULL_PTR;
 
 void (*TIMER_2_callBack) (void) = NULL_PTR;
 
+void (*TIMER_0_pwmOnCallBack) (void) = NULL_PTR;
+
+void (*TIMER_0_pwmOffcallBack) (void) = NULL_PTR;
+
+
+
 u32 u32_g_timer0NumberOfOVFs	=	0;
 
 u8  u8_g_timer0RemTicks		=	0;
+
+u16 u16_g_offTime0			=	0;
+
+u16 u16_g_onTime0			=	0;
 
 volatile u32 u32_g_timer0OVFCounter	=	0;
 
@@ -38,13 +48,23 @@ u32 u32_g_timer1NumberOfOVFs	=	0;
 
 u16 u16_g_timer1RemTicks		=	0;
 
+u32 u32_g_offTime1			=	0;
+
+u32 u32_g_onTime1			=	0;
+
 volatile u32 u32_g_timer1OVFCounter	=	0;
 
 u32 u32_g_timer2NumberOfOVFs	=	0;
 
 u32 u8_g_timer2RemTicks		=	0;
 
+u16 u16_g_offTime2			=	0;
+
+u16 u16_g_onTime2			=	0;
+
 volatile u32 u32_g_timer2OVFCounter	=	0;
+
+u8 u8_g_normalToPwm		=	0;
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION IMPLEMENTATION
  *********************************************************************************************************************/
@@ -271,15 +291,28 @@ en_TIMER_error_t TIMER_pwmGenerator(en_TIMER_number_t en_a_timerUsed , u16 u16_a
 	switch(en_a_timerUsed)
 	{
 		case TIMER_0:
+		u16_g_offTime0	= u16_a_onTime;
+		u16_g_onTime0	= u16_a_offTime;
 		break;
+		
 		case TIMER_1:
+		u32_g_offTime1	= u16_a_onTime;
+		u32_g_onTime1	= u16_a_offTime;
 		break;
+		
 		case TIMER_2:
+		u16_g_offTime2	= u16_a_onTime;
+		u16_g_onTime2	= u16_a_offTime;
 		break;
+		
 		default:
 		returnValue =  TIMER_WRONG_TIMER_USED;
 		break;
 		
+	}
+	if(returnValue == TIMER_OK)
+	{
+		u8_g_normalToPwm = 1;
 	}
 	return returnValue;
 }
@@ -409,17 +442,37 @@ en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed)
 	
 }
 
-en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_elapsedTime)
+en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, f32* f32_a_elapsedTime)
 {
 	en_TIMER_error_t returnValue = TIMER_OK;
+	u32 tickTime = 0;
+	u32 numberOfTicks = 0;
+	u16 TCNTValue = 0;
+	
+	
 	switch(en_a_timerUsed)
 	{
 		case TIMER_0:
+		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
+		TCNTValue = TCNT0;
+		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
+		*f32_a_elapsedTime = ((f32)numberOfTicks/1000) * tickTime;
 		break;
+		
 		case TIMER_1:
+		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
+		TCNTValue = ((u16)TCNT1H * 256) + TCNT1L;
+		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
+		*f32_a_elapsedTime = ((f32)numberOfTicks/1000) * tickTime;
 		break;
+		
 		case TIMER_2:
+		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
+		TCNTValue = TCNT2;
+		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
+		*f32_a_elapsedTime = ((f32)numberOfTicks/1000 )* tickTime;
 		break;
+		
 		default:
 		returnValue =  TIMER_WRONG_TIMER_USED;
 		break;
@@ -448,6 +501,7 @@ en_TIMER_error_t TIMER_pause(en_TIMER_number_t en_a_timerUsed)
 	}
 	return returnValue;
 }
+
 en_TIMER_error_t TIMER_disableInterrupt(en_TIMER_number_t en_a_timerUsed)
 {
 	en_TIMER_error_t returnValue = TIMER_OK;
@@ -505,6 +559,55 @@ en_TIMER_error_t TIMER_setCallBack(en_TIMER_number_t en_a_timerUsed, void (*funP
 	}
 	return returnValue;
 }
+
+en_TIMER_error_t TIMER_setPwmOnCallBack(en_TIMER_number_t en_a_timerUsed, void (*funPtr)(void))
+{
+	en_TIMER_error_t returnValue = TIMER_OK;
+	
+	if(funPtr != NULL_PTR)
+	{
+		switch(en_a_timerUsed)
+		{
+			case TIMER_0:	TIMER_0_pwmOnCallBack = funPtr;			break;
+			
+			case TIMER_1:	/*TO BE IMPLEMENTED*/				break;
+			
+			case TIMER_2:	/*TO BE IMPLEMENTED*/				break;
+			
+			default:	returnValue = TIMER_WRONG_TIMER_USED;	break;
+		}
+	}
+	else
+	{
+		returnValue = TIMER_NOK;
+	}
+	return returnValue;
+}
+
+en_TIMER_error_t TIMER_setPwmOffCallBack(en_TIMER_number_t en_a_timerUsed, void (*funPtr)(void))
+{
+	en_TIMER_error_t returnValue = TIMER_OK;
+	
+	if(funPtr != NULL_PTR)
+	{
+		switch(en_a_timerUsed)
+		{
+			case TIMER_0:	TIMER_0_pwmOffcallBack = funPtr;			break;
+			
+			case TIMER_1:	/*TO BE IMPLEMENTED*/				break;
+			
+			case TIMER_2:	/*TO BE IMPLEMENTED*/				break;
+			
+			default:	returnValue = TIMER_WRONG_TIMER_USED;	break;
+		}
+	}
+	else
+	{
+		returnValue = TIMER_NOK;
+	}
+	return returnValue;
+}
+
 en_TIMER_error_t TIMER_setDelayTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_timeInMS)
 {
 	en_TIMER_error_t returnValue = TIMER_OK;
@@ -578,6 +681,89 @@ en_TIMER_error_t TIMER_setDelayTime(en_TIMER_number_t en_a_timerUsed, f32 f32_a_
 	return returnValue;
 }
 
+ISR(TIM0_OVF_INT)
+{
+	if (u8_g_normalToPwm == 0	)
+	{
+		u32_g_timer0OVFCounter ++;
+		if (u32_g_timer0OVFCounter == u32_g_timer0NumberOfOVFs)
+		{
+			if(TIMER_0_callBack != NULL_PTR)
+			{
+				TIMER_0_callBack();
+			}
+			u32_g_timer0OVFCounter   =	0;
+			TCNT0 = 256 - u8_g_timer0RemTicks;
+		}
+	}
+	else
+	{
+		static u8 u8_gs_generatorState = 0;
+		if (u8_gs_generatorState)
+		{
+			
+			if(TIMER_0_pwmOffcallBack != NULL_PTR)
+			{
+				TIMER_0_callBack();
+			}
+			
+			TCNT0 = 256 - u16_g_offTime0;
+			
+			if (u16_g_offTime0 < 256)
+			{
+				u8_gs_generatorState = 0;
+			}
+		}
+		else
+		{
+			if(TIMER_0_pwmOnCallBack != NULL_PTR)
+			{
+				TIMER_0_callBack();
+			}
+			
+			TCNT0 = 256 - u16_g_onTime0;
+			
+			if (u16_g_onTime0 < 256)
+			{
+				u8_gs_generatorState = 1;
+			}
+			
+		}
+		
+	}
+}
+
+ISR(TIM1_OVF_INT)
+{
+	u32_g_timer1OVFCounter ++;
+	if (u32_g_timer1OVFCounter  == u32_g_timer1NumberOfOVFs)
+	{
+		if(TIMER_1_callBack != NULL_PTR)
+		{
+			TIMER_1_callBack();
+		}
+		u32_g_timer1OVFCounter  =	0;
+		TCNT0 = 256 - u16_g_timer1RemTicks;
+		
+	}
+
+}
+
+ISR(TIM2_OVF_INT)
+{
+	u32_g_timer2OVFCounter ++;
+	if (u32_g_timer2OVFCounter  == u32_g_timer2NumberOfOVFs)
+	{
+		if(TIMER_2_callBack != NULL_PTR)
+		{
+			TIMER_2_callBack();
+		}
+		u32_g_timer2OVFCounter  =	0;
+		TCNT0 = 256 - u8_g_timer2RemTicks;
+		
+	}
+
+}
 /**********************************************************************************************************************
  *  END OF FILE: timer_program.c
  *********************************************************************************************************************/
