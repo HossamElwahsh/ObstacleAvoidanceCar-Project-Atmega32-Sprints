@@ -56,7 +56,7 @@ const u8 * keypad[2] =
  *
  * @return Returns void
  */
-void KEYPAD_Init(void);
+void KEYPAD_init(void);
 
 
 /**
@@ -66,7 +66,7 @@ void KEYPAD_Init(void);
  *
  * @return Returns u8 value of keypad
  */
-u8 KEYPAD_GetButton(void);
+u8 KEYPAD_getButton(void);
  
 
 

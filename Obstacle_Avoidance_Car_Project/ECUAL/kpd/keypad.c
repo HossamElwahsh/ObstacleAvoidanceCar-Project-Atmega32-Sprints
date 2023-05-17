@@ -31,10 +31,10 @@ void KEYPAD_init()
  *
  * @param void
  *
- * @return Returns u8 : value of keypad
+ * @return Returns u8 value of keypad
  */
 
-u8 KEYPAD_GetButton()
+u8 KEYPAD_getButton()
 {
 	u8 LOC_COL = 0;/*Counter for column locations*/
 	u8 LOC_ROW = 0;/*Counter for row locations*/
