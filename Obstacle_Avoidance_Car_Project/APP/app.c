@@ -40,7 +40,7 @@ void APP_startProgram(void)
 
 
         switch (u8_g_state) {
-            case APP_STATE_INIT:
+            case APP_STATE_INIT: // todo-(Alaa)
                 // wait for start button
 
 
@@ -53,7 +53,7 @@ void APP_startProgram(void)
 
 
                 break;
-            case APP_STATE_SET_DIR:
+            case APP_STATE_SET_DIR: // todo-(Hossam)
                 // 5 sec timeout
                 // check for BTN0 -> toggle Right/Left
 
@@ -99,7 +99,7 @@ void APP_startProgram(void)
 
 
                 break;
-            case APP_STATE_STARTING:
+            case APP_STATE_STARTING: // todo-(Alaa)
                 // wait 2 seconds
 
 
