@@ -255,19 +255,30 @@ void APP_startProgram(void)
 
 
                 }
-                // < 20  // todo-(Hossam)
+                // < 20  // donetodo-(Hossam)
                 else if(u16_l_distanceCm < 20)
                 {
-                    if(u8_g_currentCarDir != APP_DIR_STATE_BACKWARD)
+                    if(u8_g_currentCarDir != APP_DIR_STATE_BACKWARD) // robot isn't moving backward
                     {
                         DCM_stop();
+                        /* update car global variables (speed, dir) */
                         u8_g_currentCarDir = APP_DIR_STATE_BACKWARD;
-                        LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-                        LCD_WriteString((u8 *) "B");
-                        DCM_setDirection(DCM_0,DCM_ACW);
-                        DCM_setDirection(DCM_1,DCM_ACW);
-                        DCM_speed(APP_U8_CAR_SPEED_30);
+                        u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
+
+                        /* set motors on right side to rotate backwards */
+                        DCM_setDirection(APP_RIGHT_SIDE_MOTORS,DCM_ACW);
+
+                        /* set motors on left side to rotate backwards */
+                        DCM_setDirection(APP_LEFT_SIDE_MOTORS,DCM_ACW);
+
+                        /* set DCM speed to 30% */
+                        DCM_speed(APP_U8_CAR_SPEED_30); // set DCM speed to 30%
+
+                        /* start motors */
                         DCM_start();
+
+                        // update UI (LCD)
+                        APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                     }
 
 
@@ -331,10 +342,10 @@ void APP_switchState(u8 u8_a_state)
             break;
         case APP_STATE_SET_DIR:
             // todo-Hossam
-            LCD_ClrDisplay();
-            LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION);
-            LCD_gotoXY(APP_LCD_LINE_2, 0); // next line (Line 2)
-            LCD_WriteString((u8 *) APP_STR_ROT_RIGHT);
+            LCD_ClrDisplay(); // clear display
+            LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION); // write "Set Def. Rot." on LCD line 1
+            LCD_gotoXY(APP_LCD_LINE_2, 0); // goto next line (Line 2)
+            LCD_WriteString((u8 *) APP_STR_ROT_RIGHT); // write "Right" on LCD line 2
             // todo start async timer delay 5 seconds
 
 
