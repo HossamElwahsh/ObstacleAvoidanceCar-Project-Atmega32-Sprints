@@ -50,6 +50,9 @@ en_PWM_error_t PWM_start (void);
 
 en_PWM_error_t PWM_stop (void);
 
+void PWM_onTask (void);
+
+void PWM_offTask (void);
 
 #endif /* PWM_INTERFACE_H_ */
 /**********************************************************************************************************************
