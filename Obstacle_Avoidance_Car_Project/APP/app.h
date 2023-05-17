@@ -51,8 +51,12 @@
 
 
 
-
+/* End Line 54 */
 /* Hossam Macros */
+#define STR_CAR_SPEED_30 "30"
+#define STR_SET_DEF_ROTATION "Set Def. Rot."
+#define STR_ROT_RIGHT "Right"
+#define STR_ROT_LEFT "Left"
 
 
 
@@ -72,11 +76,7 @@
 
 
 
-
-
-
-
-
+/* End Line 79 */
 void APP_initialization(void);
 
 void APP_startProgram(void);

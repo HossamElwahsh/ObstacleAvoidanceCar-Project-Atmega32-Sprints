@@ -42,14 +42,103 @@ void APP_startProgram(void)
         switch (u8_g_state) {
             case APP_STATE_INIT:
                 // wait for start button
+
+
+
+
+
+
+
+
+
+
                 break;
             case APP_STATE_SET_DIR:
                 // 5 sec timeout
                 // check for BTN0 -> toggle Right/Left
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 break;
             case APP_STATE_STARTING:
                 // wait 2 seconds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 break;
 
             case APP_STATE_RUNNING:
@@ -58,10 +147,13 @@ void APP_startProgram(void)
                 // Range (2 cm - 400 cm)
                 // if 0: fail
                 u16 u16_l_distanceCm = US_getDistance();
+                // todo Hossam Update LCD Distance
 
                 /* if statements */
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
+                if(u16_l_distanceCm > 70)
+                {
 
 
 
@@ -96,10 +188,14 @@ void APP_startProgram(void)
 
 
 
-
-
-
+                }
                 // 30 -> 70 // todo-(Hossam)
+                else if(u16_l_distanceCm > 30 && u16_l_distanceCm < 70)
+                {
+                    DCM_speed(30);
+                    // todo update LCD Speed
+                    HLCD_gotoXY(0,6); // 2 digit speed location
+                    HLCD_WriteString((u8 *) STR_CAR_SPEED_30);
 
 
 
@@ -131,6 +227,10 @@ void APP_startProgram(void)
 
 
 
+                }
+                // 20 -> 30 // todo-(Alaa), todo-(Hossam) Bonus
+                else if(u16_l_distanceCm > 30 && u16_l_distanceCm < 70)
+                {
 
 
 
@@ -138,7 +238,6 @@ void APP_startProgram(void)
 
 
 
-                // 20 -> 30 // todo-(Alaa)
 
 
 
@@ -167,17 +266,10 @@ void APP_startProgram(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
+                }
                 // < 20  // todo-(Hossam)
+                else if(u16_l_distanceCm < 20)
+                {
 
 
 
@@ -213,9 +305,7 @@ void APP_startProgram(void)
 
 
 
-
-
-
+                }
             }
                 break;
             default:
@@ -251,8 +341,8 @@ void APP_switchState(u8 u8_a_state)
             break;
         case APP_STATE_SET_DIR:
             // todo-Hossam
-
-
+            HLCD_ClrDisplay();
+            HLCD_WriteString((u8 *) STR_SET_DEF_ROTATION);
 
 
 
