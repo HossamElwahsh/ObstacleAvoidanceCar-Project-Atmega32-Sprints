@@ -17,7 +17,25 @@
 #define LCD_8_BIT_MODE				0
 #define LCD_4_BIT_MODE				1
 
+#define LCD_POS_0 0
+#define LCD_POS_1 1
+#define LCD_POS_2 2 
+#define LCD_POS_3 3
+#define LCD_POS_4 4
+#define LCD_POS_5 5
+#define LCD_POS_6 6
+#define LCD_POS_7 7
+#define LCD_POS_8 8
+#define LCD_POS_9 9
+#define LCD_POS_10 10
+#define LCD_POS_11 11
+#define LCD_POS_12 12
+#define LCD_POS_13 13
+#define LCD_POS_14 14
+#define LCD_POS_15 15
 
+#define LCD_ROW_0 0
+#define LCD_ROW_1 1
 /**************************************************************************************************
  * 											functions prototype
  *************************************************************************************************/
@@ -27,7 +45,7 @@
  * input param 	: void
  * return		: void
  * */
-void HLCD_vidInit(void);
+void LCD_vidInit(void);
 
 /*
  * function		: HLCD_vidWritecmd
@@ -46,7 +64,7 @@ void HLCD_vidWritecmd(u8 u8commandCopy);
  * input param 	: u8CharCopy -> take ascii code of char   or   char address on CGROM
  * return		: void
  * */
-void HLCD_vidWriteChar(u8 u8CharCopy);
+void LCD_vidWriteChar(u8 u8CharCopy);
 
 
 /*
@@ -55,7 +73,7 @@ void HLCD_vidWriteChar(u8 u8CharCopy);
  * input param 	: void
  * return		: void
  * */
-void HLCD_ClrDisplay(void);
+void LCD_ClrDisplay(void);
 
 
 /*
@@ -64,7 +82,7 @@ void HLCD_ClrDisplay(void);
  * input param 	: void
  * return		: void
  * */
-void HLCD_ShiftLeft(void);
+void LCD_ShiftLeft(void);
 
 
 /*
@@ -72,7 +90,7 @@ void HLCD_ShiftLeft(void);
  * description 	: func to determine position which char print at this position on lcd  ### NOTE : (2rows x 16coloms)
  * input param 	:
  * 				  row -> take row number 0 or 1
- * 				  pos -> take colom number from 0 ~ 16
+ * 				  pos -> take colom number from 0 ~ 15
  * return		: void
  * */
 void HLCD_gotoXY(u8 row, u8 pos);
@@ -84,7 +102,7 @@ void HLCD_gotoXY(u8 row, u8 pos);
  * input param 	: str --> which take string as argument
  * return		: void
  * */
-void HLCD_WriteString(u8* str);
+void LCD_WriteString(u8* str);
 
 
 
@@ -94,7 +112,7 @@ void HLCD_WriteString(u8* str);
  * input param 	: number --> which take number as argument
  * return		: void
  * */
-void HLCD_WriteInt(u32 number);
+void LCD_WriteInt(u32 number);
 
 
 
@@ -104,7 +122,7 @@ void HLCD_WriteInt(u32 number);
  * input param 	: u8ArCharCopy --> which take string as argument
  * return		: void
  * */
-void HLCD_WriteArabic(u8 u8ArCharCopy);
+void LCD_WriteArabic(u8 u8ArCharCopy);
 
 
 
@@ -117,7 +135,7 @@ void HLCD_WriteArabic(u8 u8ArCharCopy);
  * 				  u8Location -> determine location on CGRAM [0 ~ 8]
  * return		: void
  * */
-void HLCD_vidCreatCustomChar(u8* pu8custom, u8 u8Location);
+void LCD_vidCreatCustomChar(u8* pu8custom, u8 u8Location);
 
 
 
