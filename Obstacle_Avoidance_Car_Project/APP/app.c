@@ -18,22 +18,22 @@ static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
     u8 u8_l_cursorPos;
 
     /* Display speed and direction on LCD line one */
-    HLCD_gotoXY(LCD_ROW_1, LCD_COL_1);
-    HLCD_WriteString("Speed:00%  Dir:S");
-    HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
-    HLCD_WriteInt(u8_a_speed);
-    HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-    HLCD_vidWriteChar(u8_a_dir);
+    LCD_gotoXY(LCD_ROW_1, LCD_POS_1);
+    LCD_WriteString((u8 *) "Speed:00%  Dir:S");
+    LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
+    LCD_WriteInt(u8_a_speed);
+    LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+    LCD_vidWriteChar(u8_a_dir);
 
     /* Display Distance on LCD line two */
     if(u16_a_dist > APP_MAX_2_DIGITS) u8_l_cursorPos = APP_LCD_DIST_POS;
     if(u16_a_dist > APP_MAX_1_DIGIT) u8_l_cursorPos = APP_LCD_MIDDLE_DIST_POS;
     else u8_l_cursorPos = APP_LCD_MIN_DIST_POS;
 
-    HLCD_gotoXY(APP_LCD_LINE_2, LCD_COL_1);
-    HLCD_WriteString("Dist.: 000 Cm");
-    HLCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
-    HLCD_WriteInt(u16_a_dist);
+    LCD_gotoXY(APP_LCD_LINE_2, LCD_POS_1);
+    LCD_WriteString((u8 *)"Dist.: 000 Cm");
+    LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
+    LCD_WriteInt(u16_a_dist);
 }
 
 
@@ -49,7 +49,7 @@ void APP_initialization(void)
     // init DCM
     DCM_init();
     // init LCD
-    HLCD_vidInit();
+    LCD_vidInit();
     // init Ultrasonic (US)
     PWM_init();
     // enable global interrupt (SEI)
@@ -69,7 +69,7 @@ void APP_startProgram(void)
         switch (u8_g_state) {
             case APP_STATE_INIT: // todo-(Alaa)
                 // wait for start button
-                if(KEYPAD_GetButton() == 0/*START_KEY*/) //Get key before switch or here??
+                if(KEYPAD_getButton() == 0/*START_KEY*/) //Get key before switch or here??
                 {
                     APP_switchState(APP_STATE_SET_DIR);
                 }
@@ -81,7 +81,7 @@ void APP_startProgram(void)
                 // check for BTN0 -> toggle Right/Left
                 while(1) // <- todo async timer didn't finish counting 5 seconds yet
                 {
-                    if(KEYPAD_GetButton() == 1) // todo update magic number to be STOP_KEY or something
+                    if(KEYPAD_getButton() == 1) // todo update magic number to be STOP_KEY or something
                     {
                         APP_switchState(APP_STATE_INIT); // stop everything
                         // todo cancel timer or create a STOP state that cancels everything
@@ -95,8 +95,8 @@ void APP_startProgram(void)
                         // Toggle direction
                         u8_g_defaultDirection = u8_g_defaultDirection == APP_DIR_RIGHT ? APP_DIR_LEFT : APP_DIR_RIGHT;
                         // update LCD
-                        HLCD_gotoXY(1, 0);
-                        HLCD_WriteString((u8 *) (u8_g_defaultDirection == APP_DIR_RIGHT ?
+                        LCD_gotoXY(1, 0);
+                        LCD_WriteString((u8 *) (u8_g_defaultDirection == APP_DIR_RIGHT ?
                             APP_STR_ROT_RIGHT:
                             APP_STR_ROT_LEFT
                         ));
@@ -115,7 +115,7 @@ void APP_startProgram(void)
                 /* Check whether stop key is pressed or delay done */
                 while (u8_g_delayState == DELAY_NOT_DONE)// check flag from CBF
                 {
-                    if (KEYPAD_GetButton() == 1/*Stop*/)
+                    if (KEYPAD_getButton() == 1/*Stop*/)
                     {
                         /* Reset to init state */
                         APP_switchState(APP_STATE_INIT);
@@ -136,8 +136,8 @@ void APP_startProgram(void)
                 // Range (2 cm - 400 cm)
                 // if 0: fail
                 u16 u16_l_distanceCm = US_getDistance();
-                HLCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
-                HLCD_WriteInt(u16_l_distanceCm);
+                LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
+                LCD_WriteInt(u16_l_distanceCm);
                 /* if statements */
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
@@ -170,8 +170,8 @@ void APP_startProgram(void)
                     {
                         DCM_stop(); // stop motors
                         u8_g_currentCarDir = APP_DIR_STATE_FORWARD; // update global car direction indicator
-                        HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-                        HLCD_WriteString((u8 *) "F");
+                        LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+                        LCD_WriteString((u8 *) "F");
                         DCM_setDirection(DCM_0,DCM_CW); // forward direction
                         DCM_setDirection(DCM_1,DCM_CW); // forward direction
                         DCM_speed(APP_U8_CAR_SPEED_30); // update DCM speed
@@ -185,8 +185,8 @@ void APP_startProgram(void)
                             // update global speed variable
                             u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
                             // Update speed on LCD
-                            HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS); // 2 digit speed location
-                            HLCD_WriteString((u8 *) APP_STR_CAR_SPEED_30);
+                            LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS); // 2 digit speed location
+                            LCD_WriteString((u8 *) APP_STR_CAR_SPEED_30);
                         }
                     }
 
@@ -262,8 +262,8 @@ void APP_startProgram(void)
                     {
                         DCM_stop();
                         u8_g_currentCarDir = APP_DIR_STATE_BACKWARD;
-                        HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-                        HLCD_WriteString((u8 *) "B");
+                        LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+                        LCD_WriteString((u8 *) "B");
                         DCM_setDirection(DCM_0,DCM_ACW);
                         DCM_setDirection(DCM_1,DCM_ACW);
                         DCM_speed(APP_U8_CAR_SPEED_30);
@@ -320,8 +320,8 @@ void APP_switchState(u8 u8_a_state)
             DELAY_init();
 
             /* Display speed and direction on LCD line one */
-            HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_LINE_START);
-            HLCD_WriteString("Speed:00%  Dir:S");
+            LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_LINE_START);
+            LCD_WriteString((u8 *)"Speed:00%  Dir:S");
 
             /* Initialize speed */
             u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
@@ -331,10 +331,10 @@ void APP_switchState(u8 u8_a_state)
             break;
         case APP_STATE_SET_DIR:
             // todo-Hossam
-            HLCD_ClrDisplay();
-            HLCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION);
-            HLCD_gotoXY(APP_LCD_LINE_2, 0); // next line (Line 2)
-            HLCD_WriteString((u8 *) APP_STR_ROT_RIGHT);
+            LCD_ClrDisplay();
+            LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION);
+            LCD_gotoXY(APP_LCD_LINE_2, 0); // next line (Line 2)
+            LCD_WriteString((u8 *) APP_STR_ROT_RIGHT);
             // todo start async timer delay 5 seconds
 
 
