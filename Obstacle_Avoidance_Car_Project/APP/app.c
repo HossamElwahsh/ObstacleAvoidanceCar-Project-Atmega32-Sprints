@@ -5,12 +5,12 @@
  * Created: 17/5/2023 5:59:37 AM
  *  Author: Alaa & Hossam
  */
-
 #include "app.h"
-
+u8 u8_g_currentCarDir = APP_DIR_STATE_STOP;
+u8 u8_g_currentSpeed = 0;
 u8 u8_g_state = APP_STATE_INIT;
 u8 u8_g_dirChange = APP_DIR_RESET;
-
+u8 u8_g_defaultDirection = APP_DIR_RIGHT;
 void APP_initialization(void)
 {
     // todo-Alaa
@@ -53,9 +53,34 @@ void APP_startProgram(void)
 
 
                 break;
-            case APP_STATE_SET_DIR: // todo-(Hossam)
-                // 5 sec timeout
+            case APP_STATE_SET_DIR: // donetodo-(Hossam)
+            {   // 5 sec timeout
                 // check for BTN0 -> toggle Right/Left
+                while(1) // <- todo async timer didn't finish counting 5 seconds yet
+                {
+                    if(KEYPAD_GetButton() == 1) // todo update magic number to be STOP_KEY or something
+                    {
+                        APP_switchState(APP_STATE_INIT); // stop everything
+                        // todo cancel timer or create a STOP state that cancels everything
+                    }
+                    u8 u8_l_toggleBtnState = 0;
+                    BUTTON_read(TOGGLE_BTN_PORT,
+                                TOGGLE_BTN_PIN,
+                                &u8_l_toggleBtnState);
+                    if(u8_l_toggleBtnState != 0) // Toggle Button Pressed // todo remove magic number (use btn enum)
+                    {
+                        // Toggle direction
+                        u8_g_defaultDirection = u8_g_defaultDirection == APP_DIR_RIGHT ? APP_DIR_LEFT : APP_DIR_RIGHT;
+                        // update LCD
+                        HLCD_gotoXY(1, 0);
+                        HLCD_WriteString((u8 *) (u8_g_defaultDirection == APP_DIR_RIGHT ?
+                            APP_STR_ROT_RIGHT:
+                            APP_STR_ROT_LEFT
+                        ));
+                    }
+
+
+                }
 
 
 
@@ -72,32 +97,7 @@ void APP_startProgram(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            } /* line 100 */
                 break;
             case APP_STATE_STARTING: // todo-(Alaa)
                 // wait 2 seconds
@@ -147,8 +147,8 @@ void APP_startProgram(void)
                 // Range (2 cm - 400 cm)
                 // if 0: fail
                 u16 u16_l_distanceCm = US_getDistance();
-                // todo Hossam Update LCD Distance
-
+                HLCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
+                HLCD_WriteInt(u16_l_distanceCm);
                 /* if statements */
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
@@ -189,22 +189,32 @@ void APP_startProgram(void)
 
 
                 }
-                // 30 -> 70 // todo-(Hossam)
-                else if(u16_l_distanceCm > 30 && u16_l_distanceCm < 70)
+                // 30 < distance < 70 // donetodo-(Hossam)
+                else if(u16_l_distanceCm > APP_U8_CAR_SPEED_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70)
                 {
-                    DCM_speed(30);
-                    // todo update LCD Speed
-                    HLCD_gotoXY(0,6); // 2 digit speed location
-                    HLCD_WriteString((u8 *) STR_CAR_SPEED_30);
-
-
-
-
-
-
-
-
-
+                    if(u8_g_currentCarDir != APP_DIR_STATE_FORWARD)
+                    {
+                        DCM_stop(); // stop motors
+                        u8_g_currentCarDir = APP_DIR_STATE_FORWARD; // update global car direction indicator
+                        HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+                        HLCD_WriteString((u8 *) "F");
+                        DCM_setDirection(DCM_0,DCM_CW); // forward direction
+                        DCM_setDirection(DCM_1,DCM_CW); // forward direction
+                        DCM_speed(APP_U8_CAR_SPEED_30); // update DCM speed
+                        u8_g_currentSpeed = APP_U8_CAR_SPEED_30; // update global speed
+                        DCM_start(); // start motors
+                    }
+                    // Update car speed to 30% if it's not
+                    if(u8_g_currentSpeed != APP_U8_CAR_SPEED_30){
+                        if(DCM_speed(APP_U8_CAR_SPEED_30) == DCM_OK)
+                        {
+                            // update global speed variable
+                            u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
+                            // Update speed on LCD
+                            HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS); // 2 digit speed location
+                            HLCD_WriteString((u8 *) APP_STR_CAR_SPEED_30);
+                        }
+                    }
 
 
 
@@ -270,6 +280,17 @@ void APP_startProgram(void)
                 // < 20  // todo-(Hossam)
                 else if(u16_l_distanceCm < 20)
                 {
+                    if(u8_g_currentCarDir != APP_DIR_STATE_BACKWARD)
+                    {
+                        DCM_stop();
+                        u8_g_currentCarDir = APP_DIR_STATE_BACKWARD;
+                        HLCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
+                        HLCD_WriteString((u8 *) "B");
+                        DCM_setDirection(DCM_0,DCM_ACW);
+                        DCM_setDirection(DCM_1,DCM_ACW);
+                        DCM_speed(APP_U8_CAR_SPEED_30);
+                        DCM_start();
+                    }
 
 
 
@@ -294,18 +315,7 @@ void APP_startProgram(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-                }
+                } /* 315 */
             }
                 break;
             default:
@@ -342,10 +352,10 @@ void APP_switchState(u8 u8_a_state)
         case APP_STATE_SET_DIR:
             // todo-Hossam
             HLCD_ClrDisplay();
-            HLCD_WriteString((u8 *) STR_SET_DEF_ROTATION);
-
-
-
+            HLCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION);
+            HLCD_gotoXY(APP_LCD_LINE_2, 0); // next line (Line 2)
+            HLCD_WriteString((u8 *) APP_STR_ROT_RIGHT);
+            // todo start async timer delay 5 seconds
 
 
 
