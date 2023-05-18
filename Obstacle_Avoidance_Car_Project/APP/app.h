@@ -60,6 +60,7 @@
 /* End Line 60 */
 /* Hossam Macros */
 #define APP_U8_CAR_SPEED_0 0
+#define APP_DELAY_SET_DIR_TIMEOUT	5000
 #define APP_U8_CAR_SPEED_30 30
 #define APP_U8_CAR_SPEED_70 70
 #define APP_STR_CAR_SPEED_0 "00"
@@ -67,7 +68,6 @@
 #define APP_STR_SET_DEF_ROTATION "Set Def. Rot."
 #define APP_STR_ROT_RIGHT "Right"
 #define APP_STR_ROT_LEFT "Left " // keep the space to clear old value characters (Right)
-
 #define APP_DIR_RIGHT   0
 #define APP_DIR_LEFT    1
 

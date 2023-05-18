@@ -79,18 +79,19 @@ void APP_startProgram(void)
             case APP_STATE_SET_DIR: // donetodo-(Hossam)
             {   // 5 sec timeout
                 // check for BTN0 -> toggle Right/Left
-                while(1) // <- todo async timer didn't finish counting 5 seconds yet
+                while(u8_g_delayState != DELAY_DONE)
                 {
-                    if(KEYPAD_getButton() == 1) // todo update magic number to be STOP_KEY or something
+                    if(KEYPAD_getButton() == KPD_KEY_STOP)
                     {
                         APP_switchState(APP_STATE_INIT); // stop everything
-                        // todo cancel timer or create a STOP state that cancels everything
+                        // todo cancel timer(delay) or create a STOP state that cancels everything
+                        break; // continue-todo is break sufficient?
                     }
                     u8 u8_l_toggleBtnState = 0;
                     BUTTON_read(TOGGLE_BTN_PORT,
                                 TOGGLE_BTN_PIN,
                                 &u8_l_toggleBtnState);
-                    if(u8_l_toggleBtnState != 0) // Toggle Button Pressed // todo remove magic number (use btn enum)
+                    if(u8_l_toggleBtnState == PRESSED) // Toggle Button Pressed
                     {
                         // Toggle direction
                         u8_g_defaultDirection = u8_g_defaultDirection == APP_DIR_RIGHT ? APP_DIR_LEFT : APP_DIR_RIGHT;
@@ -101,9 +102,8 @@ void APP_startProgram(void)
                             APP_STR_ROT_LEFT
                         ));
                     }
-
-
                 }
+                APP_switchState(APP_STATE_STARTING); // goto next state after timeout is done
             } /* line 107 */
                 break;
 				
@@ -287,7 +287,7 @@ void APP_startProgram(void)
 
 
 
-                    
+
 
 
 
@@ -330,14 +330,15 @@ void APP_switchState(u8 u8_a_state)
 
             break;
         case APP_STATE_SET_DIR:
-            // todo-Hossam
+            // donetodo-Hossam
             LCD_ClrDisplay(); // clear display
             LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION); // write "Set Def. Rot." on LCD line 1
             LCD_gotoXY(APP_LCD_LINE_2, 0); // goto next line (Line 2)
             LCD_WriteString((u8 *) APP_STR_ROT_RIGHT); // write "Right" on LCD line 2
-            // todo start async timer delay 5 seconds
 
-
+            DELAY_setCallBack(APP_delayNotification);
+            u8_g_delayState = DELAY_NOT_DONE; // reset delay flag
+            DELAY_setTimeNonBlocking(APP_DELAY_SET_DIR_TIMEOUT); // start async timeout delay
 
 
 
