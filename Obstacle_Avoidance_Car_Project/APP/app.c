@@ -103,7 +103,7 @@ void APP_startProgram(void)
                         ));
                     }
                 }
-                APP_switchState(APP_STATE_STARTING); // goto next state after timeout is done
+                if(u8_g_state == APP_STATE_SET_DIR) APP_switchState(APP_STATE_STARTING); // goto next state after timeout is done
             } /* line 107 */
                 break;
 				
