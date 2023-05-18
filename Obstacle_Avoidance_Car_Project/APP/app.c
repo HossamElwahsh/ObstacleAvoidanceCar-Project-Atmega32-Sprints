@@ -9,33 +9,29 @@
 u8 u8_g_currentCarDir = APP_CHAR_DIR_STOP;
 u8 u8_g_currentSpeed = 0;
 u8 u8_g_state = APP_STATE_INIT;
-u8 u8_g_dirChange = APP_DIR_RESET;
+
 u8 u8_g_defaultDirection = APP_DIR_RIGHT;
 u8 u8_g_delayState = DELAY_NOT_DONE;
 
 static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
 {
-    u8 u8_l_cursorPos;
-
     /* Display speed and direction on LCD line one */
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
     LCD_WriteInt(u8_a_speed);
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
     LCD_vidWriteChar(u8_a_dir);
 
+    LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_MAX_DIST_POS);
     /* Display Distance on LCD line two */
-    if(u16_a_dist > APP_MAX_2_DIGITS) u8_l_cursorPos = APP_LCD_DIST_POS;
-    if(u16_a_dist > APP_MAX_1_DIGIT) u8_l_cursorPos = APP_LCD_MIDDLE_DIST_POS;
-    else u8_l_cursorPos = APP_LCD_MIN_DIST_POS;
+    if(u16_a_dist <= APP_MAX_2_DIGITS && u16_a_dist > APP_MAX_1_DIGIT) {
+        LCD_WriteString((u8 *)"0");
+    }
+    else if(u16_a_dist <= APP_MAX_1_DIGIT) {
+        LCD_WriteString((u8 *)"00");
+    }
 
-    LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
     LCD_WriteInt(u16_a_dist);
 }
-
-
-
-
-
 
 void APP_initialization(void)
 {
@@ -153,6 +149,11 @@ void APP_startProgram(void)
                     {
                         DELAY_setTimeNonBlocking(APP_INC_SPEED_TIME);
 						DELAY_setCallBack(APP_delayNotification);
+
+                        DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_CW);
+                        DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_CW);
+                        DCM_speed(u8_g_currentSpeed);
+                        DCM_start();
                     }
 
 					/* Change speed to 50% after 5 seconds */
@@ -163,11 +164,8 @@ void APP_startProgram(void)
 						
 						/* Update Speed */
 						u8_g_currentSpeed = APP_U8_SPEED_50;
+                        DCM_speed(u8_g_currentSpeed);
 					}
-
-                    DCM_speed(u8_g_currentSpeed);
-                    DCM_start();
-
                 }
                 // 30 < distance < 70 // donetodo-(Hossam)
                 else if(u16_l_distanceCm > APP_U8_CAR_SPEED_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70)
@@ -337,8 +335,6 @@ void APP_switchState(u8 u8_a_state)
             /* Initialize speed */
             u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
 
-
-
             break;
         case APP_STATE_SET_DIR:
             // donetodo-Hossam
@@ -350,25 +346,6 @@ void APP_switchState(u8 u8_a_state)
             DELAY_setCallBack(APP_delayNotification);
             u8_g_delayState = DELAY_NOT_DONE; // reset delay flag
             DELAY_setTimeNonBlocking(APP_DELAY_SET_DIR_TIMEOUT); // start async timeout delay
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             break;
         case APP_STATE_RUNNING:
