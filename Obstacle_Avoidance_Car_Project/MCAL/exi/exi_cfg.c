@@ -47,6 +47,6 @@ const st_EXTI_config_t arr_g_exiConfigs[EXTI_PINS_NUM] =
 		{
 				.EXTI_NUM= EXTI2,
 				.SENSE_MODE = RISING_EDGE,
-				.EXTI_EN = EXTI_ENABLE
+				.EXTI_EN = EXTI_DISABLE
 		}
 };
