@@ -415,21 +415,21 @@ en_TIMER_error_t TIMER_reset(en_TIMER_number_t en_a_timerUsed)
 	switch(en_a_timerUsed)
 	{
 		case TIMER_0:
-		//TIMER_pause(en_a_timerUsed);
+		TIMER_pause(en_a_timerUsed);
 		u32_g_timer0OVFCounter = 0;
 		TCNT0 = 0;
-		//TIMER_resume(en_a_timerUsed);
+//		TIMER_resume(en_a_timerUsed);
 		break;
 		
 		case TIMER_1:
-		//TIMER_pause(en_a_timerUsed);
+		TIMER_pause(en_a_timerUsed);
 		u32_g_timer1OVFCounter = 0;
 		TCNT1 = 0;
 		//TIMER_resume(en_a_timerUsed);
 		break;
 		
 		case TIMER_2:
-		//TIMER_pause(en_a_timerUsed);
+		TIMER_pause(en_a_timerUsed);
 		u32_g_timer2OVFCounter = 0;
 		TCNT2 = 0;
 		//TIMER_resume(en_a_timerUsed);
