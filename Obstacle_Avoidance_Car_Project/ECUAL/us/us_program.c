@@ -59,8 +59,7 @@ u16 US_getDistance(void)
 
     // send trigger signal
     DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, HIGH); // takes 21uS to complete
-//    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, HIGH);
-    DELAY_setTime(0.01f);
+    DELAY_setTime(US_TRIGGER_DELAY);
     DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
 //    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, LOW);
 

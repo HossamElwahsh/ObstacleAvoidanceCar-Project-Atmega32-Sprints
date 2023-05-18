@@ -29,6 +29,8 @@
 
 #define CALC_DISTANCE_CM(travelTimeMs) (((travelTimeMs/2) * SPEED_OF_SOUND_IN_AIR_CM_PER_US))
 
+#define US_TRIGGER_DELAY ((f32)0.01f)
+
 #define US_ECHO_STATE_WAITING 0
 #define US_ECHO_STATE_RECEIVED 1
 
