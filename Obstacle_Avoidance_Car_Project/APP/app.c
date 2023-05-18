@@ -18,8 +18,6 @@ static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
     u8 u8_l_cursorPos;
 
     /* Display speed and direction on LCD line one */
-    LCD_gotoXY(LCD_ROW_1, LCD_POS_1);
-    LCD_WriteString((u8 *) "Speed:00%  Dir:S");
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
     LCD_WriteInt(u8_a_speed);
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
@@ -30,11 +28,13 @@ static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist)
     if(u16_a_dist > APP_MAX_1_DIGIT) u8_l_cursorPos = APP_LCD_MIDDLE_DIST_POS;
     else u8_l_cursorPos = APP_LCD_MIN_DIST_POS;
 
-    LCD_gotoXY(APP_LCD_LINE_2, LCD_POS_1);
-    LCD_WriteString((u8 *)"Dist.: 000 Cm");
     LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
     LCD_WriteInt(u16_a_dist);
 }
+
+
+
+
 
 
 void APP_initialization(void)
@@ -69,7 +69,7 @@ void APP_startProgram(void)
         switch (u8_g_state) {
             case APP_STATE_INIT: // todo-(Alaa)
                 // wait for start button
-                if(KEYPAD_getButton() == 0/*START_KEY*/) //Get key before switch or here??
+                if(KEYPAD_getButton() == KPD_KEY_START) //Get key before switch or here??
                 {
                     APP_switchState(APP_STATE_SET_DIR);
                 }
@@ -115,7 +115,7 @@ void APP_startProgram(void)
                 /* Check whether stop key is pressed or delay done */
                 while (u8_g_delayState == DELAY_NOT_DONE)// check flag from CBF
                 {
-                    if (KEYPAD_getButton() == 1/*Stop*/)
+                    if (KEYPAD_getButton() == KPD_KEY_STOP)
                     {
                         /* Reset to init state */
                         APP_switchState(APP_STATE_INIT);
@@ -124,7 +124,7 @@ void APP_startProgram(void)
 
                 /* reset flag from CBF */
 				u8_g_delayState = DELAY_NOT_DONE;
-				
+
 				/* Change robot state to running */
                 APP_switchState(APP_STATE_RUNNING);
 
@@ -136,13 +136,13 @@ void APP_startProgram(void)
                 // Range (2 cm - 400 cm)
                 // if 0: fail
                 u16 u16_l_distanceCm = US_getDistance();
-                LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
-                LCD_WriteInt(u16_l_distanceCm);
-                /* if statements */
+             
+				APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
                 if(u16_l_distanceCm > 70)
                 {
+                    u8_g_currentCarDir = APP_CHAR_DIR_FWD;
                     if(u16_l_lastDist <= APP_U8_CAR_SPEED_70)
                     {
                         DELAY_setTimeNonBlocking(APP_INC_SPEED_TIME);
@@ -195,6 +195,8 @@ void APP_startProgram(void)
                 else if(u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm < APP_U8_DIST_30)
                 {
                     DCM_stop();
+                    u8_g_currentCarDir = APP_CHAR_DIR_ROTATE;
+                    APP_upadateUI(APP_U8_STOP_SPEED, u8_g_currentCarDir, u16_l_distanceCm);
 
                     if(u8_g_defaultDirection == APP_DIR_LEFT)
                     {
@@ -360,10 +362,13 @@ void APP_switchState(u8 u8_a_state)
 
 
             break;
-        case APP_STATE_STARTING:
+        case APP_STATE_RUNNING:
             // LCD output Line1,2 "SPEED:00% Dir:S\nDist.: 000 Cm"
             // donetodo-Alaa
-            APP_updateUI(APP_U8_STOP_SPEED, APP_CHAR_DIR_STOP, APP_U8_ZERO_DIST);
+            LCD_ClrDisplay();
+            LCD_WriteString((u8*) "Speed:00% Dir:S");
+            LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_LINE_START);
+            LCD_WriteString("Dist.: 000 Cm");
 
             break;
         default:
