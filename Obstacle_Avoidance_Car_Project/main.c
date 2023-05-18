@@ -47,7 +47,8 @@ int testUltrasonic(void) {
 //        DIO_setPinVal(DIO_PORTB, startPin, LOW);
 
         LCD_ClrDisplay();
-        LCD_WriteString((u8 *) "Retrieving");
+        LCD_WriteString((u8 *) "Retrieving....");
+        DELAY_setTime(500);
         u16 distance = US_getDistance();
         LCD_ClrDisplay();
         LCD_WriteInt(distance);
@@ -72,7 +73,7 @@ int testUltrasonic(void) {
         {
             LCD_WriteString("More than 70");
         }*/
-        DELAY_setTime(500);
+        DELAY_setTime(1000);
         LCD_ClrDisplay();
     }
 }
