@@ -17,7 +17,7 @@
 // 343 m/s = 0.0343 cm/uS = 1/29.1 cm/uS
 #define SPEED_OF_SOUND_IN_AIR_CM_PER_US (1/29.1) // 1/29.1 cm/uS
 
-#define CALC_DISTANCE_CM(travelTimeMs) (((travelTimeMs/2)/1000) * (SPEED_OF_SOUND_IN_AIR_CM_PER_US))
+#define CALC_DISTANCE_CM(travelTimeMs) (((travelTimeMs/2) * SPEED_OF_SOUND_IN_AIR_CM_PER_US))
 
 #define MIN_SUPPORTED_DISTANCE_CM 2     // 2cm
 #define MAX_SUPPORTED_DISTANCE_CM 400   // 4m = 400cm
