@@ -10,6 +10,7 @@
 #define BUTTON_INTERFACE_H_
 #include "../../LIB/std.h"
 #include "../../MCAL/dio/dio_interface.h"
+#include "../../ECUAL/delay/delay_interface.h"
 
 #define BTN_DELAY_BTN_POLL      50
 

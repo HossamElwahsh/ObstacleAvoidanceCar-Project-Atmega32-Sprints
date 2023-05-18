@@ -62,7 +62,7 @@ en_buttonError_t BUTTON_read(u8 u8_a_buttonPort, u8 u8_a_buttonPin, u8 *u8_a_but
 		        
 		 u8 en_buttonPosition_t = NOTPRESSED;
 		 u16 u16_l_elapsedTime = 0;
-		DIO_getPinVal(u8_a_buttonPort, u8_a_buttonPin, &u8_a_buttonState);
+		DIO_getPinVal(u8_a_buttonPort, u8_a_buttonPin, u8_a_buttonState);
 		if(en_buttonPosition_t == PRESSED)
 		{
 			while(en_buttonPosition_t != NOTPRESSED)
