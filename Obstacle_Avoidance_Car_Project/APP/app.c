@@ -6,7 +6,7 @@
  *  Author: Alaa & Hossam
  */
 #include "app.h"
-u8 u8_g_currentCarDir = APP_DIR_STATE_STOP;
+u8 u8_g_currentCarDir = APP_CHAR_DIR_STOP;
 u8 u8_g_currentSpeed = 0;
 u8 u8_g_state = APP_STATE_INIT;
 u8 u8_g_dirChange = APP_DIR_RESET;
@@ -166,10 +166,10 @@ void APP_startProgram(void)
                 // 30 < distance < 70 // donetodo-(Hossam)
                 else if(u16_l_distanceCm > APP_U8_CAR_SPEED_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70)
                 {
-                    if(u8_g_currentCarDir != APP_DIR_STATE_FORWARD)
+                    if(u8_g_currentCarDir != APP_CHAR_DIR_FWD)
                     {
                         DCM_stop(); // stop motors
-                        u8_g_currentCarDir = APP_DIR_STATE_FORWARD; // update global car direction indicator
+                        u8_g_currentCarDir = APP_CHAR_DIR_FWD; // update global car direction indicator
                         LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
                         LCD_WriteString((u8 *) "F");
                         DCM_setDirection(DCM_0,DCM_CW); // forward direction
@@ -196,7 +196,7 @@ void APP_startProgram(void)
                 {
                     DCM_stop();
                     u8_g_currentCarDir = APP_CHAR_DIR_ROTATE;
-                    APP_upadateUI(APP_U8_STOP_SPEED, u8_g_currentCarDir, u16_l_distanceCm);
+                    APP_updateUI(APP_U8_STOP_SPEED, u8_g_currentCarDir, u16_l_distanceCm);
 
                     if(u8_g_defaultDirection == APP_DIR_LEFT)
                     {
@@ -260,11 +260,11 @@ void APP_startProgram(void)
                 // < 20  // donetodo-(Hossam)
                 else if(u16_l_distanceCm < 20)
                 {
-                    if(u8_g_currentCarDir != APP_DIR_STATE_BACKWARD) // robot isn't moving backward
+                    if(u8_g_currentCarDir != APP_CHAR_DIR_BACK) // robot isn't moving backward
                     {
                         DCM_stop();
                         /* update car global variables (speed, dir) */
-                        u8_g_currentCarDir = APP_DIR_STATE_BACKWARD;
+                        u8_g_currentCarDir = APP_CHAR_DIR_BACK;
                         u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
 
                         /* set motors on right side to rotate backwards */

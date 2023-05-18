@@ -72,10 +72,6 @@
 #define APP_DIR_RIGHT   0
 #define APP_DIR_LEFT    1
 
-#define APP_DIR_STATE_STOP      0
-#define APP_DIR_STATE_FORWARD   1
-#define APP_DIR_STATE_BACKWARD  2
-#define APP_DIR_STATE_ROTATING  3
 
 #define TOGGLE_BTN_PORT     2
 #define TOGGLE_BTN_PIN      4
