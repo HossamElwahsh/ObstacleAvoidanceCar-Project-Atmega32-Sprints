@@ -18,11 +18,25 @@ en_DIO_pin_t stopPin = DIO_PIN_7;
 
 void testCallback();
 
-int main(void)
-{
+int testTimerDelay(void){
+    sei();
+    DELAY_init();
+    DELAY_setTimeNonBlocking(100);
+    DELAY_setCallBack(testCallback);
+    TIMER_reset(TIMER_1);
+    TIMER_resume(TIMER_1);
+    while(1)
+    {
+    }
+}
 
+
+//<editor-fold desc="test ultrasonic">
+int testUltrasonic(void)
+{
+    DELAY_init();
     LCD_vidInit();
-    LCD_WriteString("test");
+    LCD_WriteString("test distance");
     DIO_setPinDir(DIO_PORTB, startPin, OUTPUT);
     DIO_setPinDir(DIO_PORTB, stopPin, OUTPUT);
 
@@ -32,20 +46,21 @@ int main(void)
     US_init();
 
 //    TIMER_init();
-    DELAY_init();
-    DELAY_setTime(1000);
+    DELAY_setTime(500);
 //    TIMER_reset(TIMER_1);
 //    TIMER_resume(TIMER_1);
 
 //    DELAY_setTimeNonBlocking(1000);
 //    DELAY_setCallBack(testCallback);
     /* Replace with your application code */
-    while (1) 
+    while (1)
     {
 //        DIO_setPinVal(DIO_PORTB, startPin, LOW);
 
         LCD_ClrDisplay();
+        LCD_WriteString("Retrieving");
         u16 distance = US_getDistance();
+        LCD_ClrDisplay();
         if(distance == 0)
         {
             LCD_WriteString("Error!");
@@ -67,6 +82,7 @@ int main(void)
             LCD_WriteString("More than 70");
         }
         DELAY_setTime(500);
+        LCD_ClrDisplay();
         LCD_WriteString("Next");
         DELAY_setTime(500);
         //<editor-fold desc="Keypad">
@@ -88,12 +104,20 @@ int main(void)
 
     }
 }
+//</editor-fold>
+
+int main()
+{
+    testUltrasonic();
+}
+
 
 void testCallback()
 {
     DIO_togPinVal(DIO_PORTB, startPin);
-    DELAY_setTimeNonBlocking(1000);
+    DELAY_setTimeNonBlocking(100);
     u32 elapsed = 0;
     TIMER_getElapsedTime(TIMER_1, &elapsed);
     TIMER_reset(TIMER_1);
+	TIMER_resume(TIMER_1);
 }
