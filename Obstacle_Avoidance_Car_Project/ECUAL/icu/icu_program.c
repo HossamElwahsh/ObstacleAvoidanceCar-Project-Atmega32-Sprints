@@ -93,7 +93,7 @@ void ICU_getCaptureValue(void)
  * */
 static void ICU_inputHandler(void)
 {
-    DIO_setPinVal(DIO_PORTB, DIO_PIN_7, HIGH);
+//    DIO_setPinVal(DIO_PORTB, DIO_PIN_7, HIGH);
     u8 u8_l_capturePinValue = 0;
     DIO_getPinVal(st_g_ICU_config.icuCapturePin == PORT_B_PIN_2 ? DIO_PORTB : DIO_PORTD,
                   st_g_ICU_config.icuCapturePin == PORT_D_PIN_3 ? DIO_PIN_3 : DIO_PIN_2,

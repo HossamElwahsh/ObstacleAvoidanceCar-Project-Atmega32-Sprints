@@ -26,6 +26,9 @@ void US_init(void)
     // init input capture unit
     ICU_init();
 
+    // init delay
+    DELAY_init();
+
     // init US
     st_g_usConfig = US_getConfig();
     // init trigger pin as output
@@ -57,7 +60,7 @@ u16 US_getDistance(void)
     // send trigger signal
     DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, HIGH); // takes 21uS to complete
 //    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, HIGH);
-    // todo delay 10uS ?
+    DELAY_setTime(0.01f);
     DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
 //    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, LOW);
 

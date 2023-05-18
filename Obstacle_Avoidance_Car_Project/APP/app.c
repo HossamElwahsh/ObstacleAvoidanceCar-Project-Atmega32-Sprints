@@ -51,7 +51,7 @@ void APP_initialization(void)
     // init LCD
     LCD_vidInit();
     // init Ultrasonic (US)
-    PWM_init();
+    US_init();
     // enable global interrupt (SEI)
     sei();
     // switch to init state
@@ -87,16 +87,16 @@ void APP_startProgram(void)
                         // todo cancel timer(delay) or create a STOP state that cancels everything
                         break; // continue-todo is break sufficient?
                     }
-                    u8 u8_l_toggleBtnState = 0;
+                    en_buttonPosition_t u8_l_toggleBtnState = 0;
                     BUTTON_read(TOGGLE_BTN_PORT,
                                 TOGGLE_BTN_PIN,
                                 &u8_l_toggleBtnState);
-                    if(u8_l_toggleBtnState == PRESSED) // Toggle Button Pressed
+                    if(u8_l_toggleBtnState == 1) // Toggle Button Pressed
                     {
                         // Toggle direction
                         u8_g_defaultDirection = u8_g_defaultDirection == APP_DIR_RIGHT ? APP_DIR_LEFT : APP_DIR_RIGHT;
                         // update LCD
-                        LCD_gotoXY(1, 0);
+                        LCD_gotoXY(APP_LCD_LINE_2, LCD_POS_0);
                         LCD_WriteString((u8 *) (u8_g_defaultDirection == APP_DIR_RIGHT ?
                             APP_STR_ROT_RIGHT:
                             APP_STR_ROT_LEFT
@@ -111,7 +111,13 @@ void APP_startProgram(void)
                 // wait 2 seconds (Async)
                 DELAY_setTimeNonBlocking(APP_DELAY_START_TIME);
 				DELAY_setCallBack(APP_delayNotification);
+                LCD_ClrDisplay();
+                LCD_gotoXY(APP_LCD_LINE_1, LCD_POS_2);
+                LCD_WriteString((u8 *) "Starting....");
+                LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_LINE_START);
+                LCD_WriteString(u8_g_defaultDirection == APP_DIR_RIGHT ? (u8 *) "Direction:Right" : (u8 *) "Direction:Left");
 
+                u8_g_delayState = DELAY_NOT_DONE;
                 /* Check whether stop key is pressed or delay done */
                 while (u8_g_delayState == DELAY_NOT_DONE)// check flag from CBF
                 {
@@ -119,6 +125,7 @@ void APP_startProgram(void)
                     {
                         /* Reset to init state */
                         APP_switchState(APP_STATE_INIT);
+                        break;
                     }
                 }
 
@@ -135,9 +142,19 @@ void APP_startProgram(void)
                 // check distance
                 // Range (2 cm - 400 cm)
                 // if 0: fail
+                u8 counter = '0';
                 u16 u16_l_distanceCm = US_getDistance();
-             
-				APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                while(1)
+                {
+                    counter++;
+                    if(counter > '9') counter = '0';
+                    DELAY_setTime(1000);
+                    u16_l_distanceCm = US_getDistance();
+                    LCD_ClrDisplay();
+                    LCD_vidWriteChar(counter);
+                }
+                continue;
+				APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, 150);
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
                 if(u16_l_distanceCm > 70)
@@ -322,8 +339,11 @@ void APP_switchState(u8 u8_a_state)
             DELAY_init();
 
             /* Display speed and direction on LCD line one */
-            LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_LINE_START);
-            LCD_WriteString((u8 *)"Speed:00%  Dir:S");
+            LCD_ClrDisplay();
+            LCD_gotoXY(APP_LCD_LINE_1, LCD_POS_4);
+            LCD_WriteString((u8 *) "Welcome!");
+            LCD_gotoXY(APP_LCD_LINE_2, LCD_POS_2);
+            LCD_WriteString((u8 *) "Press  Start");
 
             /* Initialize speed */
             u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
@@ -366,9 +386,9 @@ void APP_switchState(u8 u8_a_state)
             // LCD output Line1,2 "SPEED:00% Dir:S\nDist.: 000 Cm"
             // donetodo-Alaa
             LCD_ClrDisplay();
-            LCD_WriteString((u8*) "Speed:00% Dir:S");
+            LCD_WriteString((u8 *) "Speed:00% Dir:S");
             LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_LINE_START);
-            LCD_WriteString("Dist.: 000 Cm");
+            LCD_WriteString((u8 *) "Dist.: 000 Cm");
 
             break;
         default:

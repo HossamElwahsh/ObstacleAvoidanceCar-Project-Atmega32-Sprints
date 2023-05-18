@@ -5,17 +5,29 @@
  * Author : hossam
  */
 
-#include "ECUAL/lcd/lcd_interface.h"
-#include "ECUAL/kpd/keypad_interface.h"
-#include "ECUAL/delay/delay_interface.h"
-#include "ECUAL/us/us_interface.h"
-#include "MCAL/dio/dio_interface.h"
-#include "LIB/interrupts.h"
+#include "APP/app.h"
+//#include "ECUAL/btn/button_interface.h"
+//#include "ECUAL/LCD/lcd_interface.h"
+//#include "string.h"
 
 en_DIO_pin_t startPin = DIO_PIN_6;
 en_DIO_pin_t stopPin = DIO_PIN_7;
 
 void testCallback();
+int testUltrasonic(void);
+void testKeypad();
+
+int main()
+{
+    testUltrasonic();
+    return 0;
+
+	APP_initialization();
+	
+	APP_startProgram();
+	
+	return 0;
+}
 
 int testTimerDelay(void) {
     sei();
@@ -96,10 +108,6 @@ void testKeypad()
     }
 }
 
-int main() {
-    testUltrasonic();
-}
-
 
 void testCallback() {
     DIO_togPinVal(DIO_PORTB, startPin);
@@ -108,4 +116,23 @@ void testCallback() {
     TIMER_getElapsedTime(TIMER_1, &elapsed);
     TIMER_reset(TIMER_1);
     TIMER_resume(TIMER_1);
+}
+
+void testButton()
+{
+    BUTTON_init(2, 4);
+    LCD_vidInit();
+    u8 state = 0;
+    u8 * text = "RIGHT";
+    while(1)
+    {
+        state = 0;
+        BUTTON_read(4, 2, (en_buttonPosition_t *) &state);
+        if(state == 1)
+        {
+            LCD_ClrDisplay();
+//            text = !strcmp((char*)text, (char*) "RIGHT") ? (u8 *)"LEFT" : (u8 *)"RIGHT";
+            LCD_WriteString(text);
+        }
+    }
 }

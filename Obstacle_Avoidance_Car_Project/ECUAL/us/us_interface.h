@@ -11,6 +11,7 @@
 
 #include "../../LIB/std.h"
 #include "../../ECUAL/icu/icu_interface.h"
+#include "../../ECUAL/delay/delay_interface.h"
 #include "../../ECUAL/icu/icu_cfg.h"
 
 /** Macros **/
