@@ -36,7 +36,7 @@
   <documentation help="" />
   <offline-documentation help="" />
   <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.42.0" />
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.44.1" />
   </dependencies>
 </framework-data>
     </AsfFrameworkConfig>
@@ -235,10 +235,10 @@
     <Compile Include="MCAL\dio\dio_program.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCAL\exi\exi_config.c">
+    <Compile Include="MCAL\exi\exi_cfg.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCAL\exi\exi_config.h">
+    <Compile Include="MCAL\exi\exi_cfg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\exi\exi_interface.h">
