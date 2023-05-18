@@ -68,6 +68,7 @@ u16 US_getDistance(void)
 //    return u32_g_lastElapsedTime;
     // calculate distance from time (uS)
     u16 u16_l_echoDistance = CALC_DISTANCE_CM(u32_g_lastElapsedTime);
+    u16_l_echoDistance = (u16_l_echoDistance > US_FALSE_DISTANCE_COMPENSATE ? u16_l_echoDistance - US_FALSE_DISTANCE_COMPENSATE : 0);
     if(u16_l_echoDistance > MIN_SUPPORTED_DISTANCE_CM && u16_l_echoDistance < MAX_SUPPORTED_DISTANCE_CM)
     {
         return u16_l_echoDistance;
