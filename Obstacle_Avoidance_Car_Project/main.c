@@ -19,11 +19,10 @@ void testKeypad();
 
 int main()
 {
-    testUltrasonic();
-    return 0;
-
+    /* app init */
 	APP_initialization();
-	
+
+    /* app start */
 	APP_startProgram();
 	
 	return 0;

@@ -142,19 +142,8 @@ void APP_startProgram(void)
                 // check distance
                 // Range (2 cm - 400 cm)
                 // if 0: fail
-                u8 counter = '0';
                 u16 u16_l_distanceCm = US_getDistance();
-                while(1)
-                {
-                    counter++;
-                    if(counter > '9') counter = '0';
-                    DELAY_setTime(1000);
-                    u16_l_distanceCm = US_getDistance();
-                    LCD_ClrDisplay();
-                    LCD_vidWriteChar(counter);
-                }
-                continue;
-				APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, 150);
+				APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                 // X4 Ifs
                 // > 70 // todo-(Alaa)
                 if(u16_l_distanceCm > 70)
