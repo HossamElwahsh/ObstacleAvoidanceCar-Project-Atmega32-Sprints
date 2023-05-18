@@ -12,7 +12,7 @@
 #if LCD_MODE == LCD_4_BIT_MODE
 
 
-st_lcdDataPin_t dataPin[4] = {
+en_DIO_pin_t dataPin[4] = {
 		DIO_PIN_4,
 		DIO_PIN_5,
 		DIO_PIN_6,
@@ -21,7 +21,7 @@ st_lcdDataPin_t dataPin[4] = {
 
 #elif LCD_MODE == LCD_8_BIT_MODE
 
-st_lcdDataPin_t dataPin[8] = {
+en_DIO_pin_t dataPin[8] = {
 		DIO_PIN_0,
 		DIO_PIN_1,
 		DIO_PIN_2,

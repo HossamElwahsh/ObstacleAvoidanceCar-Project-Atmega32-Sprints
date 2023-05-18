@@ -27,9 +27,13 @@
 /*************************************************************************************************/
 #define LOW 0
 #define HIGH 1
-#define LCD_RS_PORT_PIN		DIO_PIN_1
-#define LCD_RW_PORT_PIN		DIO_PIN_2
-#define LCD_EN_PORT_PIN		DIO_PIN_3
+
+#define LCD_DATA_PORT		DIO_PORTA
+#define LCD_CONTROL_PORT	DIO_PORTA
+
+#define LCD_RS_PIN			DIO_PIN_1
+#define LCD_RW_PIN			DIO_PIN_2
+#define LCD_EN_PIN			DIO_PIN_3
 /*************************************************************************************************/
 
 #if LCD_MODE == LCD_4_BIT_MODE
@@ -48,11 +52,11 @@
  /**************************************************************************************************
   * 									User Defined Data types
   *************************************************************************************************/
-typedef struct
-{ 
-	en_DIO_pin_t en_dataPin;
-
-}st_lcdDataPin_t;
+// typedef struct
+// { 
+// 	en_DIO_pin_t en_dataPin;
+// 
+// }st_lcdDataPin_t;
 
 
 
