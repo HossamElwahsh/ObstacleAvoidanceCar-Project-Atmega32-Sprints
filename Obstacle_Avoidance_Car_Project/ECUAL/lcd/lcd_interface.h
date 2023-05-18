@@ -37,6 +37,8 @@
 
 #define LCD_ROW_0 0
 #define LCD_ROW_1 1
+
+#define LCD_MAX_U32_DIGITS 10
 /**************************************************************************************************
  * 											functions prototype
  *************************************************************************************************/
@@ -120,7 +122,7 @@ void LCD_WriteString(u8* str);
  *
  * @return Returns void
  */
-void LCD_WriteInt(u32 number);
+void LCD_WriteInt(u32 u32_a_number);
 
 
 

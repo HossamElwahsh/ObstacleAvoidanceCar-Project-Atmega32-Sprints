@@ -279,11 +279,35 @@ void LCD_WriteString(u8* str)
  */
 
 
-void LCD_WriteInt(u32 number)
+void LCD_WriteInt(u32 u32_a_number)
 {
-	u8 STR[INDEX];
-	itoa(number, STR, 10);
-	LCD_WriteString(STR);
+	u8 arr_l_NumString[LCD_MAX_U32_DIGITS];
+	u8 u8_l_NumIterator = 0, u8_l_StrLen, u8_l_tempVar;
+
+	/* Get integer digits as characters */
+	do
+	{
+		arr_l_NumString[u8_l_NumIterator] = (u32_a_number % 10) + '0';
+		u32_a_number /= 10;
+		u8_l_NumIterator++;
+	}
+	while (u32_a_number > 0);
+	
+	/* Terminate String */
+	arr_l_NumString[u8_l_NumIterator] = '\0';
+	
+	u8_l_StrLen = u8_l_NumIterator;
+
+	/* Reverse String */
+	for (u8_l_NumIterator = 0; u8_l_NumIterator< u8_l_StrLen/2; u8_l_NumIterator++)
+	{
+		u8_l_tempVar = arr_l_NumString[u8_l_NumIterator];
+		arr_l_NumString[u8_l_NumIterator] = arr_l_NumString[u8_l_StrLen - u8_l_NumIterator - 1];
+		arr_l_NumString[u8_l_StrLen - u8_l_NumIterator - 1] = u8_l_tempVar;
+	}
+
+	/* Display Number */
+	LCD_WriteString(arr_l_NumString);
 }
 
 /**
