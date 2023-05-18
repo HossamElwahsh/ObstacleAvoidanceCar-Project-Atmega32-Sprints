@@ -45,12 +45,14 @@ en_ICU_error_t ICU_init(void)
             // write low on capture pin
             DIO_setPinVal(u8_l_port,u8_l_pin, LOW);
 
+            // init timer
             TIMER_init();
+            // enable timer interrupt
             TIMER_enableInterrupt(const_g_icuTimer);
 
             // enable external interrupt
             EXTI_init(u8_l_exi);
-            EXTI_setSense(u8_l_exi, ON_CHANGE);
+            EXTI_setSense(u8_l_exi, RISING_EDGE);
             EXTI_setCallback(u8_l_exi, ICU_inputHandler);
             break;
 
@@ -69,20 +71,19 @@ en_ICU_error_t ICU_init(void)
  */
 u16 ICU_getCaptureValue(void)
 {
-    // enable EXI
+    // enable EXI on rising edge
+    EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
     EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
                   EXTI_ENABLE);
     u8_g_icuState = ICU_STATE_WAIT;
 
-    // reset and restart timer
-    // todo timer
     while(u8_g_icuState == ICU_STATE_WAIT);
 
     // disable EXI
     EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
                   EXTI_DISABLE);
 
-    // todo return time elapsed
+    /* return last capture timer value (in uS) */
     return u16_g_icuLastCaptureValue;
 }
 
@@ -97,16 +98,24 @@ void ICU_inputHandler(void)
                   &u8_l_capturePinValue);
 
     // if HIGH reset timer and start counting
-    if(u8_l_capturePinValue){
-        // todo reset and restart timer
+    if(u8_l_capturePinValue == HIGH){
+        /* Change interrupt sense to falling edge */
+        EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, FALLING_EDGE);
+        /* Reset and start timer */
         TIMER_reset(const_g_icuTimer);
         TIMER_resume(const_g_icuTimer);
 
     }else{
         // if LOW = signal rebound complete, send elapsed time back
-        u8_g_icuState = EXTI_OK;
+        /* Pause Timer */
+        TIMER_pause(const_g_icuTimer);
+        /* Get elapsed time */
+        u32 u32_l_elapsed = 0;
+        TIMER_getElapsedTime(const_g_icuTimer, &u32_l_elapsed);
+        u16_g_icuLastCaptureValue = u32_l_elapsed;
 
-        u16_g_icuLastCaptureValue = 0; // todo get from timer TCNT
-        u8_g_icuState = ICU_STATE_COMPLETE;
+        /* Reset timer */
+        TIMER_reset(const_g_icuTimer);
+        u8_g_icuState = ICU_STATE_COMPLETE; // update ICU status to complete
     }
 }
