@@ -8,16 +8,16 @@
 #define APP_H_
 
 /* LIB */
-#include "../../LIB/std.h"
-#include "../../LIB/interrupts.h"
+#include "../LIB/std.h"
+#include "../LIB/interrupts.h"
 
 /* HAL */
-#include "../../ECUAL/delay/delay_interface.h"
-#include "../../ECUAL/btn/button_interface.h"
-#include "../../ECUAL/kpd/keypad_interface.h"
-#include "../../ECUAL/lcd/lcd_interface.h"
-#include "../../ECUAL/us/us_interface.h"
-#include "../../ECUAL/dcm/dcm_interface.h"
+#include "../ECUAL/delay/delay_interface.h"
+#include "../ECUAL/btn/button_interface.h"
+#include "../ECUAL/kpd/keypad_interface.h"
+#include "../ECUAL/lcd/lcd_interface.h"
+#include "../ECUAL/us/us_interface.h"
+#include "../ECUAL/dcm/dcm_interface.h"
 
 /* APP States */
 #define APP_STATE_INIT      0
