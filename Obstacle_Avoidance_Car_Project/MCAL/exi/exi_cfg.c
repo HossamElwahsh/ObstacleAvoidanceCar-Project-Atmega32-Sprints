@@ -9,7 +9,7 @@
  * 													Includes
  ************************************************************************************************************/
 #include "exi_interface.h"
-#include "exi_config.h"
+#include "exi_cfg.h"
 
 /************************************************************************************************************
  * 												Global Variables
@@ -47,6 +47,6 @@ const st_EXTI_config_t arr_g_exiConfigs[EXTI_PINS_NUM] =
 		{
 				.EXTI_NUM= EXTI2,
 				.SENSE_MODE = RISING_EDGE,
-				.EXTI_EN = EXTI_DISABLE
+				.EXTI_EN = EXTI_ENABLE
 		}
 };
