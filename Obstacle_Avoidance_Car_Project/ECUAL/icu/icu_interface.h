@@ -23,13 +23,13 @@
  * CAPTURE PIN
  */
 typedef enum{
-    PORT_B,
-    PORT_D
+    PORT_B = 1,
+    PORT_D = 3
 }en_ICU_pin_t;
 
 typedef enum{
-    PIN_2,
-    PIN_3
+    PIN_2 = 1,
+    PIN_3 = 2
 }en_ICU_port_t;
 
 typedef enum{

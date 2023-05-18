@@ -8,9 +8,9 @@
 #include "us_cfg.h"
 
 static st_US_config_t st_gs_usConfig = {
-	PORT_B,
-	PIN_2,
-	PIN_3,
+	US_PORT_B,
+    US_PIN_2,
+    US_PIN_3,
 };
 
 st_US_config_t US_getConfig()

@@ -5,6 +5,9 @@
  *  Author: Hossam Elwahsh - https://github.com/HossamElwahsh/
  */
 #include "us_interface.h"
+#include "us_cfg.h"
+
+st_US_config_t st_g_usConfig;
 
 /**
  * Initializes the ultrasonic driver
@@ -13,12 +16,21 @@
  */
 void US_init(void)
 {
+    // init input capture unit
+    ICU_init();
 
+    // init US
+    st_g_usConfig = US_getConfig();
+    // init trigger pin as output
+    DIO_setPinDir((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, OUTPUT);
+
+    // write low on trigger pin
+    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
 }
 
 /**
  *
- * Initiates a get distance request
+ * Initiates a get distance request (sync)
  *
  * This function sends a signal out to the trigger pin, waits for echo signal
  * to come back and finally calculates the distance the signal traveled using
@@ -28,18 +40,22 @@ void US_init(void)
  */
 u16 US_getDistance(void)
 {
-    return 0;
-}
+    // send trigger signal
+    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, HIGH);
+    // todo delay 10uS ?
+    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
 
-/**
- * Event Handler: called when echo time is received from ICU (input capture unit)
- *
- * This function is called by the US as an event callback when the trigger signal
- * is received back on the echo pin, the function receives the elapsed time taken.
- *
- * @param [in]u8_a_timeElapsed time elapsed (duration) by trigger signal to echo back
- */
-void US_evtEchoTimeReceived(u8 u8_a_timeElapsed)
-{
+    // request ICU to listen to echo pin and wait for time elapsed response
+    u16 u16_l_timeElapsed = ICU_getCaptureValue(); // blocking
 
+    if(u16_l_timeElapsed == 0) return 0; // fail
+
+    // calculate distance from time (uS)
+    u16 u16_l_echoDistance = CALC_DISTANCE_CM(u16_l_timeElapsed);
+    if(u16_l_echoDistance > MIN_SUPPORTED_DISTANCE_CM && u16_l_echoDistance < MAX_SUPPORTED_DISTANCE_CM)
+    {
+        return u16_l_echoDistance;
+    }else{
+        return 0;
+    }
 }
