@@ -6,6 +6,13 @@
  */ 
 #include "keypad_interface.h"
 
+/* Globals */
+const u8 u8_gc_keypadKeys[1][2] =
+        {
+                KPD_KEY_START,
+                KPD_KEY_STOP
+        };
+
 /**
  * @brief This function inialize keypad
  *
@@ -48,7 +55,7 @@ u8 KEYPAD_getButton()
 			DIO_getPinVal(KEYPAD_PORT, LOC_ROW, &Temp);
 			if(!Temp)/*Wait */
 			{
-				Value = keypadKeys[LOC_ROW - ROW_INIT][LOC_COL - COL_INIT];/*Check matrix to know*/
+				Value = u8_gc_keypadKeys[LOC_ROW - ROW_INIT][LOC_COL - COL_INIT];/*Check matrix to know*/
 				while(!Temp)/*Still pressing on button*/
 				{
 					DIO_getPinVal(KEYPAD_PORT, LOC_ROW, &Temp);

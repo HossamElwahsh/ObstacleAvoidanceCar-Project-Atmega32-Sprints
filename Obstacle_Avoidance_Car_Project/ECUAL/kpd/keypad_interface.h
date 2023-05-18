@@ -33,21 +33,16 @@
 
 
 #define KEYPAD_ROW_0 DIO_PIN_2
-#define COL_INIT 0
-#define COL_FINAL 1
+#define COL_INIT 5
+#define COL_FINAL 6
 
-#define ROW_INIT   4
-#define ROW_FINAL  4
+#define ROW_INIT   2
+#define ROW_FINAL  2
 
 #define KPD_KEY_NOT_PRESSED 0
 #define KPD_KEY_START 1
 #define KPD_KEY_STOP 2
 
-const u8 keypadKeys[2] =
-{
-        KPD_KEY_START,
-        KPD_KEY_STOP
-};
 
 /*************************************************************************************************************
  * 											  Function Prototypes
