@@ -8,16 +8,16 @@
 #define APP_H_
 
 /* LIB */
-#include "../../LIB/std.h"
-#include "../../LIB/interrupts.h"
+#include "../LIB/std.h"
+#include "../LIB/interrupts.h"
 
 /* HAL */
-#include "../../ECUAL/delay/delay_interface.h"
-#include "../../ECUAL/btn/button_interface.h"
-#include "../../ECUAL/kpd/keypad_interface.h"
-#include "../../ECUAL/lcd/lcd_interface.h"
-#include "../../ECUAL/us/us_interface.h"
-#include "../../ECUAL/dcm/dcm_interface.h"
+#include "../ECUAL/delay/delay_interface.h"
+#include "../ECUAL/btn/button_interface.h"
+#include "../ECUAL/kpd/keypad_interface.h"
+#include "../ECUAL/lcd/lcd_interface.h"
+#include "../ECUAL/us/us_interface.h"
+#include "../ECUAL/dcm/dcm_interface.h"
 
 /* APP States */
 #define APP_STATE_INIT      0
@@ -48,9 +48,10 @@
 #define APP_CHAR_DIR_ROTATE		'R'
 #define APP_CHAR_DIR_STOP		'S'
 
-#define APP_LCD_LINE_START      0
-#define APP_LCD_MIN_DIST_POS	9
-#define APP_LCD_MIDDLE_DIST_POS 8
+#define APP_LCD_LINE_START      LCD_POS_0
+#define APP_LCD_MIN_DIST_POS	LCD_POS_9
+#define APP_LCD_MIDDLE_DIST_POS LCD_POS_8
+#define APP_LCD_MAX_DIST_POS    LCD_POS_7
 #define APP_MAX_2_DIGITS        99
 #define APP_MAX_1_DIGIT         9
 
@@ -60,21 +61,17 @@
 /* End Line 60 */
 /* Hossam Macros */
 #define APP_U8_CAR_SPEED_0 0
+#define APP_DELAY_SET_DIR_TIMEOUT	5000
 #define APP_U8_CAR_SPEED_30 30
 #define APP_U8_CAR_SPEED_70 70
 #define APP_STR_CAR_SPEED_0 "00"
 #define APP_STR_CAR_SPEED_30 "30"
-#define APP_STR_SET_DEF_ROTATION "Set Def. Rot."
+#define APP_STR_SET_DEF_ROTATION "Set Def. Rot:"
 #define APP_STR_ROT_RIGHT "Right"
 #define APP_STR_ROT_LEFT "Left " // keep the space to clear old value characters (Right)
-
 #define APP_DIR_RIGHT   0
 #define APP_DIR_LEFT    1
 
-#define APP_DIR_STATE_STOP      0
-#define APP_DIR_STATE_FORWARD   1
-#define APP_DIR_STATE_BACKWARD  2
-#define APP_DIR_STATE_ROTATING  3
 
 #define TOGGLE_BTN_PORT     2
 #define TOGGLE_BTN_PIN      4

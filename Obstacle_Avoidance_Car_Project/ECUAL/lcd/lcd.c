@@ -26,11 +26,11 @@
  *************************************************************************************************/
 #if LCD_MODE == LCD_4_BIT_MODE
 
-extern st_lcdDataPin_t dataPin[4];
+extern en_DIO_pin_t dataPin[4];
 
 #elif LCD_MODE == LCD_8_BIT_MODE
 
-extern st_lcdDataPin_t dataPin[8];
+extern en_DIO_pin_t dataPin[8];
 
 
 #endif
@@ -47,12 +47,12 @@ void LCD_vidInit(void)
 {
 	for (u8 i = 0; i < DATA_PIN_NUMBER; i++)
 	{
-		DIO_setPinDir(DIO_PORTD,dataPin[i].en_dataPin,OUTPUT);
+		DIO_setPinDir(LCD_DATA_PORT,dataPin[i],OUTPUT);
 	}
 
-	DIO_setPinDir(DIO_PORTD,LCD_RS_PORT_PIN,OUTPUT);
-	DIO_setPinDir(DIO_PORTD,LCD_RW_PORT_PIN,OUTPUT);
-	DIO_setPinDir(DIO_PORTD,LCD_EN_PORT_PIN,OUTPUT);
+	DIO_setPinDir(LCD_CONTROL_PORT,LCD_RS_PIN,OUTPUT);
+	DIO_setPinDir(LCD_CONTROL_PORT,LCD_RW_PIN,OUTPUT);
+	DIO_setPinDir(LCD_CONTROL_PORT,LCD_EN_PIN,OUTPUT);
 
 	 DELAY_setTime(40);
 
@@ -88,8 +88,8 @@ void LCD_vidInit(void)
 
 void LCD_vidWritecmd(u8 u8commandCopy)
 {
-	DIO_setPinVal(DIO_PORTD,LCD_RW_PORT_PIN, LOW); // WRITE
-	DIO_setPinVal(DIO_PORTD,LCD_RS_PORT_PIN, LOW); // CMD
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_RW_PIN, LOW); // WRITE
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_RS_PIN, LOW); // CMD
 
 #if LCD_MODE == LCD_4_BIT_MODE
 
@@ -99,25 +99,25 @@ void LCD_vidWritecmd(u8 u8commandCopy)
 
 	for (u8 i = 0; i < DATA_PIN_NUMBER; i++)
 	{
-		DIO_setPinVal(DIO_PORTD,dataPin[i].en_dataPin, ((loc_u8DataReg >> i)&1) );
+		DIO_setPinVal(LCD_DATA_PORT,dataPin[i], ((loc_u8DataReg >> i)&1) );
 	}
 
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (1);
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, LOW); //ENABLE low
 
-	DELAY_setTime (200);
+	DELAY_setTime (2);
 
 	loc_u8DataReg = (u8commandCopy & 0x0F);
 
 	for (u8 i = 0; i < DATA_PIN_NUMBER; i++)
 	{
-		DIO_setPinVal(DIO_PORTD,dataPin[i].en_dataPin, ((loc_u8DataReg >> i)&1) );
+		DIO_setPinVal(LCD_DATA_PORT,dataPin[i], ((loc_u8DataReg >> i)&1) );
 	}
 
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (1);
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, LOW); //ENABLE low
 	DELAY_setTime (2);
 
 
@@ -127,9 +127,9 @@ void LCD_vidWritecmd(u8 u8commandCopy)
 		DIO_setPinVal(dataPin[i].en_dataPin, ((u8commandCopy >> i)&1) );
 	}
 
-	DIO_setPinVal(LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (2);
-	DIO_setPinVal(LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_EN_PIN, LOW); //ENABLE low
 	DELAY_setTime (2);
 #endif
 
@@ -147,8 +147,8 @@ void LCD_vidWritecmd(u8 u8commandCopy)
 
 void LCD_vidWriteChar(u8 u8CharCopy)
 {
-	DIO_setPinVal(DIO_PORTD,LCD_RW_PORT_PIN, LOW); // WRITE
-	DIO_setPinVal(DIO_PORTD,LCD_RS_PORT_PIN, HIGH); // DATA
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_RW_PIN, LOW); // WRITE
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_RS_PIN, HIGH); // DATA
 
 #if LCD_MODE == LCD_4_BIT_MODE
 
@@ -158,25 +158,25 @@ void LCD_vidWriteChar(u8 u8CharCopy)
 
 	for (u8 i = 0; i < DATA_PIN_NUMBER; i++)
 	{
-		DIO_setPinVal(DIO_PORTD,dataPin[i].en_dataPin, ((loc_u8DataReg >> i)&1) );
+		DIO_setPinVal(LCD_DATA_PORT, dataPin[i], ((loc_u8DataReg >> i)&1) );
 	}
 
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (1);
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, LOW); //ENABLE low
 
-	DELAY_setTime (200);
+	DELAY_setTime (2);
 
 	loc_u8DataReg = (u8CharCopy & 0x0F);
 
 	for (u8 i = 0; i < DATA_PIN_NUMBER; i++)
 	{
-		DIO_setPinVal(DIO_PORTD,dataPin[i].en_dataPin, ((loc_u8DataReg >> i)&1) );
+		DIO_setPinVal(LCD_DATA_PORT, dataPin[i], ((loc_u8DataReg >> i)&1) );
 	}
 
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (1);
-	DIO_setPinVal(DIO_PORTD,LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_CONTROL_PORT,LCD_EN_PIN, LOW); //ENABLE low
 	DELAY_setTime (2);
 
 
@@ -186,9 +186,9 @@ void LCD_vidWriteChar(u8 u8CharCopy)
 		DIO_setPinVal(dataPin[i].en_dataPin, ((u8CharCopy >> i)&1) );
 	}
 
-	DIO_setPinVal(LCD_EN_PORT_PIN, HIGH); //ENABLE high
+	DIO_setPinVal(LCD_EN_PIN, HIGH); //ENABLE high
 	DELAY_setTime (2);
-	DIO_setPinVal(LCD_EN_PORT_PIN, LOW); //ENABLE low
+	DIO_setPinVal(LCD_EN_PIN, LOW); //ENABLE low
 #endif
 
 }
@@ -279,11 +279,35 @@ void LCD_WriteString(u8* str)
  */
 
 
-void LCD_WriteInt(u32 number)
+void LCD_WriteInt(u32 u32_a_number)
 {
-	u8 STR[INDEX];
-	itoa(number, STR, 10);
-	LCD_WriteString(STR);
+	u8 arr_l_NumString[LCD_MAX_U32_DIGITS];
+	u8 u8_l_NumIterator = 0, u8_l_StrLen, u8_l_tempVar;
+
+	/* Get integer digits as characters */
+	do
+	{
+		arr_l_NumString[u8_l_NumIterator] = (u32_a_number % 10) + '0';
+		u32_a_number /= 10;
+		u8_l_NumIterator++;
+	}
+	while (u32_a_number > 0);
+	
+	/* Terminate String */
+	arr_l_NumString[u8_l_NumIterator] = '\0';
+	
+	u8_l_StrLen = u8_l_NumIterator;
+
+	/* Reverse String */
+	for (u8_l_NumIterator = 0; u8_l_NumIterator< u8_l_StrLen/2; u8_l_NumIterator++)
+	{
+		u8_l_tempVar = arr_l_NumString[u8_l_NumIterator];
+		arr_l_NumString[u8_l_NumIterator] = arr_l_NumString[u8_l_StrLen - u8_l_NumIterator - 1];
+		arr_l_NumString[u8_l_StrLen - u8_l_NumIterator - 1] = u8_l_tempVar;
+	}
+
+	/* Display Number */
+	LCD_WriteString(arr_l_NumString);
 }
 
 /**

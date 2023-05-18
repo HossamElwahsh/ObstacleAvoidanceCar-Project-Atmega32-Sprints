@@ -30,15 +30,15 @@
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.42.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.44.1" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <avrtoolserialnumber />
@@ -235,10 +235,10 @@
     <Compile Include="MCAL\dio\dio_program.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCAL\exi\exi_config.c">
+    <Compile Include="MCAL\exi\exi_cfg.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCAL\exi\exi_config.h">
+    <Compile Include="MCAL\exi\exi_cfg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\exi\exi_interface.h">
@@ -265,8 +265,15 @@
     <Compile Include="MCAL\timer\timer_program.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="APP\app.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="APP\app.c">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ECUAL\" />
     <Folder Include="ECUAL\lcd" />
     <Folder Include="ECUAL\kpd" />
     <Folder Include="ECUAL\delay" />
@@ -280,7 +287,7 @@
     <Folder Include="MCAL\exi" />
     <Folder Include="MCAL\dio" />
     <Folder Include="MCAL\timer" />
-    <Folder Include="ECUAL" />
+    <Folder Include="APP" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

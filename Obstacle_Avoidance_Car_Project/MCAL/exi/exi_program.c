@@ -14,7 +14,7 @@
 
 #include "exi_private.h"
 #include "exi_interface.h"
-#include "exi_config.h"
+#include "exi_cfg.h"
 
 /************************************************************************************************************
  * 												Global Variables
@@ -80,29 +80,18 @@ en_EXTI_error_t EXTI_init(en_EXTI_num_t en_a_intNumber)
 	switch(en_a_intNumber)
 	{
 	case EXTI0:
-		/* Set interrupt sense mode as configured */
-		MCUCR &= EXTI0_SENSE_MODE_MASK;
-		MCUCR |= arr_g_exiConfigs[EXTI0].SENSE_MODE;
-
-		/* Set Specific Interrupt Enable bit as configured */
-		CLR_BIT(GICR, GICR_INT0);
-		GICR |= ((arr_g_exiConfigs[EXTI0].EXTI_EN) << GICR_INT0);
+		EXTI_setSense(EXTI0, arr_g_exiConfigs[EXTI0].SENSE_MODE);
+		EXTI_setState(EXTI0, arr_g_exiConfigs[EXTI0].EXTI_EN);
 		break;
 
 	case EXTI1:
-		MCUCR &= EXTI1_SENSE_MODE_MASK;
-		MCUCR |= arr_g_exiConfigs[EXTI1].SENSE_MODE<<MCUCR_ISC10;
-
-		CLR_BIT(GICR, GICR_INT1);
-		GICR |= ((arr_g_exiConfigs[EXTI1].EXTI_EN) << GICR_INT1);
+		EXTI_setSense(EXTI1, arr_g_exiConfigs[EXTI1].SENSE_MODE);
+		EXTI_setState(EXTI1, arr_g_exiConfigs[EXTI1].EXTI_EN);		
 		break;
 
 	case EXTI2:
-		MCUCSR &= EXTI2_SENSE_MODE_MASK;
-		MCUCSR |= (arr_g_exiConfigs[EXTI2].SENSE_MODE) << MCUCSR_ISC2;
-
-		CLR_BIT(GICR, GICR_INT2);
-		GICR |= ((arr_g_exiConfigs[EXTI2].EXTI_EN) << GICR_INT2);
+		EXTI_setSense(EXTI2, arr_g_exiConfigs[EXTI2].SENSE_MODE);
+		EXTI_setState(EXTI2, arr_g_exiConfigs[EXTI2].EXTI_EN);		
 		break;
 	}
 
@@ -176,17 +165,17 @@ en_EXTI_error_t EXTI_setState(en_EXTI_num_t en_a_intNumber, en_EXTI_state_t en_a
 	{
 	case EXTI0:
 		CLR_BIT(GICR, GICR_INT0);
-		GICR |= ((arr_g_exiConfigs[EXTI0].EXTI_EN) << GICR_INT0);
+		GICR |= (en_a_intState << GICR_INT0);
 		break;
 
 	case EXTI1:
 		CLR_BIT(GICR, GICR_INT1);
-		GICR |= ((arr_g_exiConfigs[EXTI1].EXTI_EN) << GICR_INT1);
+		GICR |= (en_a_intState << GICR_INT1);
 		break;
 
 	case EXTI2:
 		CLR_BIT(GICR, GICR_INT2);
-		GICR |= ((arr_g_exiConfigs[EXTI2].EXTI_EN) << GICR_INT2);
+		GICR |= (en_a_intState << GICR_INT2);
 		break;
 
 	default: en_l_errorState = EXTI_ERROR;
@@ -212,7 +201,7 @@ en_EXTI_error_t EXTI_setCallback(en_EXTI_num_t en_a_IntNumber, void (*pv_a_Funct
 {
 	en_EXTI_error_t en_l_errorState = EXTI_OK;
 
-	if((pv_a_Function != NULL) && (en_a_IntNumber < MAX_EXTI))
+	if((pv_a_Function != NULL) && (en_a_IntNumber <= MAX_EXTI))
 	{
 		arr_g_exiCBF[en_a_IntNumber] = pv_a_Function;
 	}
