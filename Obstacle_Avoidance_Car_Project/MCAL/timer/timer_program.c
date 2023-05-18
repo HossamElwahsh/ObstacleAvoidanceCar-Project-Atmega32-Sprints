@@ -458,16 +458,15 @@ en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, u32* u32
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
 		TCNTValue = TCNT0;
 		numberOfTicks = TCNTValue + (u32_g_timer0OVFCounter * 256);
-		*u32_a_elapsedTime = ((f32)numberOfTicks) * tickTime;
+		*u32_a_elapsedTime = (((f32)numberOfTicks) * tickTime);
 		//*u32_a_elapsedTime /= 1000;
 		break;
 		
 		case TIMER_1:
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
-		TCNTValue = ((u16)TCNT1H * 256) + TCNT1L;
-		//TCNTValue = TCNT1;
+		TCNTValue = TCNT1;
 		numberOfTicks = TCNTValue + (u32_g_timer1OVFCounter * 65536);
-		*u32_a_elapsedTime = ((f32)numberOfTicks) * tickTime;
+		*u32_a_elapsedTime = numberOfTicks * tickTime;
 		//*u32_a_elapsedTime /= 1000;
 		break;
 		
@@ -475,7 +474,7 @@ en_TIMER_error_t TIMER_getElapsedTime(en_TIMER_number_t en_a_timerUsed, u32* u32
 		tickTime = st_TIMER_config[en_a_timerUsed].prescalerUsed / XTAL_FREQ;
 		TCNTValue = TCNT2;
 		numberOfTicks = TCNTValue + (u32_g_timer2OVFCounter * 256);
-		*u32_a_elapsedTime = ((f32)numberOfTicks)* tickTime;
+		*u32_a_elapsedTime = (((f32)numberOfTicks)* tickTime);
 		//*u32_a_elapsedTime /= 1000;
 		break;
 		
