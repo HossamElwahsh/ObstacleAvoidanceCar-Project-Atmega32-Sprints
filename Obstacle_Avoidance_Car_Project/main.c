@@ -5,11 +5,95 @@
  * Author : hossam
  */
 
+#include "ECUAL/lcd/lcd_interface.h"
+#include "ECUAL/kpd/keypad_interface.h"
+#include "ECUAL/delay/delay_interface.h"
+#include "ECUAL/us/us_interface.h"
+#include "MCAL/dio/dio_interface.h"
+#include "MCAL/exi/exi_interface.h"
+#include "LIB/interrupts.h"
+
+en_DIO_pin_t startPin = DIO_PIN_6;
+en_DIO_pin_t stopPin = DIO_PIN_7;
+
+void testCallback();
+
 int main(void)
-{    
+{
+
+    LCD_vidInit();
+    LCD_WriteString("test");
+    DIO_setPinDir(DIO_PORTB, startPin, OUTPUT);
+    DIO_setPinDir(DIO_PORTB, stopPin, OUTPUT);
+
+    DIO_setPinVal(DIO_PORTB, startPin, LOW);
+    DIO_setPinVal(DIO_PORTB, stopPin, LOW);
+//    return 0;
+    US_init();
+
+//    TIMER_init();
+    DELAY_init();
+    DELAY_setTime(1000);
+//    TIMER_reset(TIMER_1);
+//    TIMER_resume(TIMER_1);
+
+//    DELAY_setTimeNonBlocking(1000);
+//    DELAY_setCallBack(testCallback);
     /* Replace with your application code */
     while (1) 
-    {  
+    {
+//        DIO_setPinVal(DIO_PORTB, startPin, LOW);
+
+        LCD_ClrDisplay();
+        u16 distance = US_getDistance();
+        if(distance == 0)
+        {
+            LCD_WriteString("Error!");
+        }
+        else if(distance < 20)
+        {
+            LCD_WriteString("less than 20");
+        }
+        else if(distance > 20 && distance < 30)
+        {
+            LCD_WriteString("betw 20 & 30");
+        }
+        else if(distance > 30 && distance < 70)
+        {
+            LCD_WriteString("betw 30 & 70");
+        }
+        else if(distance > 70)
+        {
+            LCD_WriteString("More than 70");
+        }
+        DELAY_setTime(500);
+        LCD_WriteString("Next");
+        DELAY_setTime(500);
+        //<editor-fold desc="Keypad">
+        /*u8 btn = KEYPAD_getButton();
+        if(btn != KPD_KEY_NOT_PRESSED)
+        {
+            if(btn == KPD_KEY_START)
+            {
+                DIO_setPinVal(DIO_PORTB, startPin, HIGH);
+                DIO_setPinVal(DIO_PORTB, stopPin, LOW);
+            }else if(btn == KPD_KEY_STOP)
+            {
+                DIO_setPinVal(DIO_PORTB, startPin, LOW);
+                DIO_setPinVal(DIO_PORTB, stopPin, HIGH);
+            }
+        }*/
+        //</editor-fold>
+
+
     }
 }
 
+void testCallback()
+{
+    DIO_togPinVal(DIO_PORTB, startPin);
+    DELAY_setTimeNonBlocking(1000);
+    u32 elapsed = 0;
+    TIMER_getElapsedTime(TIMER_1, &elapsed);
+    TIMER_reset(TIMER_1);
+}

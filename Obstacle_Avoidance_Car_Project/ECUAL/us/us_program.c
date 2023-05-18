@@ -22,10 +22,12 @@ void US_init(void)
     // init US
     st_g_usConfig = US_getConfig();
     // init trigger pin as output
-    DIO_setPinDir((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, OUTPUT);
+//    DIO_setPinDir((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, OUTPUT);
+    DIO_setPinDir(DIO_PORTB, DIO_PIN_3, OUTPUT);
 
     // write low on trigger pin
-    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
+//    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
+    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, LOW);
 }
 
 /**
@@ -41,9 +43,11 @@ void US_init(void)
 u16 US_getDistance(void)
 {
     // send trigger signal
-    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, HIGH);
+//    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, HIGH);
+    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, HIGH);
     // todo delay 10uS ?
-    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
+//    DIO_setPinVal((en_DIO_port_t) st_g_usConfig.US_Port, (en_DIO_pin_t) st_g_usConfig.triggerPin, LOW);
+    DIO_setPinVal(DIO_PORTB, DIO_PIN_3, LOW);
 
     // request ICU to listen to echo pin and wait for time elapsed response
     u16 u16_l_timeElapsed = ICU_getCaptureValue(); // blocking

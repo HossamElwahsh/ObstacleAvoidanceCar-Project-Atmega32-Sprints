@@ -9,8 +9,8 @@
 
 static st_US_config_t st_gs_usConfig = {
 	US_PORT_B,
-    US_PIN_2,
     US_PIN_3,
+    US_PIN_2,
 };
 
 st_US_config_t US_getConfig()

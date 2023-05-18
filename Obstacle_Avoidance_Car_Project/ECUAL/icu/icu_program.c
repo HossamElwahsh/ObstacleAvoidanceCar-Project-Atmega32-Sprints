@@ -42,8 +42,6 @@ en_ICU_error_t ICU_init(void)
             u8 u8_l_exi = st_g_ICU_config.icuCapturePinData.interruptNo;    // input capture EXI INT number
             // initialize capture pin direction
             DIO_setPinDir(u8_l_port, u8_l_pin, INPUT);
-            // write low on capture pin
-            DIO_setPinVal(u8_l_port,u8_l_pin, LOW);
 
             // init timer
             TIMER_init();
