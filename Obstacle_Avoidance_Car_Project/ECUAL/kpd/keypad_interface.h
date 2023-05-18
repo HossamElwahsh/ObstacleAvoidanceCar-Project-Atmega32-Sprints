@@ -38,10 +38,15 @@
 
 #define ROW_INIT   4
 #define ROW_FINAL  4
-const u8 * keypad[2] =
+
+#define KPD_KEY_NOT_PRESSED 0
+#define KPD_KEY_START 1
+#define KPD_KEY_STOP 2
+
+const u8 keypadKeys[2] =
 {
-        (u8 *)"start",
-        (u8 *)"stop"
+        KPD_KEY_START,
+        KPD_KEY_STOP
 };
 
 /*************************************************************************************************************
@@ -64,7 +69,7 @@ void KEYPAD_init(void);
  *
  * @param void
  *
- * @return Returns u8 value of keypad
+ * @return Returns u8 value of keypad key
  */
 u8 KEYPAD_getButton(void);
  

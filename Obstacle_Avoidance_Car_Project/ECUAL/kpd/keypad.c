@@ -38,7 +38,7 @@ u8 KEYPAD_getButton()
 {
 	u8 LOC_COL = 0;/*Counter for column locations*/
 	u8 LOC_ROW = 0;/*Counter for row locations*/
-	u8 Value = 0;/*Final value*/
+	u8 Value = KPD_KEY_NOT_PRESSED; /* Final value if no key is pressed */
 	u8 Temp = 0;
 	for(LOC_COL = COL_INIT; LOC_COL <= COL_FINAL; LOC_COL++)
 	{
@@ -48,7 +48,7 @@ u8 KEYPAD_getButton()
 			DIO_getPinVal(KEYPAD_PORT, LOC_ROW, &Temp);
 			if(!Temp)/*Wait */
 			{
-				Value = keypad[LOC_ROW - ROW_INIT][LOC_COL - COL_INIT];/*Check matrix to know*/
+				Value = keypadKeys[LOC_ROW - ROW_INIT][LOC_COL - COL_INIT];/*Check matrix to know*/
 				while(!Temp)/*Still pressing on button*/
 				{
 					DIO_getPinVal(KEYPAD_PORT, LOC_ROW, &Temp);
