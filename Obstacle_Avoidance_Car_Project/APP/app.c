@@ -119,8 +119,8 @@ void APP_startProgram(void) {
                         break;
                     }
                 }
-
-				if(u8_g_state == APP_STATE_STARTING)
+                /* check if still in state */
+                if(u8_g_state == APP_STATE_STARTING)
 				{
 					/* reset flag from CBF */
 					u8_g_delayState = DELAY_NOT_DONE;
@@ -143,7 +143,7 @@ void APP_startProgram(void) {
                 if (u16_l_distanceCm > APP_U8_DIST_70) {
                     u8_g_currentCarDir = APP_CHAR_DIR_FWD;
 
-                    if (u16_l_lastDist <= APP_U8_CAR_SPEED_70) {
+                    if (u16_l_lastDist <= APP_U8_DIST_70) {
                         DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_CW);
                         DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_CW);
                         DCM_speed(u8_g_currentSpeed);
@@ -164,11 +164,6 @@ void APP_startProgram(void) {
                     }
 
                     /* Change speed to 50% after 5 seconds */
-                    //if(u8_g_delayCount == 100)
-                    //{
-                    // 							/* Reset delay notification flag */
-                    // 							u8_g_delayState = DELAY_NOT_DONE;
-					
 					if(u8_g_state == APP_STATE_RUNNING)
 					{
 						/* Update Speed */
@@ -327,6 +322,13 @@ void APP_switchState(u8 u8_a_state) {
 
             /* Initialize speed */
             u8_g_currentSpeed = APP_U8_SPEED_30;
+
+            /* Reset globals */
+//            u8 u8_g_currentSpeed = APP_U8_SPEED_30;
+            //u8 u8_g_defaultDirection = APP_DIR_RIGHT;
+            u8_g_currentCarDir = APP_CHAR_DIR_STOP;
+            u8_g_delayState = DELAY_NOT_DONE;
+            u8_g_rotCounter = APP_ZERO;
 
             break;
         case APP_STATE_SET_DIR:
