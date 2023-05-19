@@ -6,9 +6,6 @@
  */
 
 #include "APP/app.h"
-//#include "ECUAL/btn/button_interface.h"
-//#include "ECUAL/LCD/lcd_interface.h"
-//#include "string.h"
 
 en_DIO_pin_t startPin = DIO_PIN_6;
 en_DIO_pin_t stopPin = DIO_PIN_7;
