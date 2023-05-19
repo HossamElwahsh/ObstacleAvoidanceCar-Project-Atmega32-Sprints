@@ -12,7 +12,11 @@
 #include "../../MCAL/dio/dio_interface.h"
 #include "../../ECUAL/delay/delay_interface.h"
 
-#define BTN_DELAY_BTN_POLL      50
+/* Macros */
+#define MAX_PIN_NUMBER  7
+#define MAX_PORT_NUMBER 3
+
+#define BTN_DELAY_BTN_DEBOUNCE      50
 
 #define BTN_DELAY_LONG_PRESS    2000
 typedef enum buttonErrors{
@@ -21,10 +25,9 @@ typedef enum buttonErrors{
 	WRONG_BUTTON_PIN
 }en_buttonError_t;
 typedef enum buttonPosition{
-	PRESSED,
-	NOTPRESSED,
-	LONGRELEASED
-	
+    BTN_NOT_PRESSED,
+    BTN_RELEASED,
+
 }en_buttonPosition_t;
 /**
  * @brief This function to inialize button
@@ -42,9 +45,9 @@ en_buttonError_t BUTTON_init(u8 u8_a_buttonPort, u8 u8_a_buttonPin);
  * 		   u8_a_buttonPin -> define pins of button
  *         *u8_a_buttonState -> pointer to get button state
  *
- * @return Returns void
+ * @return Returns Button error
  */
-en_buttonError_t BUTTON_read(u8 u8_a_buttonPort, u8 u8_a_buttonPin, u8 *u8_a_buttonState);
+u8 BUTTON_read(en_DIO_port_t en_a_portNumber, u8 u8_a_pinNumber, en_buttonPosition_t * u8Ptr_a_returnedBtnState);
 
 
 

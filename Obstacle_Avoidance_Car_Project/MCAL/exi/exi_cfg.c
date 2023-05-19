@@ -17,7 +17,7 @@
 
 /**
  * Options:
- * 			.EXTI_NUM =   EXTI0
+ * 			.EXI_NUM =   EXTI0
  * 			              EXTI1
  * 			              EXTI2
  *
@@ -26,27 +26,27 @@
  * 			              FALLING_EDGE
  * 			              RISING_EDGE
  *
- * 			.EXTI_EN	= EXTI_ENABLE
- * 						  EXTI_DISABLE
+ * 			.EXI_EN	= EXI_ENABLE
+ * 						  EXI_DISABLE
  */
 
-const st_EXTI_config_t arr_g_exiConfigs[EXTI_PINS_NUM] =
+const st_EXI_config_t arr_g_exiConfigs[EXI_PINS_NUM] =
 {
 		{
-				.EXTI_NUM= EXTI0,
+				.EXI_NUM= EXTI0,
 				.SENSE_MODE = RISING_EDGE,
-				.EXTI_EN = EXTI_DISABLE
+				.EXI_EN = EXI_DISABLE
 		},
 
 		{
-				.EXTI_NUM= EXTI1,
+				.EXI_NUM= EXTI1,
 				.SENSE_MODE = FALLING_EDGE,
-				.EXTI_EN = EXTI_DISABLE
+				.EXI_EN = EXI_DISABLE
 		},
 
 		{
-				.EXTI_NUM= EXTI2,
+				.EXI_NUM= EXTI2,
 				.SENSE_MODE = RISING_EDGE,
-				.EXTI_EN = EXTI_ENABLE
+				.EXI_EN = EXI_DISABLE
 		}
 };

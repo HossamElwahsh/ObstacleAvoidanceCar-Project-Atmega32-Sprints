@@ -19,9 +19,6 @@
 
 /** OPTIONS **/
 
-/**
- * CAPTURE PIN
- */
 typedef enum{
     PORT_B = 1,
     PORT_D = 3
@@ -70,7 +67,7 @@ typedef enum{
 typedef struct{
     en_ICU_capturePin_t icuCapturePin;
     st_ICU_capturePin_t icuCapturePinData;
-	void (* timeReceivedCallbackFun)(void);
+	void (* timeReceivedCallbackFun)(u32 u32_a_elapsedTime);
 }st_ICU_config_t;
 
 /* FUNCTIONS' PROTOTYPES */
@@ -90,14 +87,8 @@ en_ICU_error_t ICU_init(void);
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
  *
- * @return elapsed time in uS
+ * @return none, callback will fire when done (async)
  */
-u16 ICU_getCaptureValue(void);
-
-
-/**
- * Handles Interrupts/Events on the capture input pin
- * */
-void ICU_inputHandler(void);
+void ICU_getCaptureValue(void);
 
 #endif /* ICU_INTERFACE_H_ */

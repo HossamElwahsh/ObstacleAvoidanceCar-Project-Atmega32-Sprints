@@ -11,16 +11,28 @@
 
 #include "../../LIB/std.h"
 #include "../../ECUAL/icu/icu_interface.h"
+#include "../../ECUAL/delay/delay_interface.h"
 #include "../../ECUAL/icu/icu_cfg.h"
 
 /** Macros **/
 // 343 m/s = 0.0343 cm/uS = 1/29.1 cm/uS
-#define SPEED_OF_SOUND_IN_AIR_CM_PER_US (1/29.1) // 1/29.1 cm/uS
-
-#define CALC_DISTANCE_CM(travelTimeMs) (((travelTimeMs/2)/1000) * (SPEED_OF_SOUND_IN_AIR_CM_PER_US))
-
 #define MIN_SUPPORTED_DISTANCE_CM 2     // 2cm
 #define MAX_SUPPORTED_DISTANCE_CM 400   // 4m = 400cm
+
+/* Equations */
+
+// extra distance reading due to extra time taken by timer
+// commands to calculate elapsed time
+#define US_FALSE_DISTANCE_COMPENSATE 13 // 13 CM or 376 microseconds
+
+#define SPEED_OF_SOUND_IN_AIR_CM_PER_US (1/29.1) // 1/29.1 cm/uS
+
+#define CALC_DISTANCE_CM(travelTimeMs) (((travelTimeMs/2) * SPEED_OF_SOUND_IN_AIR_CM_PER_US))
+
+#define US_TRIGGER_DELAY ((f32)0.01f)
+
+#define US_ECHO_STATE_WAITING 0
+#define US_ECHO_STATE_RECEIVED 1
 
 /**
  * ULTRASONIC PORT
@@ -77,5 +89,15 @@ void US_init(void);
  * @return Distance in cm (Supported Range 2 - 400 cm), 0 if failed or wrong read
  */
 u16 US_getDistance(void);
+
+/**
+ * Event Handler: called when echo time is received from ICU (input capture unit)
+ *
+ * This function is called by the ICU as an event callback when the trigger signal
+ * is received back on the echo pin, the function receives the elapsed time taken.
+ *
+ * @param [in]u32_a_timeElapsed time elapsed (duration) by trigger signal to echo back
+ */
+void US_evtEchoTimeReceived(u32 u32_a_timeElapsed);
 
 #endif /* US_INTERFACE_H_ */

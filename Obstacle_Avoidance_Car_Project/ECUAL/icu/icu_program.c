@@ -8,15 +8,17 @@
 #include "icu_interface.h"
 #include "icu_cfg.h"
 
-/* Runtime Macros */
-#define ICU_STATE_WAIT 0
-#define ICU_STATE_COMPLETE 1
+/* Runtime Helping Macros */
+#define ICU_STEP_1_WAIT_HIGH 0
+#define ICU_STEP_2_WAIT_LOW 1
 
 // configuration
 st_ICU_config_t st_g_ICU_config;
-u8 u8_g_icuState = ICU_STATE_WAIT;
-u16 u16_g_icuLastCaptureValue = 0;
+u8 u8_g_icuStep = ICU_STEP_1_WAIT_HIGH;
 const en_TIMER_number_t const_g_icuTimer = TIMER_2;
+
+/* Private Helper Functions Prototypes */
+static void ICU_inputHandler(void);
 
 /**
  * Initializes the ICU driver
@@ -49,9 +51,9 @@ en_ICU_error_t ICU_init(void)
             TIMER_enableInterrupt(const_g_icuTimer);
 
             // enable external interrupt
-            EXTI_init(u8_l_exi);
-            EXTI_setSense(u8_l_exi, RISING_EDGE);
-            EXTI_setCallback(u8_l_exi, ICU_inputHandler);
+            EXI_init(u8_l_exi);
+            EXI_setSense(u8_l_exi, RISING_EDGE);
+            EXI_setCallback(u8_l_exi, ICU_inputHandler);
             break;
 
         default:
@@ -65,30 +67,20 @@ en_ICU_error_t ICU_init(void)
  * Resets and starts the ICU algorithm to capture the elapsed time by the trigger signal
  * to rebound back on the echo/capture PIN
  *
- * @return elapsed time in uS
+ * @return none, callback will fire when done (async)
  */
-u16 ICU_getCaptureValue(void)
+void ICU_getCaptureValue(void)
 {
     // enable EXI on rising edge
-    EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
-    EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                  EXTI_ENABLE);
-    u8_g_icuState = ICU_STATE_WAIT;
-
-    while(u8_g_icuState == ICU_STATE_WAIT);
-
-    // disable EXI
-    EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                  EXTI_DISABLE);
-
-    /* return last capture timer value (in uS) */
-    return u16_g_icuLastCaptureValue;
+    EXI_setSense((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
+    EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
+                  EXI_ENABLE);
 }
 
 /**
  * Handles Interrupts/Events on the capture input pin
  * */
-void ICU_inputHandler(void)
+static void ICU_inputHandler(void)
 {
     u8 u8_l_capturePinValue = 0;
     DIO_getPinVal(st_g_ICU_config.icuCapturePin == PORT_B_PIN_2 ? DIO_PORTB : DIO_PORTD,
@@ -96,24 +88,31 @@ void ICU_inputHandler(void)
                   &u8_l_capturePinValue);
 
     // if HIGH reset timer and start counting
-    if(u8_l_capturePinValue == HIGH){
+    if(u8_l_capturePinValue == HIGH && u8_g_icuStep == ICU_STEP_1_WAIT_HIGH){
         /* Change interrupt sense to falling edge */
-        EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, FALLING_EDGE);
+        EXI_setSense((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, FALLING_EDGE);
         /* Reset and start timer */
         TIMER_reset(const_g_icuTimer);
         TIMER_resume(const_g_icuTimer);
-
-    }else{
+        u8_g_icuStep = ICU_STEP_2_WAIT_LOW;
+    }else if (u8_l_capturePinValue == LOW && u8_g_icuStep == ICU_STEP_2_WAIT_LOW){
         // if LOW = signal rebound complete, send elapsed time back
         /* Pause Timer */
         TIMER_pause(const_g_icuTimer);
         /* Get elapsed time */
         u32 u32_l_elapsed = 0;
         TIMER_getElapsedTime(const_g_icuTimer, &u32_l_elapsed);
-        u16_g_icuLastCaptureValue = u32_l_elapsed;
 
         /* Reset timer */
         TIMER_reset(const_g_icuTimer);
-        u8_g_icuState = ICU_STATE_COMPLETE; // update ICU status to complete
+
+        /* Disable EXI */
+        EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
+                      EXI_DISABLE);
+        if(st_g_ICU_config.timeReceivedCallbackFun != NULL)
+        {
+            st_g_ICU_config.timeReceivedCallbackFun(u32_l_elapsed);
+        }
+        u8_g_icuStep = ICU_STEP_1_WAIT_HIGH;
     }
 }
