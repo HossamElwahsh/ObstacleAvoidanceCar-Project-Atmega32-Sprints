@@ -336,7 +336,11 @@ void APP_switchState(u8 u8_a_state) {
             LCD_ClrDisplay(); // clear display
             LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION); // write "Set Def. Rot." on LCD line 1
             LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_LINE_START); // goto next line (Line 2)
-            LCD_WriteString((u8 *) APP_STR_ROT_RIGHT); // write "Right" on LCD line 2
+            // write "Right"/"Left" (last preferred direction) on LCD line 2
+            LCD_WriteString((u8 *) (u8_g_defaultDirection == APP_DIR_RIGHT ?
+                                    APP_STR_ROT_RIGHT :
+                                    APP_STR_ROT_LEFT
+            ));
 
             DELAY_setCallBack(APP_delayNotification);
             u8_g_delayState = DELAY_NOT_DONE; // reset delay flag
