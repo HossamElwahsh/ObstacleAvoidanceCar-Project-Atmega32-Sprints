@@ -226,7 +226,7 @@ void APP_startProgram(void) {
                     // 20 -> 30 // donetodo-(Alaa), donetodo-(Hossam) Bonus
                 else if (u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm < APP_U8_DIST_30) {
                     DCM_stop();
-                    u8_g_currentCarDir = APP_CHAR_DIR_ROTATE;
+                    u8_g_currentCarDir = APP_CHAR_DIR_STOP;
                     u8_g_currentSpeed = APP_U8_STOP_SPEED;
                     APP_updateUI(u16_l_distanceCm);
 
@@ -247,6 +247,7 @@ void APP_startProgram(void) {
                     }
 
                     // update speed to 30
+                    u8_g_currentCarDir = APP_CHAR_DIR_ROTATE;
                     u8_g_currentSpeed = APP_U8_SPEED_30;
                     DCM_speed(u8_g_currentSpeed);
                     // start DCM
