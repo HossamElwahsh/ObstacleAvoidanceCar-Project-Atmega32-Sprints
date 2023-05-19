@@ -291,7 +291,15 @@ void APP_startProgram(void) {
                     // < 20  // donetodo-(Hossam)
                 else if (u16_l_distanceCm < APP_U8_DIST_20) {
                     u8_g_rotCounter = APP_ZERO;
-                    if (u8_g_currentCarDir != APP_CHAR_DIR_BACK) // robot isn't moving backward
+
+                    // check if stop is pressed
+                    if (KEYPAD_getButton() == KPD_KEY_STOP) {
+                        /* Reset to init state */
+                        APP_switchState(APP_STATE_INIT);
+                        break;
+                    }
+                    // robot isn't moving backward
+                    if (u8_g_currentCarDir != APP_CHAR_DIR_BACK && u8_g_state == APP_STATE_RUNNING)
                     {
                         DCM_stop();
                         /* update car global variables (speed, dir) */
