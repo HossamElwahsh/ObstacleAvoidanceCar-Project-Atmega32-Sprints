@@ -8,12 +8,12 @@
 #include "app.h"
 
 u8 u8_g_currentCarDir = APP_CHAR_DIR_STOP;
-u8 u8_g_currentSpeed = 0;
+u8 u8_g_currentSpeed = APP_ZERO;
 u8 u8_g_state = APP_STATE_INIT;
 
 u8 u8_g_defaultDirection = APP_DIR_RIGHT;
 u8 u8_g_delayState = DELAY_NOT_DONE;
-u8 u8_g_rotCounter = 0;
+u8 u8_g_rotCounter = APP_ZERO;
 
 
 static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist) {
@@ -23,7 +23,7 @@ static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist) {
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
     LCD_vidWriteChar(u8_a_dir);
 
-    LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_MAX_DIST_POS);
+    LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
     /* Display Distance on LCD line two */
     if (u16_a_dist <= APP_MAX_2_DIGITS && u16_a_dist > APP_MAX_1_DIGIT) {
         LCD_WriteString((u8 *) "0");
@@ -57,7 +57,7 @@ void APP_initialization(void) {
 void APP_startProgram(void) {
     u16 u16_l_lastDist = APP_U8_ZERO_DIST;
 
-    while (1) {
+    while (TRUE) {
 
         switch (u8_g_state) {
             case APP_STATE_INIT: // donetodo-(Alaa)
@@ -77,11 +77,11 @@ void APP_startProgram(void) {
                         APP_switchState(APP_STATE_INIT); // stop everything
                         break;
                     }
-                    en_buttonPosition_t u8_l_toggleBtnState = 0;
+                    en_buttonPosition_t u8_l_toggleBtnState = APP_ZERO;
                     BUTTON_read(TOGGLE_BTN_PORT,
                                 TOGGLE_BTN_PIN,
                                 &u8_l_toggleBtnState);
-                    if (u8_l_toggleBtnState == 1) // Toggle Button Pressed
+                    if (u8_l_toggleBtnState == BTN_RELEASED) // Toggle Button was pressed and released
                     {
                         // Toggle direction
                         u8_g_defaultDirection = u8_g_defaultDirection == APP_DIR_RIGHT ? APP_DIR_LEFT : APP_DIR_RIGHT;
@@ -137,7 +137,7 @@ void APP_startProgram(void) {
                 APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                 // X4 Ifs
                 // > 70 // donetodo-(Alaa)
-                if (u16_l_distanceCm > 70) {
+                if (u16_l_distanceCm > APP_U8_DIST_70) {
                     u8_g_currentCarDir = APP_CHAR_DIR_FWD;
 
                     if (u16_l_lastDist <= APP_U8_CAR_SPEED_70) {
@@ -146,7 +146,7 @@ void APP_startProgram(void) {
                         DCM_speed(u8_g_currentSpeed);
                         DCM_start();
 
-                        for (u8_g_delayCount = 0; u8_g_delayCount < 42; u8_g_delayCount++) {
+                        for (u8_g_delayCount = APP_ZERO; u8_g_delayCount < APP_INC_SPEED_DELAY_LOOPS; u8_g_delayCount++) {
                             APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                             if (KEYPAD_getButton() == KPD_KEY_STOP) {
                                 APP_switchState(APP_STATE_INIT);
@@ -154,9 +154,9 @@ void APP_startProgram(void) {
                             }
 
                             u16_l_distanceCm = US_getDistance();
-                            if (u16_l_distanceCm <= 70) break;
+                            if (u16_l_distanceCm <= APP_U8_DIST_70) break;
 
-                            DELAY_setTime(50);
+                            DELAY_setTime(APP_INC_SPEED_DELAY_PER_LOOP);
                         }
                     }
 
@@ -174,8 +174,8 @@ void APP_startProgram(void) {
                     //}
                 }
                     // 30 < distance < 70 // donetodo-(Hossam)
-                else if (u16_l_distanceCm > APP_U8_CAR_SPEED_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70) {
-                    u8_g_rotCounter = 0;
+                else if (u16_l_distanceCm > APP_U8_DIST_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70) {
+                    u8_g_rotCounter = APP_ZERO;
                     if (u8_g_currentCarDir != APP_CHAR_DIR_FWD) {
                         DCM_stop(); // stop motors
                         u8_g_currentCarDir = APP_CHAR_DIR_FWD; // update global car direction indicator
@@ -183,18 +183,17 @@ void APP_startProgram(void) {
                         LCD_WriteString((u8 *) "F");
                         DCM_setDirection(DCM_0, DCM_CW); // forward direction
                         DCM_setDirection(DCM_1, DCM_CW); // forward direction
-                        DCM_speed(APP_U8_CAR_SPEED_30); // update DCM speed
-                        u8_g_currentSpeed = APP_U8_CAR_SPEED_30; // update global speed
+                        u8_g_currentSpeed = APP_U8_SPEED_30; // update global speed
+                        DCM_speed(u8_g_currentSpeed); // update DCM speed
                         DCM_start(); // start motors
                     }
                     // Update car speed to 30% if it's not
-                    if (u8_g_currentSpeed != APP_U8_CAR_SPEED_30) {
-                        if (DCM_speed(APP_U8_CAR_SPEED_30) == DCM_OK) {
+                    if (u8_g_currentSpeed != APP_U8_SPEED_30) {
+                        if (DCM_speed(APP_U8_SPEED_30) == DCM_OK) {
                             // update global speed variable
-                            u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
+                            u8_g_currentSpeed = APP_U8_SPEED_30;
                             // Update speed on LCD
-                            LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS); // 2 digit speed location
-                            LCD_WriteString((u8 *) APP_STR_CAR_SPEED_30);
+                            APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                         }
                     }
 
@@ -236,15 +235,15 @@ void APP_startProgram(void) {
                     u8_g_rotCounter++;
 
                     u16_l_distanceCm = US_getDistance();
-                    if (u16_l_distanceCm > 30) {
-                        u8_g_rotCounter = 0;
+                    if (u16_l_distanceCm > APP_U8_DIST_30) {
+                        u8_g_rotCounter = APP_ZERO;
                         continue;
                     }
 
-                    if (u8_g_rotCounter == 4) {
+                    if (u8_g_rotCounter == APP_ROTATIONS_BEFORE_STOP) {
                         DCM_stop();
-                        DELAY_setTimeNonBlocking(3000);
-                        u8_g_currentSpeed = 0;
+                        DELAY_setTimeNonBlocking(APP_DELAY_4_ROTATE_WAIT);
+                        u8_g_currentSpeed = APP_U8_CAR_SPEED_0;
                         u8_g_currentCarDir = APP_CHAR_DIR_STOP;
                         APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
 
@@ -261,18 +260,18 @@ void APP_startProgram(void) {
 
                         /* reset flag from CBF */
                         u8_g_delayState = DELAY_NOT_DONE;
-                        u8_g_rotCounter = 0;
+                        u8_g_rotCounter = APP_ZERO;
                     }
                 }
                     // < 20  // donetodo-(Hossam)
-                else if (u16_l_distanceCm < 20) {
-                    u8_g_rotCounter = 0;
+                else if (u16_l_distanceCm < APP_U8_DIST_20) {
+                    u8_g_rotCounter = APP_ZERO;
                     if (u8_g_currentCarDir != APP_CHAR_DIR_BACK) // robot isn't moving backward
                     {
                         DCM_stop();
                         /* update car global variables (speed, dir) */
                         u8_g_currentCarDir = APP_CHAR_DIR_BACK;
-                        u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
+                        u8_g_currentSpeed = APP_U8_SPEED_30;
 
                         /* set motors on right side to rotate backwards */
                         DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_ACW);
@@ -281,7 +280,7 @@ void APP_startProgram(void) {
                         DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_ACW);
 
                         /* set DCM speed to 30% */
-                        DCM_speed(APP_U8_CAR_SPEED_30); // set DCM speed to 30%
+                        DCM_speed(APP_U8_SPEED_30); // set DCM speed to 30%
 
                         /* start motors */
                         DCM_start();
@@ -322,14 +321,14 @@ void APP_switchState(u8 u8_a_state) {
             LCD_WriteString((u8 *) "Press  Start");
 
             /* Initialize speed */
-            u8_g_currentSpeed = APP_U8_CAR_SPEED_30;
+            u8_g_currentSpeed = APP_U8_SPEED_30;
 
             break;
         case APP_STATE_SET_DIR:
             // donetodo-Hossam
             LCD_ClrDisplay(); // clear display
             LCD_WriteString((u8 *) APP_STR_SET_DEF_ROTATION); // write "Set Def. Rot." on LCD line 1
-            LCD_gotoXY(APP_LCD_LINE_2, 0); // goto next line (Line 2)
+            LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_LINE_START); // goto next line (Line 2)
             LCD_WriteString((u8 *) APP_STR_ROT_RIGHT); // write "Right" on LCD line 2
 
             DELAY_setCallBack(APP_delayNotification);

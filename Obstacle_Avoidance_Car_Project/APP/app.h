@@ -26,18 +26,24 @@
 #define APP_STATE_RUNNING   3
 
 /* Macros */
-#define APP_DIR_SET         0
-#define APP_DIR_RESET       1
 
 /* Alaa Macros */
-#define APP_INC_SPEED_TIME		5000
+
+// This is workaround as there's no more times in ATmega32 to be used as async delay
+// as the available delay timer is used by the ultrasonic in this particular case to keep
+// monitoring the distance while the 5000ms starting time is done
+// each loop takes 120ms to complete its commands, 42 loops -> total delay 5000ms
+#define APP_INC_SPEED_DELAY_LOOPS		42
+#define APP_INC_SPEED_DELAY_PER_LOOP	50  // 50ms + commands takes 70ms
+
 #define APP_DELAY_START_TIME	2000
 #define APP_U8_STOP_SPEED		0
 #define APP_U8_ZERO_DIST		0
-#define APP_U8_SPEED_30			30
-#define APP_U8_SPEED_50			50
-#define APP_U8_DIST_30			30
-#define APP_U8_DIST_20			20
+#define APP_U8_SPEED_30			30  // 30%
+#define APP_U8_SPEED_50			50  // 50%
+#define APP_U8_DIST_20			20  // 20cm
+#define APP_U8_DIST_30			30  // 30cm
+#define APP_U8_DIST_70			70  // 70cm
 
 #define APP_RIGHT_SIDE_MOTORS	DCM_0
 #define APP_LEFT_SIDE_MOTORS	DCM_1
@@ -49,9 +55,7 @@
 #define APP_CHAR_DIR_STOP		'S'
 
 #define APP_LCD_LINE_START      LCD_POS_0
-#define APP_LCD_MIN_DIST_POS	LCD_POS_9
-#define APP_LCD_MIDDLE_DIST_POS LCD_POS_8
-#define APP_LCD_MAX_DIST_POS    LCD_POS_7
+    #define APP_LCD_DIST_POS    LCD_POS_7
 #define APP_MAX_2_DIGITS        99
 #define APP_MAX_1_DIGIT         9
 
@@ -60,18 +64,18 @@
 
 /* End Line 60 */
 /* Hossam Macros */
-#define APP_U8_CAR_SPEED_0 0
 #define APP_DELAY_SET_DIR_TIMEOUT	5000
-#define APP_U8_CAR_SPEED_30 30
+#define APP_DELAY_4_ROTATE_WAIT	    3000
+#define APP_ROTATIONS_BEFORE_STOP   4       // rotations done by the robot before it stops if no where to go (all sides are blocked)
+#define APP_U8_CAR_SPEED_0  0
 #define APP_U8_CAR_SPEED_70 70
-#define APP_STR_CAR_SPEED_0 "00"
-#define APP_STR_CAR_SPEED_30 "30"
+#define APP_U8_CAR_SPEED_70 70
 #define APP_STR_SET_DEF_ROTATION "Set Def. Rot:"
 #define APP_STR_ROT_RIGHT "Right"
 #define APP_STR_ROT_LEFT "Left " // keep the space to clear old value characters (Right)
 #define APP_DIR_RIGHT   0
 #define APP_DIR_LEFT    1
-
+#define APP_ZERO 0
 
 #define TOGGLE_BTN_PORT     2
 #define TOGGLE_BTN_PIN      4
@@ -79,7 +83,7 @@
 #define APP_LCD_LINE_2      1
 #define APP_LCD_SPEED_POS   6
 #define APP_LCD_DIR_POS     14
-#define APP_LCD_DIST_POS    7
+
 /* End Line 79 */
 void APP_initialization(void);
 
