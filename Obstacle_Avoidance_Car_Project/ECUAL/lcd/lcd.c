@@ -19,7 +19,7 @@
 #define LCD_DISPLAY_SHIFT_LEFT				0x18
 #define LCD_DISPLAY_SHIFT_RIGHT			0x1C
 #define LCD_SET_CGRAM_ADDR_CMD				0x40
-
+#define LCD_CURSOR_OFF             0x0c
 #define INDEX		10
 /**************************************************************************************************
  * 										Global Variables
@@ -73,7 +73,7 @@ void LCD_vidInit(void)
 	LCD_vidWritecmd(LCD_ENTRY_MODE_CURSOR_INCREMENT);
 	DELAY_setTime (1);
 
-	LCD_vidWritecmd(LCD_DISPLAY_ON_CURSOR_ON_NO_BLINK);
+	  LCD_vidWritecmd(LCD_CURSOR_OFF);
 	DELAY_setTime (1);
 }
 
