@@ -19,10 +19,7 @@
  * 		LCD_8_BIT_MODE  for 8 bit mode
  */
 #define LCD_PORT        DIO_PORTD
-/*#define LCD_PIN_4      DIO_PIN_4
-#define LCD_PIN_5      DIO_PIN_5
-#define LCD_PIN_6      DIO_PIN_6
-#define LCD_PIN_7      DIO_PIN_7*/
+
 #define LCD_MODE		LCD_4_BIT_MODE
 /*************************************************************************************************/
 #define LOW 0
