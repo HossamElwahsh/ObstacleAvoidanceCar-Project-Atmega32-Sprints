@@ -53,9 +53,9 @@ en_ICU_error_t ICU_init(void)
             TIMER_enableInterrupt(const_g_icuTimer);
 
             // enable external interrupt
-            EXTI_init(u8_l_exi);
-            EXTI_setSense(u8_l_exi, RISING_EDGE);
-            EXTI_setCallback(u8_l_exi, ICU_inputHandler);
+            EXI_init(u8_l_exi);
+            EXI_setSense(u8_l_exi, RISING_EDGE);
+            EXI_setCallback(u8_l_exi, ICU_inputHandler);
             break;
 
         default:
@@ -74,15 +74,15 @@ en_ICU_error_t ICU_init(void)
 void ICU_getCaptureValue(void)
 {
     // enable EXI on rising edge
-    EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
-    EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                  EXTI_ENABLE);
+    EXI_setSense((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
+    EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
+                  EXI_ENABLE);
 
 //    while(u8_g_icuState == ICU_STATE_WAIT);
 /*
     // disable EXI
-    EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                  EXTI_DISABLE);
+    EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
+                  EXI_DISABLE);
 
     *//* return last capture timer value (in uS) *//*
     return u16_g_icuLastCaptureValue;*/
@@ -102,7 +102,7 @@ static void ICU_inputHandler(void)
     // if HIGH reset timer and start counting
     if(u8_l_capturePinValue == HIGH && u8_g_icuStep == ICU_STEP_1_WAIT_HIGH){
         /* Change interrupt sense to falling edge */
-        EXTI_setSense((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, FALLING_EDGE);
+        EXI_setSense((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, FALLING_EDGE);
         /* Reset and start timer */
         TIMER_reset(const_g_icuTimer);
         TIMER_resume(const_g_icuTimer);
@@ -121,8 +121,8 @@ static void ICU_inputHandler(void)
 //        u8_g_icuState = ICU_STATE_COMPLETE; // update ICU status to complete
 
 /* Disable EXI */
-        EXTI_setState((en_EXTI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                      EXTI_DISABLE);
+        EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
+                      EXI_DISABLE);
         if(st_g_ICU_config.timeReceivedCallbackFun != NULL)
         {
             st_g_ICU_config.timeReceivedCallbackFun(u32_l_elapsed);
