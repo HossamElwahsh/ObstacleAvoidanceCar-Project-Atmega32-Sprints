@@ -13,9 +13,12 @@
 en_DIO_pin_t startPin = DIO_PIN_6;
 en_DIO_pin_t stopPin = DIO_PIN_7;
 
-void testCallback();
-int testUltrasonic(void);
-void testKeypad();
+/* Test functions' prototypes */
+static int testTimerDelay(void);
+static int testUltrasonic(void);
+static void testKeypad(void);
+static void testCallback(void);
+static void testButton(void);
 
 int main()
 {
@@ -31,7 +34,8 @@ int main()
 	return 0;
 }
 
-int testTimerDelay(void) {
+/* Test functions */
+static int testTimerDelay(void) {
     sei();
     DELAY_init();
     DELAY_setTimeNonBlocking(100);
@@ -41,10 +45,7 @@ int testTimerDelay(void) {
     while (1) {
     }
 }
-
-
-//<editor-fold desc="test ultrasonic">
-int testUltrasonic(void) {
+static int testUltrasonic(void) {
     DELAY_init();
     LCD_vidInit();
     LCD_WriteString((u8 *)"test distance");
@@ -91,9 +92,7 @@ int testUltrasonic(void) {
         LCD_ClrDisplay();
     }
 }
-//</editor-fold>
-
-void testKeypad()
+static void testKeypad(void)
 {
     u8 btn = KEYPAD_getButton();
     if(btn != KPD_KEY_NOT_PRESSED)
@@ -109,9 +108,7 @@ void testKeypad()
         }
     }
 }
-
-
-void testCallback() {
+static void testCallback(void) {
     DIO_togPinVal(DIO_PORTB, startPin);
     DELAY_setTimeNonBlocking(100);
     u32 elapsed = 0;
@@ -119,8 +116,7 @@ void testCallback() {
     TIMER_reset(TIMER_1);
     TIMER_resume(TIMER_1);
 }
-
-void testButton()
+static void testButton(void)
 {
     BUTTON_init(2, 4);
     LCD_vidInit();
