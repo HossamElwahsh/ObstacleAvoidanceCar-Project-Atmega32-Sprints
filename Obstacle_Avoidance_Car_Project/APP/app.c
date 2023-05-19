@@ -87,6 +87,7 @@ void APP_startProgram(void) {
         switch (u8_g_state) {
             case APP_STATE_INIT: // donetodo-(Alaa)
                 // wait for start button
+                u16_l_lastDist = APP_U8_ZERO_DIST; // reset last distance
                 if (KEYPAD_getButton() == KPD_KEY_START)
                 {
                     APP_switchState(APP_STATE_SET_DIR);
@@ -168,7 +169,14 @@ void APP_startProgram(void) {
                 if (u16_l_distanceCm > APP_U8_DIST_70) {
                     u8_g_currentCarDir = APP_CHAR_DIR_FWD;
 
-                    if (u16_l_lastDist <= APP_U8_DIST_70) {
+                    // check if stop is pressed
+                    if (KEYPAD_getButton() == KPD_KEY_STOP) {
+                        /* Reset to init state */
+                        APP_switchState(APP_STATE_INIT);
+                        break;
+                    }
+
+                    if (u16_l_lastDist < APP_U8_DIST_70 && u8_g_state == APP_STATE_RUNNING) {
                         DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_CW);
                         DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_CW);
                         DCM_speed(u8_g_currentSpeed);
@@ -198,7 +206,7 @@ void APP_startProgram(void) {
                     }
                 }
                     // 30 < distance < 70 // donetodo-(Hossam)
-                else if (u16_l_distanceCm > APP_U8_DIST_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70) {
+                else if (u16_l_distanceCm > APP_U8_DIST_30 && u16_l_distanceCm <= APP_U8_CAR_SPEED_70) {
                     u8_g_rotCounter = APP_ZERO;
 
                     // check if stop is pressed
@@ -241,7 +249,7 @@ void APP_startProgram(void) {
                     }
                 }
                     // 20 -> 30 // donetodo-(Alaa), donetodo-(Hossam) Bonus
-                else if (u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm < APP_U8_DIST_30) {
+                else if (u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm <= APP_U8_DIST_30) {
                     DCM_stop();
                     u8_g_currentCarDir = APP_CHAR_DIR_STOP;
                     u8_g_currentSpeed = APP_U8_STOP_SPEED;
@@ -307,7 +315,7 @@ void APP_startProgram(void) {
                     }
                 }
                     // < 20  // donetodo-(Hossam)
-                else if (u16_l_distanceCm < APP_U8_DIST_20) {
+                else if (u16_l_distanceCm <= APP_U8_DIST_20) {
                     u8_g_rotCounter = APP_ZERO;
 
                     // check if stop is pressed
