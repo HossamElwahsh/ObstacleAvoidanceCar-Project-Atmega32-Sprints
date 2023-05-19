@@ -176,19 +176,38 @@ void APP_startProgram(void) {
                     // 30 < distance < 70 // donetodo-(Hossam)
                 else if (u16_l_distanceCm > APP_U8_DIST_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70) {
                     u8_g_rotCounter = APP_ZERO;
-                    if (u8_g_currentCarDir != APP_CHAR_DIR_FWD) {
+
+                    // check if stop is pressed
+                    if (KEYPAD_getButton() == KPD_KEY_STOP) {
+                        /* Reset to init state */
+                        APP_switchState(APP_STATE_INIT);
+                        break;
+                    }
+
+                    // car isn't moving forward?
+                    if (u8_g_currentCarDir != APP_CHAR_DIR_FWD && u8_g_state == APP_STATE_RUNNING) {
                         DCM_stop(); // stop motors
-                        u8_g_currentCarDir = APP_CHAR_DIR_FWD; // update global car direction indicator
-                        LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-                        LCD_WriteString((u8 *) "F");
-                        DCM_setDirection(DCM_0, DCM_CW); // forward direction
-                        DCM_setDirection(DCM_1, DCM_CW); // forward direction
-                        u8_g_currentSpeed = APP_U8_SPEED_30; // update global speed
-                        DCM_speed(u8_g_currentSpeed); // update DCM speed
+
+                        // update global car direction indicator to Forward
+                        u8_g_currentCarDir = APP_CHAR_DIR_FWD;
+
+                        // forward direction left motors
+                        DCM_setDirection(APP_LEFT_SIDE_MOTORS, DCM_CW);
+                        // forward direction right motors
+                        DCM_setDirection(APP_RIGHT_SIDE_MOTORS, DCM_CW);
+
+                        // update global speed
+                        u8_g_currentSpeed = APP_U8_SPEED_30;
+
+                        // update DCM speed
+                        DCM_speed(u8_g_currentSpeed);
+
+                        // update UI (LCD)
+                        APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                         DCM_start(); // start motors
                     }
                     // Update car speed to 30% if it's not
-                    if (u8_g_currentSpeed != APP_U8_SPEED_30) {
+                    if (u8_g_currentSpeed != APP_U8_SPEED_30 && u8_g_state == APP_STATE_RUNNING) {
                         if (DCM_speed(APP_U8_SPEED_30) == DCM_OK) {
                             // update global speed variable
                             u8_g_currentSpeed = APP_U8_SPEED_30;
@@ -196,7 +215,6 @@ void APP_startProgram(void) {
                             APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
                         }
                     }
-
                 }
                     // 20 -> 30 // donetodo-(Alaa), donetodo-(Hossam) Bonus
                 else if (u16_l_distanceCm > APP_U8_DIST_20 && u16_l_distanceCm < APP_U8_DIST_30) {
