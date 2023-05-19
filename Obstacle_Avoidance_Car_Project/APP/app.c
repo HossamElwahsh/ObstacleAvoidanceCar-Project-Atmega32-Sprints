@@ -16,12 +16,20 @@ u8 u8_g_delayState = DELAY_NOT_DONE;
 u8 u8_g_rotCounter = APP_ZERO;
 
 
-static void APP_updateUI(u8 u8_a_speed, u8 u8_a_dir, u16 u16_a_dist) {
+/**
+ * Updates LCD (UI) with current speed (global), current direction (Fwd, Bck, Rot, Stp)
+ * and current distance from obstacle in front of the robot
+ *
+ * @param [in]u16_a_dist distance between the robot and the obstacle infront of it in CM
+ *
+ * @return void
+ */
+static void APP_updateUI(u16 u16_a_dist) {
     /* Display speed and direction on LCD line one */
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_SPEED_POS);
-    LCD_WriteInt(u8_a_speed);
+    LCD_WriteInt(u8_g_currentSpeed);
     LCD_gotoXY(APP_LCD_LINE_1, APP_LCD_DIR_POS);
-    LCD_vidWriteChar(u8_a_dir);
+    LCD_vidWriteChar(u8_g_currentCarDir);
 
     LCD_gotoXY(APP_LCD_LINE_2, APP_LCD_DIST_POS);
     /* Display Distance on LCD line two */
@@ -137,7 +145,7 @@ void APP_startProgram(void) {
                 // if 0: fail
                 u8 u8_g_delayCount;
                 u16 u16_l_distanceCm = US_getDistance();
-                APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                APP_updateUI(u16_l_distanceCm);
                 // X4 Ifs
                 // > 70 // donetodo-(Alaa)
                 if (u16_l_distanceCm > APP_U8_DIST_70) {
@@ -150,7 +158,7 @@ void APP_startProgram(void) {
                         DCM_start();
 
                         for (u8_g_delayCount = APP_ZERO; u8_g_delayCount < APP_INC_SPEED_DELAY_LOOPS; u8_g_delayCount++) {
-                            APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                            APP_updateUI(u16_l_distanceCm);
                             if (KEYPAD_getButton() == KPD_KEY_STOP) {
                                 APP_switchState(APP_STATE_INIT);
                                 break;
@@ -169,8 +177,7 @@ void APP_startProgram(void) {
 						/* Update Speed */
 						u8_g_currentSpeed = APP_U8_SPEED_50;
 						DCM_speed(u8_g_currentSpeed);
-						APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
-						//DELAY_setTime(5000);
+						APP_updateUI(u16_l_distanceCm);
                     }
                 }
                     // 30 < distance < 70 // donetodo-(Hossam)
@@ -203,7 +210,7 @@ void APP_startProgram(void) {
                         DCM_speed(u8_g_currentSpeed);
 
                         // update UI (LCD)
-                        APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                        APP_updateUI(u16_l_distanceCm);
                         DCM_start(); // start motors
                     }
                     // Update car speed to 30% if it's not
@@ -212,7 +219,7 @@ void APP_startProgram(void) {
                             // update global speed variable
                             u8_g_currentSpeed = APP_U8_SPEED_30;
                             // Update speed on LCD
-                            APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                            APP_updateUI(u16_l_distanceCm);
                         }
                     }
                 }
@@ -221,7 +228,7 @@ void APP_startProgram(void) {
                     DCM_stop();
                     u8_g_currentCarDir = APP_CHAR_DIR_ROTATE;
                     u8_g_currentSpeed = APP_U8_STOP_SPEED;
-                    APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                    APP_updateUI(u16_l_distanceCm);
 
                     if (u8_g_defaultDirection == APP_DIR_LEFT) {
                         /* Set motors on right side to rotate forward */
@@ -245,7 +252,7 @@ void APP_startProgram(void) {
                     // start DCM
                     DCM_start();
                     // update UI
-                    APP_updateUI(APP_U8_SPEED_30, u8_g_currentCarDir, u16_l_distanceCm);
+                    APP_updateUI(u16_l_distanceCm);
 
                     // set sync. delay to rotation time
                     DELAY_setTime(APP_ROTATION_TIME_MS);
@@ -263,7 +270,7 @@ void APP_startProgram(void) {
                         DELAY_setTimeNonBlocking(APP_DELAY_4_ROTATE_WAIT);
                         u8_g_currentSpeed = APP_U8_CAR_SPEED_0;
                         u8_g_currentCarDir = APP_CHAR_DIR_STOP;
-                        APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                        APP_updateUI(u16_l_distanceCm);
 
                         u8_g_delayState = DELAY_NOT_DONE;
                         /* Check whether stop key is pressed or delay done */
@@ -304,7 +311,7 @@ void APP_startProgram(void) {
                         DCM_start();
 
                         // update UI (LCD)
-                        APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+                        APP_updateUI(u16_l_distanceCm);
                     }
                 }
 
