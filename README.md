@@ -14,9 +14,9 @@
 > - `Project Documentation`
     >     👉 [PDF]()
     >     👉 [Google Docs](https://docs.google.com/document/d/16uuhubi2graTcfyTHd0PIQihEIsMuAf3cQ7XSO92o3k/edit#)
-> - `Video` 👉 Youtube - uploading []()
-> - `Team Backlog` 👉 [Google Sheets](https://docs.google.com/spreadsheets/d/1zNYQwJDrJ9qqAZZ_Uy99j_71yp0KEJW7-AQn8Z2eghk/edit?usp=sharing) 👉 [Excel](Documents/Hacker%20Kermit%20-%20Team%20Backlog%20Simple%20ATM%20Machine.xlsx)
-> - `Test Protocol` 👉 [Google Sheets](https://docs.google.com/spreadsheets/d/1zNYQwJDrJ9qqAZZ_Uy99j_71yp0KEJW7-AQn8Z2eghk/edit?usp=sharing) 👉 [Excel](Documents/Hacker%20Kermit%20-%20Test%20Protocol%20Simple%20ATM%20Machine.xlsx)
+> - `Video` 👉 [Youtube](https://youtu.be/5b-M8Epj4_I)
+> - `Team Backlog` 👉 [Google Sheets](https://docs.google.com/spreadsheets/d/1zNYQwJDrJ9qqAZZ_Uy99j_71yp0KEJW7-AQn8Z2eghk/edit?usp=sharing) 👉 [Excel]()
+> - `Test Protocol` 👉 [Google Sheets](https://docs.google.com/spreadsheets/d/1zNYQwJDrJ9qqAZZ_Uy99j_71yp0KEJW7-AQn8Z2eghk/edit?usp=sharing#gid=320715025) 👉 [Excel]()
 > - ---
 > ### Technical
 > - `Proteus Simulation (Proteus 8.13)` 👉 [Proteus.pdsprj](Simulation/ObstacleAvoidanceRobot.pdsprj)
