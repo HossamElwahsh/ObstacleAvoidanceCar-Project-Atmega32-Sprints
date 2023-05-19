@@ -20,7 +20,7 @@ u8 u8_g_rotCounter = APP_ZERO;
  * Updates LCD (UI) with current speed (global), current direction (Fwd, Bck, Rot, Stp)
  * and current distance from obstacle in front of the robot
  *
- * @param [in]u16_a_dist distance between the robot and the obstacle infront of it in CM
+ * @param [in]u16_a_dist distance between the robot and the obstacle in-front of it in CM
  *
  * @return void
  */
@@ -42,6 +42,15 @@ static void APP_updateUI(u16 u16_a_dist) {
     LCD_WriteInt(u16_a_dist);
 }
 
+
+/**
+ * @brief Initializes the application by initializing the MCAL and HAL components.
+ *
+ * @details This function initializes the external interrupt, SPI, timer0, buzzer, button, keypad, and LCD.
+ * It also clears the LCD's display and switches to the entry point state.
+ *
+ * @return void
+ */
 void APP_initialization(void) {
     // donetodo-Alaa
     // init button
@@ -62,6 +71,14 @@ void APP_initialization(void) {
     APP_switchState(APP_STATE_INIT);
 }
 
+/**
+ * @brief Start the application program flow for ATM
+ *
+ * This function starts the application program and enters an infinite loop that continuously polls
+ * the application state and executes the corresponding actions according to the current state.
+ *
+ * @return void
+ */
 void APP_startProgram(void) {
     u16 u16_l_lastDist = APP_U8_ZERO_DIST;
 
@@ -335,6 +352,13 @@ void APP_startProgram(void) {
     }
 }
 
+/**
+ * @brief Used to switch between app states to initialize standard UI elements before main app flow (loop)
+ *
+ * @param [in]u8_a_state state to set (APP_STATE_LAUNCH, APP_STATE_...)
+ *
+ * @return void
+ */
 void APP_switchState(u8 u8_a_state) {
     switch (u8_a_state) {
         case APP_STATE_INIT:
@@ -397,6 +421,9 @@ void APP_switchState(u8 u8_a_state) {
     u8_g_state = u8_a_state;
 }
 
+/**
+ * @brief Updates the delay flag when the delay overflow interrupt is set
+ */
 void APP_delayNotification(void) {
     u8_g_delayState = DELAY_DONE;
 }
