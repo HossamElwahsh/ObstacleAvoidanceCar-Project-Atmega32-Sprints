@@ -120,11 +120,14 @@ void APP_startProgram(void) {
                     }
                 }
 
-                /* reset flag from CBF */
-                u8_g_delayState = DELAY_NOT_DONE;
+				if(u8_g_state == APP_STATE_STARTING)
+				{
+					/* reset flag from CBF */
+					u8_g_delayState = DELAY_NOT_DONE;
 
-                /* Change robot state to running */
-                APP_switchState(APP_STATE_RUNNING);
+					/* Change robot state to running */
+					APP_switchState(APP_STATE_RUNNING);
+				}
 
                 break;
 
@@ -165,13 +168,15 @@ void APP_startProgram(void) {
                     //{
                     // 							/* Reset delay notification flag */
                     // 							u8_g_delayState = DELAY_NOT_DONE;
-
-                    /* Update Speed */
-                    u8_g_currentSpeed = APP_U8_SPEED_50;
-                    DCM_speed(u8_g_currentSpeed);
-                    APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
-                    //DELAY_setTime(5000);
-                    //}
+					
+					if(u8_g_state == APP_STATE_RUNNING)
+					{
+						/* Update Speed */
+						u8_g_currentSpeed = APP_U8_SPEED_50;
+						DCM_speed(u8_g_currentSpeed);
+						APP_updateUI(u8_g_currentSpeed, u8_g_currentCarDir, u16_l_distanceCm);
+						//DELAY_setTime(5000);
+                    }
                 }
                     // 30 < distance < 70 // donetodo-(Hossam)
                 else if (u16_l_distanceCm > APP_U8_DIST_30 && u16_l_distanceCm < APP_U8_CAR_SPEED_70) {
