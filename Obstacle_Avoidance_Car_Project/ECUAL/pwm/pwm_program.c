@@ -22,6 +22,16 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION IMPLEMENTATION
  *********************************************************************************************************************/
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_init (void)
+* @Description     : Initializes PWM module
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 en_PWM_error_t PWM_init	(void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
@@ -67,6 +77,16 @@ en_PWM_error_t PWM_init	(void)
 	return returnValue;
 }
 
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_setDutyCycle (u8 u8_a_speed)
+* @Description     : Sets PWM duty cycle
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : u8						u8_a_speed
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 en_PWM_error_t PWM_setDutyCycle (u8 u8_a_speed)
 {
 	u16 u16_a_onTime = 0, u16_a_offTime	= 0;
@@ -104,6 +124,16 @@ en_PWM_error_t PWM_setDutyCycle (u8 u8_a_speed)
 	return returnValue;
 }
 
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_start (void)
+* @Description     : Starts PWM
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 en_PWM_error_t PWM_start (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
@@ -129,6 +159,16 @@ en_PWM_error_t PWM_start (void)
 	return returnValue;
 }
 
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_stop (void)
+* @Description     : Stops PWM
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 en_PWM_error_t PWM_stop (void)
 {
 	en_PWM_error_t returnValue = PWM_OK;
@@ -167,6 +207,16 @@ en_PWM_error_t PWM_stop (void)
 	return returnValue;
 }
 
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_onTask (void)
+* @Description     : task called by the interrupt when the signal is in HIGH phase
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 void PWM_onTask (void)
 {
 	for (u8 counter = 0; counter < NUMBER_OF_PWM_PINS; counter++)
@@ -175,6 +225,16 @@ void PWM_onTask (void)
 	}
 }
 
+/******************************************************************************
+* @Syntax          : en_PWM_error_t PWM_onTask (void)
+* @Description     : task called by the interrupt when the signal is in LOW phase
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_PWM_error_t			PWM_OK = 0
+*											PWM_NOK = 1
+*******************************************************************************/
 void PWM_offTask (void)
 {
 	for (u8 counter = 0; counter < NUMBER_OF_PWM_PINS; counter++)

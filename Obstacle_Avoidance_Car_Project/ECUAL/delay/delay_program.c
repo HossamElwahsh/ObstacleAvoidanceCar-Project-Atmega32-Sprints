@@ -23,6 +23,16 @@
  /**********************************************************************************************************************
  *  GLOBAL FUNCTION IMPLEMENTATION
  *********************************************************************************************************************/
+ /******************************************************************************
+ * @Syntax          : en_DELAY_error_t DELAY_init (void)
+ * @Description     : Initializes delay module
+ * @Sync\Async      : Synchronous
+ * @Reentrancy      : Reentrant
+ * @Parameters (in) : None
+ * @Parameters (out): None
+ * @Return value:   : en_DELAY_error_t		DELAY_OK = 0
+ *											DELAY_NOK = 1
+ *******************************************************************************/
  en_DELAY_error_t DELAY_init (void)
  {
 	 en_DELAY_error_t returnValue = DELAY_OK;
@@ -55,7 +65,17 @@
 	 return returnValue;
  }
 
- en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS)
+ /******************************************************************************
+ * @Syntax          : en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS)
+ * @Description     : Sets blocking delay time
+ * @Sync\Async      : Synchronous
+ * @Reentrancy      : Reentrant
+ * @Parameters (in) : f32					f32_a_timeInMS
+ * @Parameters (out): None
+ * @Return value:   : en_DELAY_error_t		DELAY_OK = 0
+ *											DELAY_NOK = 1
+ *******************************************************************************/
+en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS)
  {
 	 en_DELAY_error_t returnValue = DELAY_OK;
 	 
@@ -99,6 +119,16 @@
 	 
  }
 
+/******************************************************************************
+* @Syntax          : en_DELAY_error_t DELAY_setTime (f32 f32_a_timeInMS)
+* @Description     : Sets non-blocking delay time
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : f32					f32_a_timeInMS
+* @Parameters (out): None
+* @Return value:   : en_DELAY_error_t		DELAY_OK = 0
+*											DELAY_NOK = 1
+*******************************************************************************/
 en_DELAY_error_t DELAY_setTimeNonBlocking (f32 f32_a_timeInMs)
 {
 	en_DELAY_error_t returnValue = DELAY_OK;
@@ -151,6 +181,17 @@ en_DELAY_error_t DELAY_setTimeNonBlocking (f32 f32_a_timeInMs)
 	return returnValue;
 }
 
+/******************************************************************************
+* @Syntax          : en_DELAY_error_t DELAY_setCallBack (void (*funPtr)(void))
+* @Description     : Sets call back for the function which gonna be performed
+*					 when the nonblocking delay times out
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : void					(*funPtr)(void)
+* @Parameters (out): None
+* @Return value:   : en_DELAY_error_t		DELAY_OK = 0
+*											DELAY_NOK = 1
+*******************************************************************************/
 en_DELAY_error_t DELAY_setCallBack (void (*funPtr)(void))
 {
 	en_DELAY_error_t returnValue = DELAY_OK;
