@@ -73,7 +73,7 @@ void LCD_vidInit(void)
 	LCD_vidWritecmd(LCD_ENTRY_MODE_CURSOR_INCREMENT);
 	DELAY_setTime (1);
 
-	LCD_vidWritecmd(LCD_CURSOR_OFF);
+	  LCD_vidWritecmd(LCD_CURSOR_OFF);
 	DELAY_setTime (1);
 }
 
