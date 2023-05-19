@@ -281,15 +281,27 @@ void APP_startProgram(void) {
                     APP_updateUI(u16_l_distanceCm);
 
                     // set sync. delay to rotation time
-                    DELAY_setTime(APP_ROTATION_TIME_MS);
-
-                    u8_g_rotCounter++;
-
+                    //DELAY_setTime(APP_ROTATION_TIME_MS);
                     u16_l_distanceCm = US_getDistance();
                     if (u16_l_distanceCm > APP_U8_DIST_30) {
                         u8_g_rotCounter = APP_ZERO;
+                        //u8_g_delayState = DELAY_NOT_DONE;
                         continue;
                     }
+
+                    u8_g_delayState = DELAY_NOT_DONE;
+                    DELAY_setTimeNonBlocking(APP_ROTATION_TIME_MS);
+                    u8_g_rotCounter++;
+
+                    while(u8_g_delayState == DELAY_NOT_DONE)
+                    {
+                        if (KEYPAD_getButton() == KPD_KEY_STOP) {
+                            /* Reset to init state */
+                            APP_switchState(APP_STATE_INIT);
+                            break;
+                        }
+                    }
+                    if(u8_g_state != APP_STATE_RUNNING) break;
 
                     if (u8_g_rotCounter == APP_ROTATIONS_BEFORE_STOP) {
                         DCM_stop();
