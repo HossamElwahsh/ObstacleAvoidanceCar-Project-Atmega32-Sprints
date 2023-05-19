@@ -23,6 +23,16 @@ extern const st_DCM_config_t st_DCM_config [NUMBER_OF_DCMS_USED];
  /**********************************************************************************************************************
  *  GLOBAL FUNCTION IMPLEMENTATION
  *********************************************************************************************************************/
+/******************************************************************************
+* @Syntax          : en_DCM_error_t DCM_init (void)
+* @Description     : Initializes DCM module
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_DCM_error_t			DCM_OK = 0
+*											DCM_NOK = 1
+*******************************************************************************/
 en_DCM_error_t DCM_init	(void)
 {
 	en_DCM_error_t returnValue = DCM_OK;
@@ -60,7 +70,18 @@ en_DCM_error_t DCM_init	(void)
 	
 }
 
-
+/******************************************************************************
+* @Syntax          : en_DCM_error_t DCM_setDirection
+*					 (en_DCM_number_t en_a_dcmNumber, en_DCM_direction_t en_a_direction)
+* @Description     : Sets Directions for the a specific DCM
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : en_DCM_number_t		en_a_dcmNumber
+*					 en_DCM_direction_t		en_a_direction
+* @Parameters (out): None
+* @Return value:   : en_DCM_error_t			DCM_OK = 0
+*											DCM_NOK = 1
+*******************************************************************************/
 en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_direction_t en_a_direction)
 {
 	en_DCM_error_t returnValue = DCM_OK;
@@ -121,6 +142,16 @@ en_DCM_error_t DCM_setDirection		(en_DCM_number_t en_a_dcmNumber, en_DCM_directi
 }
 
 
+/******************************************************************************
+* @Syntax          : en_DCM_error_t DCM_speed (u8 u8_a_speed)
+* @Description     : Sets speed for DCMs
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : u8						u8_a_speed
+* @Parameters (out): None
+* @Return value:   : en_DCM_error_t			DCM_OK = 0
+*											DCM_NOK = 1
+*******************************************************************************/
 en_DCM_error_t DCM_speed (u8 u8_a_speed)
 {
 	en_DCM_error_t returnValue = DCM_OK;
@@ -145,6 +176,16 @@ en_DCM_error_t DCM_speed (u8 u8_a_speed)
 }
 
 
+/******************************************************************************
+* @Syntax          : en_DCM_error_t DCM_start (void)
+* @Description     : Starts DCMs to rotate
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_DCM_error_t			DCM_OK = 0
+*											DCM_NOK = 1
+*******************************************************************************/
 en_DCM_error_t DCM_start (void)
 {
 	en_DCM_error_t returnValue = DCM_OK;
@@ -161,6 +202,16 @@ en_DCM_error_t DCM_start (void)
 }
 
 
+/******************************************************************************
+* @Syntax          : en_DCM_error_t DCM_stop (void)
+* @Description     : Stops DCMs from rotating
+* @Sync\Async      : Synchronous
+* @Reentrancy      : Reentrant
+* @Parameters (in) : None
+* @Parameters (out): None
+* @Return value:   : en_DCM_error_t			DCM_OK = 0
+*											DCM_NOK = 1
+*******************************************************************************/
 en_DCM_error_t DCM_stop	(void)
 {
 	en_DCM_error_t returnValue = DCM_OK;
