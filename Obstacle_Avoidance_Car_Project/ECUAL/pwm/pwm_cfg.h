@@ -30,7 +30,7 @@
 /*
  *	Enter microcontrolers frequency in Hz writing UL besides it
  */
-#define F_CPU							16000000UL
+#define F_CPU							8000000UL
 
 /*************************_TIMER_USED_*************************/
 /*
