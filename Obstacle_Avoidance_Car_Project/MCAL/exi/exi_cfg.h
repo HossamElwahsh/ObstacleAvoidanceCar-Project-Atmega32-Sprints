@@ -12,7 +12,7 @@
 /*************************************************************************************************************
  * 													Macros
  ************************************************************************************************************/
-#define EXTI_PINS_NUM		3			//Number of ext. interrupt pins
+#define EXI_PINS_NUM		3			//Number of ext. interrupt pins
 
 #define MAX_EXTI			EXTI2
 
@@ -21,10 +21,10 @@
  ************************************************************************************************************/
 typedef struct
 {
-	en_EXTI_num_t 	 	EXTI_NUM;
-	en_EXTI_senseMode_t SENSE_MODE;
-	en_EXTI_state_t 	EXTI_EN;
-}st_EXTI_config_t;
+	en_EXI_num_t 	 	EXI_NUM;
+	en_EXI_senseMode_t SENSE_MODE;
+	en_EXI_state_t 	EXI_EN;
+}st_EXI_config_t;
 
 
 /*************************************************************************************************************
