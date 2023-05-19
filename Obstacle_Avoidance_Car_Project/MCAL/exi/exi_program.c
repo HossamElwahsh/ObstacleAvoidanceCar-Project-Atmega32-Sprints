@@ -19,9 +19,9 @@
 /************************************************************************************************************
  * 												Global Variables
  ************************************************************************************************************/
-extern const st_EXTI_config_t arr_g_exiConfigs[EXTI_PINS_NUM];
+extern const st_EXI_config_t arr_g_exiConfigs[EXI_PINS_NUM];
 
-void (*arr_g_exiCBF[EXTI_PINS_NUM])(void) = {NULL};
+void (*arr_g_exiCBF[EXI_PINS_NUM])(void) = {NULL};
 
 /************************************************************************************************************
  * 											Function Implementation
@@ -29,69 +29,69 @@ void (*arr_g_exiCBF[EXTI_PINS_NUM])(void) = {NULL};
 /**
  * @brief Check the parameters and configurations
  *
- * This static function checks the validity of the input EXTI number,
- * the configured EXTI state and the configured EXTI sense mode
+ * This static function checks the validity of the input EXI number,
+ * the configured EXI state and the configured EXI sense mode
  * parameters in the configuration source file
  *
  * @param[in] en_a_intNumber the interrupt to be initialized
  *
- * @return en_EXTI_error_t value that indicates operation success/failure
- *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
+ * @return en_EXI_error_t value that indicates operation success/failure
+ *		   (EXI_OK in case of success or EXI_ERROR in case of failure)
  */
-static en_EXTI_error_t ParameterCheck(en_EXTI_num_t en_a_intNumber)
+static en_EXI_error_t ParameterCheck(en_EXI_num_t en_a_intNumber)
 {
 	/* Check whether the ext. int. number is valid */
 	if((en_a_intNumber < EXTI0) || (en_a_intNumber > EXTI2)) 
-	return EXTI_ERROR;
+	return EXI_ERROR;
 	
 	/* Check whether the interrupt state is valid */
-	if((arr_g_exiConfigs[en_a_intNumber].EXTI_EN != EXTI_DISABLE)
-	&& (arr_g_exiConfigs[en_a_intNumber].EXTI_EN != EXTI_ENABLE))
-		return EXTI_ERROR;
+	if((arr_g_exiConfigs[en_a_intNumber].EXI_EN != EXI_DISABLE)
+	&& (arr_g_exiConfigs[en_a_intNumber].EXI_EN != EXI_ENABLE))
+		return EXI_ERROR;
 	
 	/* Check whether the interrupt sense mode is valid */	
 	if(((arr_g_exiConfigs[en_a_intNumber].SENSE_MODE)<LOW_LEVEL) 
 	|| ((arr_g_exiConfigs[en_a_intNumber].SENSE_MODE)>RISING_EDGE))
-		return EXTI_ERROR;
+		return EXI_ERROR;
 		
-	return EXTI_OK;
+	return EXI_OK;
 }
 
 /**
- * @brief Initialize given EXTI as configured
+ * @brief Initialize given EXI as configured
  *
  * This function initializes the passed interrupt with the configured
  * parameters in the configuration source file
  *
  * @param[in] en_a_intNumber the interrupt to be initialized
  *
- * @return en_EXTI_error_t value that indicates operation success/failure
- *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
+ * @return en_EXI_error_t value that indicates operation success/failure
+ *		   (EXI_OK in case of success or EXI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_init(en_EXTI_num_t en_a_intNumber)
+en_EXI_error_t EXI_init(en_EXI_num_t en_a_intNumber)
 {
-	en_EXTI_error_t en_l_errorState = EXTI_OK;
+	en_EXI_error_t en_l_errorState = EXI_OK;
 
 	/* Input and configuration check */
 	en_l_errorState = ParameterCheck(en_a_intNumber);
 	
-	if(en_l_errorState == EXTI_ERROR) return en_l_errorState; 
+	if(en_l_errorState == EXI_ERROR) return en_l_errorState; 
 
 	switch(en_a_intNumber)
 	{
 	case EXTI0:
-		EXTI_setSense(EXTI0, arr_g_exiConfigs[EXTI0].SENSE_MODE);
-		EXTI_setState(EXTI0, arr_g_exiConfigs[EXTI0].EXTI_EN);
+		EXI_setSense(EXTI0, arr_g_exiConfigs[EXTI0].SENSE_MODE);
+		EXI_setState(EXTI0, arr_g_exiConfigs[EXTI0].EXI_EN);
 		break;
 
 	case EXTI1:
-		EXTI_setSense(EXTI1, arr_g_exiConfigs[EXTI1].SENSE_MODE);
-		EXTI_setState(EXTI1, arr_g_exiConfigs[EXTI1].EXTI_EN);		
+		EXI_setSense(EXTI1, arr_g_exiConfigs[EXTI1].SENSE_MODE);
+		EXI_setState(EXTI1, arr_g_exiConfigs[EXTI1].EXI_EN);		
 		break;
 
 	case EXTI2:
-		EXTI_setSense(EXTI2, arr_g_exiConfigs[EXTI2].SENSE_MODE);
-		EXTI_setState(EXTI2, arr_g_exiConfigs[EXTI2].EXTI_EN);		
+		EXI_setSense(EXTI2, arr_g_exiConfigs[EXTI2].SENSE_MODE);
+		EXI_setState(EXTI2, arr_g_exiConfigs[EXTI2].EXI_EN);		
 		break;
 	}
 
@@ -99,20 +99,20 @@ en_EXTI_error_t EXTI_init(en_EXTI_num_t en_a_intNumber)
 }
 
 /**
- * @brief  Function to choose the trigger event for given EXTI 
+ * @brief  Function to choose the trigger event for given EXI 
  *
- * This function sets the given EXTI to be triggered whenever 
+ * This function sets the given EXI to be triggered whenever 
  * an event that matches the given sense mode occurs
  *
  * @param[in] en_a_intNumber The interrupt to be configured
  * @param[in] en_a_senseMode The event to trigger the EXTI
  *
- * @return en_EXTI_error_t value that indicates operation success/failure
- *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
+ * @return en_EXI_error_t value that indicates operation success/failure
+ *		   (EXI_OK in case of success or EXI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setSense(en_EXTI_num_t en_a_intNumber, en_EXTI_senseMode_t en_a_senseMode)
+en_EXI_error_t EXI_setSense(en_EXI_num_t en_a_intNumber, en_EXI_senseMode_t en_a_senseMode)
 {
-	en_EXTI_error_t en_l_errorState = EXTI_OK;
+	en_EXI_error_t en_l_errorState = EXI_OK;
 
 	if((en_a_senseMode>=LOW_LEVEL && en_a_senseMode<=RISING_EDGE) && !(en_a_senseMode<FALLING_EDGE && en_a_intNumber==EXTI2))
 	{
@@ -133,12 +133,12 @@ en_EXTI_error_t EXTI_setSense(en_EXTI_num_t en_a_intNumber, en_EXTI_senseMode_t 
 		MCUCSR |= (en_a_senseMode&1)<<MCUCSR_ISC2;
 		break;
 
-		default: en_l_errorState = EXTI_ERROR;
+		default: en_l_errorState = EXI_ERROR;
 		}
 	}
 	else
 	{
-		en_l_errorState = EXTI_ERROR;
+		en_l_errorState = EXI_ERROR;
 	}
 
 	return en_l_errorState;
@@ -151,14 +151,14 @@ en_EXTI_error_t EXTI_setSense(en_EXTI_num_t en_a_intNumber, en_EXTI_senseMode_t 
  * for the given interrupt to enable or disable it
  *
  * @param[in] en_a_intNumber The interrupt to be configured
- * @param[in] en_a_intState  EXTI state (EXTI_ENABLE/EXTI_DISABLE)
+ * @param[in] en_a_intState  EXI state (EXI_ENABLE/EXI_DISABLE)
  *
- * @return en_EXTI_error_t value that indicates operation success/failure
- *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
+ * @return en_EXI_error_t value that indicates operation success/failure
+ *		   (EXI_OK in case of success or EXI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setState(en_EXTI_num_t en_a_intNumber, en_EXTI_state_t en_a_intState)
+en_EXI_error_t EXI_setState(en_EXI_num_t en_a_intNumber, en_EXI_state_t en_a_intState)
 {
-	en_EXTI_error_t en_l_errorState = EXTI_OK;
+	en_EXI_error_t en_l_errorState = EXI_OK;
 
 	/* Set Specific Interrupt Enable bit as configured */
 	switch(en_a_intNumber)
@@ -178,7 +178,7 @@ en_EXTI_error_t EXTI_setState(en_EXTI_num_t en_a_intNumber, en_EXTI_state_t en_a
 		GICR |= (en_a_intState << GICR_INT2);
 		break;
 
-	default: en_l_errorState = EXTI_ERROR;
+	default: en_l_errorState = EXI_ERROR;
 	}
 
 	return en_l_errorState;
@@ -186,20 +186,20 @@ en_EXTI_error_t EXTI_setState(en_EXTI_num_t en_a_intNumber, en_EXTI_state_t en_a
 
 
 /**
- * @brief Function to set a function to call when exti is triggered
+ * @brief Function to set a function to call when EXI is triggered
  *
  * This function sets a callback function to be called whenever 
  * the given interrupt is triggered 
  *
- * @param[in] en_a_IntNumber The desired exti number
+ * @param[in] en_a_IntNumber The desired EXI number
  * @param[in] pv_a_Function  The function to call
  *
- * @return en_EXTI_error_t value that indicates operation success/failure
- *		   (EXTI_OK in case of success or EXTI_ERROR in case of failure)
+ * @return en_EXI_error_t value that indicates operation success/failure
+ *		   (EXI_OK in case of success or EXI_ERROR in case of failure)
  */
-en_EXTI_error_t EXTI_setCallback(en_EXTI_num_t en_a_IntNumber, void (*pv_a_Function)(void))
+en_EXI_error_t EXI_setCallback(en_EXI_num_t en_a_IntNumber, void (*pv_a_Function)(void))
 {
-	en_EXTI_error_t en_l_errorState = EXTI_OK;
+	en_EXI_error_t en_l_errorState = EXI_OK;
 
 	if((pv_a_Function != NULL) && (en_a_IntNumber <= MAX_EXTI))
 	{
@@ -207,7 +207,7 @@ en_EXTI_error_t EXTI_setCallback(en_EXTI_num_t en_a_IntNumber, void (*pv_a_Funct
 	}
 	else
 	{
-		en_l_errorState = EXTI_ERROR;
+		en_l_errorState = EXI_ERROR;
 	}
 
 	return en_l_errorState;
