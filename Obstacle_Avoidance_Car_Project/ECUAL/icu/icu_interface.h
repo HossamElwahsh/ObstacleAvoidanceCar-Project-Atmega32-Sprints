@@ -19,12 +19,6 @@
 
 /** OPTIONS **/
 
-#define ICU_STEP_1_WAIT_HIGH 0
-#define ICU_STEP_2_WAIT_LOW 1
-
-/**
- * CAPTURE PIN
- */
 typedef enum{
     PORT_B = 1,
     PORT_D = 3

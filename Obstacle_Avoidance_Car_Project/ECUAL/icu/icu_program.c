@@ -8,15 +8,13 @@
 #include "icu_interface.h"
 #include "icu_cfg.h"
 
-/* Runtime Macros */
-#define ICU_STATE_WAIT 0
-#define ICU_STATE_COMPLETE 1
+/* Runtime Helping Macros */
+#define ICU_STEP_1_WAIT_HIGH 0
+#define ICU_STEP_2_WAIT_LOW 1
 
 // configuration
 st_ICU_config_t st_g_ICU_config;
-u8 u8_g_icuState = ICU_STATE_WAIT;
 u8 u8_g_icuStep = ICU_STEP_1_WAIT_HIGH;
-u16 u16_g_icuLastCaptureValue = 0;
 const en_TIMER_number_t const_g_icuTimer = TIMER_2;
 
 /* Private Helper Functions Prototypes */
@@ -77,15 +75,6 @@ void ICU_getCaptureValue(void)
     EXI_setSense((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo, RISING_EDGE);
     EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
                   EXI_ENABLE);
-
-//    while(u8_g_icuState == ICU_STATE_WAIT);
-/*
-    // disable EXI
-    EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
-                  EXI_DISABLE);
-
-    *//* return last capture timer value (in uS) *//*
-    return u16_g_icuLastCaptureValue;*/
 }
 
 /**
@@ -93,7 +82,6 @@ void ICU_getCaptureValue(void)
  * */
 static void ICU_inputHandler(void)
 {
-//    DIO_setPinVal(DIO_PORTB, DIO_PIN_7, HIGH);
     u8 u8_l_capturePinValue = 0;
     DIO_getPinVal(st_g_ICU_config.icuCapturePin == PORT_B_PIN_2 ? DIO_PORTB : DIO_PORTD,
                   st_g_ICU_config.icuCapturePin == PORT_D_PIN_3 ? DIO_PIN_3 : DIO_PIN_2,
@@ -114,13 +102,11 @@ static void ICU_inputHandler(void)
         /* Get elapsed time */
         u32 u32_l_elapsed = 0;
         TIMER_getElapsedTime(const_g_icuTimer, &u32_l_elapsed);
-        u16_g_icuLastCaptureValue = u32_l_elapsed;
 
         /* Reset timer */
         TIMER_reset(const_g_icuTimer);
-//        u8_g_icuState = ICU_STATE_COMPLETE; // update ICU status to complete
 
-/* Disable EXI */
+        /* Disable EXI */
         EXI_setState((en_EXI_num_t) st_g_ICU_config.icuCapturePinData.interruptNo,
                       EXI_DISABLE);
         if(st_g_ICU_config.timeReceivedCallbackFun != NULL)
